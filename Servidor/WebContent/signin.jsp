@@ -29,14 +29,17 @@
 
     <div class="container">
 
-      <form class="form-signin">
+      <form name="loginForm" method="post" action="signin" class="form-signin">
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Correo electrónico" required>
+        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Correo electrónico" required>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Contraseña" required>
         <div class="checkbox">
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Inicia Sesión</button>
+        <div class="login-register">
+				<a href="#" >Registrate</a>
+			</div>
       </form>
 
     </div> <!-- /container -->
