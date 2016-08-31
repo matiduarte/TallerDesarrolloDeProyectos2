@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import entities.User;
+
 @Path("/prueba")
 public class UserLoginService {
 	
@@ -24,6 +26,11 @@ public class UserLoginService {
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json")
     public ServiceResponse prueba(@FormParam("userName")String userName) {
+		User prueba = new User();
+		prueba.setFirstName("first");
+		prueba.setLastName("last");
+		prueba.save();
+		
 		return new ServiceResponse(false, "Usuario o contraseña incorrecto", "");
 
     }
