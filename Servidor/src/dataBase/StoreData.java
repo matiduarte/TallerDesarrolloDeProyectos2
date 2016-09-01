@@ -40,6 +40,7 @@ public class StoreData {
 			
 			//Aca se agregan los configs de cada clase
 			cfg.addResource("dataBase/user.hbm.xml");
+			cfg.addResource("dataBase/course.hbm.xml");
 
 			//creating seession factory object  
 			this.factory = cfg.buildSessionFactory();
