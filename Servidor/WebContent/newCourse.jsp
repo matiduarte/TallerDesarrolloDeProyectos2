@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="entities.Category" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -8,6 +10,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="bootstrap/img/icono.ico">
+	 
+	 
 
     <title>Nuevo Curso</title>
 
@@ -33,8 +37,23 @@
         <input type="text" id="inputName" name="name" class="form-control" placeholder="Nombre" required>
         <label for="inputDescription" class="sr-only">Descripci&oacute;n</label>
         <input type="text" id="inputDescription" name="description" class="form-control" placeholder="Descripci&oacute;n" required>
+        
+       	<select class="selectpicker" multiple name="categories">
+			<%
+			 ArrayList<Category> categories = (java.util.ArrayList)request.getAttribute("categories");
+			 for (Category category: categories)
+			 { 
+				 out.print("<option value='"+category.getId()+"'>"+category.getName()+"</option>");
+			 }
+			%>
+		</select>
+       	
+		</br>
+        
         <label class="control-label">Seleccione una imagen</label>
 		<input id="inputPicture" name="picture" type="file" class="form-control-file">
+		</br>
+		
         <button class="btn btn-lg btn-primary btn-block" type="submit">Guardar</button>
       </form>
 
