@@ -55,10 +55,9 @@ public static User getByUserName(String userName){
 }
 
 public static User getByUserEmail(String email){
-	List<?> list = StoreData.getByField(User.class, "email", email);
 	
+	List<?> list = StoreData.getByField(User.class, "email", email);
 	User user = null;
-	System.out.println("TAM LISTA " + list.size());
 	if(list.size() > 0){
 		user = (User)list.get(0);
 	}

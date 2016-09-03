@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.User;
+
 /**
  * Servlet implementation class SignInController
  */
@@ -42,8 +44,23 @@ public class SignInController extends HttpServlet {
     	String email = request.getParameter("email");
     	String password = request.getParameter("password");
     	
-    	System.out.println("Email " + email);
-    	System.out.println("Email " + password);
+    	User user = User.getByUserEmail(email);
+    	boolean mismoPass = false;
+    	
+    	System.out.println("PASS " + user.getPassword());
+    	
+    	if (user != null){
+    		if (user.getPassword().equals(password))
+    			mismoPass = true;
+    	}
+    	
+    	if (mismoPass){
+    		System.out.println("ENTRE MISMO");
+    		request.setAttribute("error", "false");
+    	} else {
+    		System.out.println("ENTRE MAL");
+    		request.setAttribute("error", "true");
+    	}
     	
         processRequest(request, response);
     }
