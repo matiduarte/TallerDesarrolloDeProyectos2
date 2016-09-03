@@ -32,7 +32,7 @@
 
     <div class="container">
 
-      <form name="loginForm" method="post" action="newCourse" class="form-signin">
+      <form name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
         <label for="inputName" class="sr-only">Nombre</label>
         <input type="text" id="inputName" name="name" class="form-control" placeholder="Nombre" required>
         <label for="inputDescription" class="sr-only">Descripci&oacute;n</label>
