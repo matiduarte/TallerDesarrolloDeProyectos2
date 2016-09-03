@@ -75,7 +75,7 @@ public class NewCourseController extends HttpServlet {
 		}
     	
     	 // Create path components to save the file
-        final String path = System.getProperty("user.dir") + "/Files/Course/1";
+        final String path = System.getProperty("user.dir") + "/Files/Course/" + course.getId() + "/";
         final Part filePart = request.getPart("picture");
         final String fileName = getFileName(filePart);
 
