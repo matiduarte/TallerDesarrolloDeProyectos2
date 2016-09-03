@@ -9,10 +9,11 @@
     	<generator class="increment"></generator>  
     </id>  
             
-    <property name="firstName"></property>  
-    <property name="lastName"></property>  
+    <property name="firstName"></property>
+    <property name="lastName"></property> 
     <property name="userName"></property>
-    <property name="password"></property>            
-  </class>  
+    <property name="password"></property>
+    <property name="email"></property>
+    </class>  
             
  </hibernate-mapping>  
