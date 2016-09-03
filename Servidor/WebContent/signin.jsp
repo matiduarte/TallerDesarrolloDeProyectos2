@@ -47,11 +47,17 @@
         </div>
         <button class="btn btn-lg btn-raised btn-primary btn-block" type="submit">Iniciar Sesión</button>
         <div class="login-register">
-				<a href="#" >Registrate</a>
+				<a href="#" onclick="registro()">Registrate</a>
 			</div>
       </form>
 
     </div> <!-- /container -->
+
+	<script>
+	function registro(){	
+			window.location.href = "/Servidor/signup";
+	}
+	</script>
 
   </body>
 </html>

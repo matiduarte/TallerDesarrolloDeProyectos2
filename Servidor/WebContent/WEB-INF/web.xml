@@ -26,15 +26,20 @@
     <servlet-name>Jersey Web Application</servlet-name>
     <url-pattern>/proyectos2/*</url-pattern>
   </servlet-mapping>
-  
-  	<servlet>
-        <servlet-name>Sign In</servlet-name>
-        <servlet-class>controllers.SignInController</servlet-class>
-    </servlet>
- 
-    <servlet-mapping>
-        <servlet-name>Sign In</servlet-name>
-        <url-pattern>/signin/*</url-pattern>
-    </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>Sign In</servlet-name>
+    <servlet-class>controllers.SignInController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Sign In</servlet-name>
+    <url-pattern>/signin/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Sign Up</servlet-name>
+    <servlet-class>controllers.SignUpController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Sign Up</servlet-name>
+    <url-pattern>/signup/*</url-pattern>
+  </servlet-mapping>
 </web-app>
