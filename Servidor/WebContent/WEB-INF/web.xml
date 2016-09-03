@@ -2,39 +2,35 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>Servidor</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <servlet-name>Jersey Web Application</servlet-name>
-    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-    <init-param>
-      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>service</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Jersey Web Application</servlet-name>
-    <url-pattern>/proyectos2/*</url-pattern>
-  </servlet-mapping>
-  
-  	<servlet>
-        <servlet-name>Sign In</servlet-name>
-        <servlet-class>controllers.SignInController</servlet-class>
+
+<servlet>		
+ 	<servlet-name>Jersey Web Application</servlet-name>		
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>		
+	<init-param>		
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>		
+			<param-value>true</param-value>		
+		</init-param>		
+		<init-param>		
+		<param-name>com.sun.jersey.config.property.packages</param-name>		
+			<param-value>service</param-value>		
+		</init-param>		
+		<load-on-startup>1</load-on-startup>		
+	</servlet>		
+	<servlet-mapping>		
+		<servlet-name>Jersey Web Application</servlet-name>		
+		<url-pattern>/proyectos2/*</url-pattern>		
+	</servlet-mapping>		
+	
+	<servlet>
+        <servlet-name>NewCourse</servlet-name>
+        <servlet-class>controllers.NewCourseController</servlet-class>
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>Sign In</servlet-name>
-        <url-pattern>/signin/*</url-pattern>
+        <servlet-name>NewCourse</servlet-name>
+        <url-pattern>/newCourse/*</url-pattern>
     </servlet-mapping>
-  
-</web-app>
+	
+</web-app> 
