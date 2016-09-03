@@ -10,22 +10,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="bootstrap/img/icono.ico">
-	 
-	 
-
     <title>Nuevo Curso</title>
-
-    <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="bootstrap/css/newCourse.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   </head>
 
   <body>
@@ -33,12 +21,24 @@
     <div class="container">
 
       <form name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
-        <label for="inputName" class="sr-only">Nombre</label>
-        <input type="text" id="inputName" name="name" class="form-control" placeholder="Nombre" required>
-        <label for="inputDescription" class="sr-only">Descripci&oacute;n</label>
-        <input type="text" id="inputDescription" name="description" class="form-control" placeholder="Descripci&oacute;n" required>
+        </br>
         
-       	<select class="selectpicker" multiple name="categories">
+        <label class="btn btn-primary btn-file addImageButton">
+		    Agregar Foto <input required="true" type="file" style="display: none;" id="inputPicture" name="picture" onchange="readURL(this);">
+		</label>
+		
+		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
+		
+        </br>
+        </br>
+        </br>
+        <input type="text" id="inputName" name="name" required="true" class="form-control" placeholder="Nombre" required>
+        </br>
+        <input type="text" id="inputDescription" name="description" required="true" class="form-control" placeholder="Descripci&oacute;n" required>
+        
+        </br>
+        <label for="categories">Categorias:</label>
+       	<select class="form-control" multiple name="categories" id="categories" required="true">
 			<%
 			 ArrayList<Category> categories = (java.util.ArrayList)request.getAttribute("categories");
 			 for (Category category: categories)
@@ -47,17 +47,29 @@
 			 }
 			%>
 		</select>
-       	
-		</br>
-        
-        <label class="control-label">Seleccione una imagen</label>
-		<input id="inputPicture" name="picture" type="file" class="form-control-file">
+       
+       
 		</br>
 		
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Guardar</button>
+        <button class="btn-primary newCourseButton btn" type="submit">Crear Curso</button>
       </form>
 
     </div> <!-- /container -->
-
+	
+	<script type="text/javascript">
+		function readURL(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	
+	            reader.onload = function (e) {
+	                $('#imageHolder')
+	                    .attr('src', e.target.result)
+	            };
+	
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+	
+	</script>
   </body>
 </html>
