@@ -5,3 +5,6 @@
 /.gitignore~
 /tomcat.8086/
 /WebContent/WEB-INF/lib/
+/bin/
+origin/agregarCurso
+*~

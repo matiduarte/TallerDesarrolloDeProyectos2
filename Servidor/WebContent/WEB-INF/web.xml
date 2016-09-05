@@ -42,4 +42,13 @@
     <servlet-name>Sign Up</servlet-name>
     <url-pattern>/signup/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+        <servlet-name>NewCourse</servlet-name>
+        <servlet-class>controllers.NewCourseController</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>NewCourse</servlet-name>
+        <url-pattern>/newCourse/*</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -6,8 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    
-    <script src="//cdn.muicss.com/mui-0.7.4/js/mui.js"></script>
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -21,7 +19,7 @@
  	
  </head>
   <body>
-<div class="navbar navbar-inverse">
+<div class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
@@ -54,6 +52,91 @@
   
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>
 </form>
+
+	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+  (function () {
+
+    var $button = $("<div id='source-button' class='btn btn-primary btn-xs'>&lt; &gt;</div>").click(function () {
+      var index = $('.bs-component').index($(this).parent());
+      $.get(window.location.href, function (data) {
+        var html = $(data).find('.bs-component').eq(index).html();
+        html = cleanSource(html);
+        $("#source-modal pre").text(html);
+        $("#source-modal").modal();
+      })
+
+    });
+
+    $('.bs-component [data-toggle="popover"]').popover();
+    $('.bs-component [data-toggle="tooltip"]').tooltip();
+
+    $(".bs-component").hover(function () {
+      $(this).append($button);
+      $button.show();
+    }, function () {
+      $button.hide();
+    });
+
+    function cleanSource(html) {
+      var lines = html.split(/\n/);
+
+      lines.shift();
+      lines.splice(-1, 1);
+
+      var indentSize = lines[0].length - lines[0].trim().length,
+          re = new RegExp(" {" + indentSize + "}");
+
+      lines = lines.map(function (line) {
+        if (line.match(re)) {
+          line = line.substring(indentSize);
+        }
+
+        return line;
+      });
+
+      lines = lines.join("\n");
+
+      return lines;
+    }
+
+    $(".icons-material .icon").each(function () {
+      $(this).after("<br><br><code>" + $(this).attr("class").replace("icon ", "") + "</code>");
+    });
+
+  })();
+
+</script>
+<script src="bootstrap/js/ripples.min.js"></script>
+<script src="bootstrap/js/material.min.js"></script>
+<script src="//fezvrasta.github.io/snackbarjs/dist/snackbar.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+<script>
+  $(function () {
+    $.material.init();
+    $(".shor").noUiSlider({
+      start: 40,
+      connect: "lower",
+      range: {
+        min: 0,
+        max: 100
+      }
+    });
+
+    $(".svert").noUiSlider({
+      orientation: "vertical",
+      start: 40,
+      connect: "lower",
+      range: {
+        min: 0,
+        max: 100
+      }
+    });
+  });
+</script>
 
   </body>
 </html>
