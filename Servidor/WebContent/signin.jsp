@@ -1,3 +1,5 @@
+<%@ page import="java.lang.*" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,8 +13,15 @@
 
     <title>Iniciar Sesion</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Material Design -->
+    <link href="bootstrap/css/bootstrap-material-design.css" rel="stylesheet">
+    <link href="bootstrap/css/ripples.min.css" rel="stylesheet">
+
+	<link href="//fezvrasta.github.io/snackbarjs/dist/snackbar.min.css" rel="stylesheet">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Custom styles for this template -->
     <link href="bootstrap/css/signin.css" rel="stylesheet">
@@ -26,23 +35,30 @@
   </head>
 
   <body>
-
+  	
     <div class="container">
-
-      <form name="loginForm" method="post" action="signin" class="form-signin">
+    
+		<form name="loginForm" method="post" action="signin" class="form-signin">
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Correo electrónico" required>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Contraseña" required>
         <div class="checkbox">
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Inicia Sesión</button>
+        <button class="btn btn-lg btn-raised btn-primary btn-block" type="submit">Iniciar Sesión</button>
         <div class="login-register">
-				<a href="#" >Registrate</a>
+				<a href="#" onclick="registro()">Registrate</a>
 			</div>
       </form>
 
     </div> <!-- /container -->
 
+	<script>
+	function registro(){	
+			window.location.href = "/Servidor/signup";
+	}
+	</script>
+
   </body>
 </html>
+
