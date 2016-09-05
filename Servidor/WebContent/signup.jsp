@@ -31,6 +31,8 @@
   </div>
 </div>
 
+
+ 
 <form class="register" method="post" action="signup">
 
   <div class="form-group label-floating">
