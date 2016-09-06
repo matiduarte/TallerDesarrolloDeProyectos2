@@ -12,8 +12,11 @@
     <link rel="icon" href="bootstrap/img/icono.ico">
     <title>Nuevo Curso</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
     <link href="bootstrap/css/newCourse.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap-tagsinput.js"></script>
+	<script src="bootstrap/js/typeahead.bundle.js"></script>
   </head>
 
   <body>
@@ -54,8 +57,53 @@
         <button class="btn-primary newCourseButton btn" type="submit">Crear Curso</button>
       </form>
 
+<input type="text" id="autocomplete" >
+
     </div> <!-- /container -->
-	
+    
+    <script>
+
+var data = [
+<%
+	 for (Category category: categories)
+	 { 
+		 out.print("'" + category.getName() + "',");
+	 }
+%>
+];
+
+var citynames = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: $.map(data, function (city) {
+        return {
+            name: city
+        };
+    })
+});
+citynames.initialize();
+
+var elt = $('#autocomplete');
+elt.tagsinput({
+    typeaheadjs: [{
+          minLength: 3,
+          highlight: true,
+    },{
+        minlength: 3,
+        name: 'citynames',
+        displayKey: 'name',
+        valueKey: 'name',
+        source: citynames.ttAdapter()
+    }],
+    freeInput: true
+});
+/*elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });*/
+</script>
+
 	<script type="text/javascript">
 		function readURL(input) {
 	        if (input.files && input.files[0]) {
