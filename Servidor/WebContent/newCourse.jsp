@@ -67,7 +67,7 @@ var data = [
 <%
 	 for (Category category: categories)
 	 { 
-		 out.print("'" + category.getName() + "',");
+		 out.print("{ 'value': " + category.getId() + " , 'text': '" + category.getName() + "'} ,");
 	 }
 %>
 ];
@@ -77,7 +77,8 @@ var citynames = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     local: $.map(data, function (city) {
         return {
-            name: city
+            name: city.text,
+            id: city.value,
         };
     })
 });
@@ -85,14 +86,16 @@ citynames.initialize();
 
 var elt = $('#autocomplete');
 elt.tagsinput({
+	itemValue: 'id',
+  	itemText: 'name',
     typeaheadjs: [{
-          minLength: 3,
+          minLength: 1,
           highlight: true,
     },{
-        minlength: 3,
+        minlength: 1,
         name: 'citynames',
         displayKey: 'name',
-        valueKey: 'name',
+        //valueKey: 'name',
         source: citynames.ttAdapter()
     }],
     freeInput: true
