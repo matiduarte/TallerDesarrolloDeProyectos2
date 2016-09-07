@@ -35,10 +35,11 @@
   </head>
 
   <body>
-  	
+  	<img src="bootstrap/img/icono.ico" class="logo" alt="Logo" style="width:100px;height:100px;"> 
     <div class="container">
     
 		<form name="loginForm" method="post" action="signin" class="form-signin">
+		
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Correo electrónico" required>
         <label for="inputPassword" class="sr-only">Password</label>
