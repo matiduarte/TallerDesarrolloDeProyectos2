@@ -23,12 +23,14 @@
 
     <div class="container">
 
-      <form name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
+      <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
         </br>
         
         <label class="btn btn-primary btn-file addImageButton">
 		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="readURL(this);">
 		</label>
+
+        <label class="">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
 		
 		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
 		
@@ -41,8 +43,7 @@
         
         </br>
         
-        <label for="categories">Categorias:</label>
-        <input type="text" id="categories" name="categories" class="form-control" required="true" required >
+        <input type="text" id="categories" name="categories" class="form-control" required="true" placeholder="Categor&iacute;as" required>
        
         </br>
         

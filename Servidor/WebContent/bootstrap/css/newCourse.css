@@ -16,3 +16,6 @@
     height: 80px;
 }
 
+.bootstrap-tagsinput {
+	display: inherit;
+}
