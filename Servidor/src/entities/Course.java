@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,6 +43,24 @@ public class Course {
 	
 	public static Course getById(int id){
 		return (Course)StoreData.getById(Course.class, id);
+	}
+	
+	public static List<Course> getByCategoryId(int categoryId){
+		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCategoryId(categoryId);	 
+		List<Course> listOfCourses = new ArrayList<Course>();
+		
+		for (CourseCategory courseCategory : listOfCouseCategory) {
+			Course course = Course.getById(courseCategory.getCourseId());
+			if(course != null){
+				listOfCourses.add(course);
+			}
+		}
+		
+		return listOfCourses;
+	}
+	
+	public static List<Course> getAll(){
+		return (List<Course>)StoreData.getByField(Course.class, "1", "1");
 	}
 	
 	public void save(){
