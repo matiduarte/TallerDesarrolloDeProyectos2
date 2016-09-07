@@ -47,6 +47,11 @@ public class Category {
 		
 		return result;
 	}
+	
+	public static List<Category> search(String search) {
+		return (List<Category>)StoreData.getByField(Category.class, "name", search);
+	}
+	
 	public List<Course> getCourses() {
 		return courses;
 	}

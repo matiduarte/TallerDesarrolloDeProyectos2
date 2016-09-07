@@ -66,6 +66,16 @@ public class Course {
 	public void save(){
 		StoreData.save(this);
 	}
+	public static List<Course> search(String search) {
+		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "name", search);
+		List<Category> cateogries = Category.search(search);
+		for (Category category : cateogries) {
+			List<Course> categoryCourses = Course.getByCategoryId(category.getId());
+			//TODO: Validar si ya esta el curso en la lista
+			courses.addAll(categoryCourses);
+		}
+		return courses;
+	}
 
 
 }
