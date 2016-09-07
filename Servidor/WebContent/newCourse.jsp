@@ -27,7 +27,7 @@
         </br>
         
         <label class="btn btn-primary btn-file addImageButton">
-		    Agregar Foto <input required="true" type="file" style="display: none;" id="inputPicture" name="picture" onchange="readURL(this);">
+		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="readURL(this);">
 		</label>
 		
 		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
@@ -40,24 +40,15 @@
         <input type="text" id="inputDescription" name="description" required="true" class="form-control" placeholder="Descripci&oacute;n" required>
         
         </br>
+        
         <label for="categories">Categorias:</label>
-       	<select class="form-control" multiple name="categories" id="categories" required="true">
-			<%
-			 ArrayList<Category> categories = (java.util.ArrayList)request.getAttribute("categories");
-			 for (Category category: categories)
-			 { 
-				 out.print("<option value='"+category.getId()+"'>"+category.getName()+"</option>");
-			 }
-			%>
-		</select>
+        <input type="text" id="categories" name="categories" class="form-control" required="true" required >
        
-       
-		</br>
-		
+        </br>
+        
         <button class="btn-primary newCourseButton btn" type="submit">Crear Curso</button>
       </form>
 
-<input type="text" id="autocomplete" >
 
     </div> <!-- /container -->
     
@@ -65,6 +56,7 @@
 
 var data = [
 <%
+    ArrayList<Category> categories = (java.util.ArrayList)request.getAttribute("categories");
 	 for (Category category: categories)
 	 { 
 		 out.print("{ 'value': " + category.getId() + " , 'text': '" + category.getName() + "'} ,");
@@ -84,7 +76,7 @@ var citynames = new Bloodhound({
 });
 citynames.initialize();
 
-var elt = $('#autocomplete');
+var elt = $('#categories');
 elt.tagsinput({
 	itemValue: 'id',
   	itemText: 'name',
@@ -100,11 +92,7 @@ elt.tagsinput({
     }],
     freeInput: true
 });
-/*elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
-elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
-elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
-elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
-elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });*/
+
 </script>
 
 	<script type="text/javascript">
