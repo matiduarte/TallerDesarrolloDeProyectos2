@@ -19,7 +19,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap-tagsinput.js"></script>
 	<script src="bootstrap/js/typeahead.bundle.js"></script>
+	
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/ripples.min.js"></script>
+	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	<script src="bootstrap/js/floating-label.js"></script>
 	
 	
   </head>
@@ -55,15 +60,22 @@
         </br>
         </br>
         </br>
-        
-        <input type="text" id="inputName" name="name" required="true" class="form-control" placeholder="Nombre" required>
+        <div class="form-group label-floating">	
+        	<label class="control-label" for="inputName">Nombre</label>
+        	<input type="text" id="inputName" name="name" required="true" class="form-control" required>
+		</div>
         </br>
-        <input type="text" id="inputDescription" name="description" required="true" class="form-control" placeholder="Descripci&oacute;n" required>
         
+        <div class="form-group label-floating">	
+        	<label class="control-label" for="inputName">Descripci&oacute;n</label>
+        	<input type="text" id="inputDescription" name="description" required="true" class="form-control" required>
+        </div>
         </br>
         
-        <input type="text" id="categories" name="categories" class="form-control" required="true" placeholder="Categor&iacute;as" required>
-       
+        <div class="form-group label-floating">	
+        	<label class="control-label" for="inputName">Categor&iacute;as</label>
+        	<input type="text" id="categories" name="categories" class="form-control" required="true" required>
+       </div>
         </br>
         
         <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
