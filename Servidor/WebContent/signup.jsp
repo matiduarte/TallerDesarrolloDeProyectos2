@@ -37,7 +37,7 @@
 
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Email *</label>
-  <input class="form-control" type="email" required>
+  <input class="form-control" name="email" type="email" required>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Contraseña *</label>
@@ -49,11 +49,11 @@
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Nombre *</label>
-  <input class="form-control" type="text" required>
+  <input class="form-control" name="name" type="text" required>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Apellido *</label>
-  <input class="form-control" type="text" required>
+  <input class="form-control" name="lastName" type="text" required>
   </div>
   
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>

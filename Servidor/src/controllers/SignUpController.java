@@ -1,11 +1,14 @@
 package controllers;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import entities.User;
 
 /**
  * Servlet implementation class SignUpController
@@ -38,8 +41,26 @@ public class SignUpController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String finalizar_btn = request.getParameter("finalizar");
 		
+		String email = request.getParameter("email");
+    	String password = request.getParameter("password");
+    	String name = request.getParameter("name");
+    	String lastName = request.getParameter("lastName");
+    	
+    	User user = User.getByUserEmail(email);
+    	
+    	if (user == null){
+    		user = new User();
+    		user.setEmail(email);
+    		user.setPassword(password);
+    		user.setFirstName(name);
+    		user.setLastName(lastName);
+    	
+    		user.save();
+    	}
+    	
+		String finalizar_btn = request.getParameter("finalizar");
+	
 		if (finalizar_btn != null){
 			getServletConfig().getServletContext().getRequestDispatcher("/signin.jsp").forward(request,response);
 		}
