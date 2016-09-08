@@ -46,10 +46,12 @@ public class SignUpController extends HttpServlet {
     	String password = request.getParameter("password");
     	String name = request.getParameter("name");
     	String lastName = request.getParameter("lastName");
-    	
     	User user = User.getByUserEmail(email);
+    	boolean existe = true;
+    	
     	
     	if (user == null){
+    		existe = false;
     		user = new User();
     		user.setEmail(email);
     		user.setPassword(password);
@@ -57,13 +59,23 @@ public class SignUpController extends HttpServlet {
     		user.setLastName(lastName);
     	
     		user.save();
+    		
     	}
     	
 		String finalizar_btn = request.getParameter("finalizar");
 	
 		if (finalizar_btn != null){
-			getServletConfig().getServletContext().getRequestDispatcher("/signin.jsp").forward(request,response);
+			if (!existe){
+				response.sendRedirect(request.getContextPath() + "/signin.jsp");
+			}else{
+				request.setAttribute("errormsg", "Email existente.");
+				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);
+			}
 		}
+		
+		
+		
+		
 	}
 
 }

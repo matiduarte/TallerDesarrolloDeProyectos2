@@ -34,14 +34,20 @@
     <![endif]-->
   </head>
 
+
+
   <body>
+  <div class="alerta alert alert-success fade in">
+    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    	<strong>Felicitaciones!</strong> Usuario creado con éxito.
+  	</div>
   	<img src="bootstrap/img/icono.ico" class="logo" alt="Logo" style="width:100px;height:100px;"> 
     <div class="container">
     
 		<form name="loginForm" method="post" action="signin" class="form-signin">
 		<div class="form-group label-floating">
     	<label class="control-label" for="focusedInput1">Email</label>
- 		<input class="form-control" id="focusedInput1" name="email" type="email" required>
+ 		<input class="form-control" id="focusedInput1" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
   		</div>
  		 <div class="form-group label-floating">
     	<label class="control-label" for="focusedInput1">Contraseña</label>
@@ -53,8 +59,10 @@
         <div class="login-register">
 				<a href="#" onclick="recuperarContrasenia()">¿Olvido su contraseña?</a>
 			</div>
+			
       </form>
 
+	
     </div> <!-- /container -->
 
 
@@ -73,6 +81,8 @@
 	function recuperarContrasenia(){	
 		window.location.href = "/Servidor/signup";
 	}
+	
+	
 	</script>
 
   </body>

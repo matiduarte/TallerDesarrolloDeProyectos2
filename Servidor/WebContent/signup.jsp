@@ -31,13 +31,26 @@
   </div>
 </div>
 
+<%
 
+		if(request.getAttribute("errormsg") != null){
+%>
+
+	<div class="alerta alert alert-danger">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>Error!</strong> Este email ya se ha utilizado. Por favor, introduzca otro.
+	</div>
+ 
+ <%
+
+		}
+%>
  
 <form id="identicalForm" class="register" method="post" action="signup">
 
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Email *</label>
-  <input class="form-control" name="email" type="email" required>
+  <input class="form-control" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Contraseña *</label>
@@ -55,19 +68,20 @@
     <label class="control-label" for="focusedInput1">Apellido *</label>
   <input class="form-control" name="lastName" type="text" required>
   </div>
-  
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>
-  <button class="btn btn-primary pull-left" onclick="volver()" type="button">Atras</button>
-</form>
+  <button class="btn btn-primary pull-left" onclick="volver()" type="button">Volver</button>
+	</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="bootstrap/js/ripples.min.js"></script>
-<script src="bootstrap/js/material.min.js"></script>
+	<script src="bootstrap/js/ripples.min.js"></script>
+	<script src="bootstrap/js/material.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
-<script src="bootstrap/js/floating-label.js"></script>
-<script type='text/javascript'>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	<script src="bootstrap/js/floating-label.js"></script>
+	
+	<script type='text/javascript'>
+
 	function volver(){	
 			window.location.href = "/Servidor/signin";
 	}
