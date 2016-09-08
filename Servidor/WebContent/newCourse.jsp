@@ -13,14 +13,31 @@
     <title>Nuevo Curso</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap-material-design.min.css" rel="stylesheet">
+    <link href="bootstrap/css/ripples.min.css" rel="stylesheet">
     <link href="bootstrap/css/newCourse.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap-tagsinput.js"></script>
 	<script src="bootstrap/js/typeahead.bundle.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	
+	
   </head>
 
   <body>
-
+	
+	<div class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+	      </button>
+	      <a class="navbar-brand" href="javascript:void(0)">Nuevo Curso</a>
+	    </div>
+	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
+	    </div>
+	  </div>
+	</div>
+	
     <div class="container">
 
       <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
@@ -29,14 +46,16 @@
         <label class="btn btn-primary btn-file addImageButton">
 		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="readURL(this);">
 		</label>
-
-        <label class="">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
 		
+		<span>
+        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
+		</span>
 		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
 		
         </br>
         </br>
         </br>
+        
         <input type="text" id="inputName" name="name" required="true" class="form-control" placeholder="Nombre" required>
         </br>
         <input type="text" id="inputDescription" name="description" required="true" class="form-control" placeholder="Descripci&oacute;n" required>
@@ -47,7 +66,8 @@
        
         </br>
         
-        <button class="btn-primary newCourseButton btn" type="submit">Crear Curso</button>
+        <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
+        <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Crear Curso</button>
       </form>
 
 
@@ -93,6 +113,8 @@ elt.tagsinput({
     }],
     freeInput: true
 });
+
+$(".bootstrap-tagsinput").addClass("form-control");
 
 </script>
 
