@@ -44,12 +44,16 @@
 	</div>
 	
     <div class="container">
+    	
+	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
+		  <strong>Error!</strong> La imagen es muy pesada.
+		</div>
 
       <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
         </br>
         
         <label class="btn btn-primary btn-file addImageButton">
-		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="readURL(this);">
+		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileSizeValidated(this))readURL(this);">
 		</label>
 		
 		<span>
@@ -131,6 +135,18 @@ $(".bootstrap-tagsinput").addClass("form-control");
 </script>
 
 	<script type="text/javascript">
+	
+		function fileSizeValidated(input){
+			$("#pictureError").hide();
+			if((input.files[0].size / 1024) > 1024){
+				$("#pictureError").show();
+				$('#imageHolder').attr('src', "images/photo_upload.jpg")
+				
+				return false;
+			}
+			return true
+		}
+		
 		function readURL(input) {
 	        if (input.files && input.files[0]) {
 	            var reader = new FileReader();
