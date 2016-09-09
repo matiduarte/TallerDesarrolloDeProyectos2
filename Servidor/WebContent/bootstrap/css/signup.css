@@ -1,0 +1,18 @@
+
+body {
+  
+  background-color: #fff;
+}
+
+.register{
+	margin: 0 auto;
+	padding-top: 30px;
+	width: 60%;
+}
+
+.alerta{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
