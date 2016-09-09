@@ -79,7 +79,7 @@ public class NewCourseController extends HttpServlet {
         final String path = System.getProperty("user.dir") + "/Files/Course/" + course.getId() + "/";
         final Part filePart = request.getPart("picture");
         final String fileName = getFileName(filePart);
-        if(fileName != ""){
+        if(!(fileName.compareTo("") == 0)){
 
             OutputStream out = null;
             InputStream filecontent = null;
