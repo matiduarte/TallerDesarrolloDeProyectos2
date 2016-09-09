@@ -1,11 +1,15 @@
 package controllers;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import service.mailing.MailConfirmacion;
+import service.mailing.Mailer;
 
 /**
  * Servlet implementation class SignUpController
@@ -39,6 +43,11 @@ public class SignUpController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String finalizar_btn = request.getParameter("finalizar");
+		
+		// aca tengo q reconocer el mail y mandarle un link para q acepte.
+		String email = request.getParameter("email");
+		// Mailer.getInstancia().mandarMail( new MailConfirmacion( email ) );
+		Mailer.getInstancia().mandarMail( "email" );
 		
 		if (finalizar_btn != null){
 			getServletConfig().getServletContext().getRequestDispatcher("/signin.jsp").forward(request,response);

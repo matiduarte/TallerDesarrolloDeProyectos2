@@ -37,19 +37,19 @@
 
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Email</label>
-  <input class="form-control" id="focusedInput1" type="email" required>
+  <input class="form-control" id="focusedInput1" name="email" type="email" required>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Contraseña</label>
-  <input class="form-control" id="focusedInput1" type="password" required>
+  <input class="form-control" id="focusedInput1" name="password" type="password" required>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Repita Contraseña</label>
-  <input class="form-control" id="focusedInput1" type="password" required>
+  <input class="form-control" id="focusedInput1" name="password_confirmada" type="password" required>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="focusedInput1">Nombre</label>
-  <input class="form-control" id="focusedInput1" type="text" required>
+  <input class="form-control" id="focusedInput1" name="nombre" type="text" required>
   </div>
   
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>
