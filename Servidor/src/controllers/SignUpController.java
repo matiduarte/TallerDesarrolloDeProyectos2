@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import service.mailing.MailConfirmacion;
 import service.mailing.Mailer;
 
+import entities.User;
+
 /**
  * Servlet implementation class SignUpController
  */
@@ -42,16 +44,41 @@ public class SignUpController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String email = request.getParameter("email");
+    	String password = request.getParameter("password");
+    	String name = request.getParameter("name");
+    	String lastName = request.getParameter("lastName");
+    	User user = User.getByUserEmail(email);
+    	boolean existe = true;
+    	
+    	
+    	if (user == null){
+    		existe = false;
+    		user = new User();
+    		user.setEmail(email);
+    		user.setPassword(password);
+    		user.setFirstName(name);
+    		user.setLastName(lastName);
+    	
+    		user.save();
+    		
+    	}
+    	
 		String finalizar_btn = request.getParameter("finalizar");
 		
-		// aca tengo q reconocer el mail y mandarle un link para q acepte.
-		String email = request.getParameter("email");
-		// Mailer.getInstancia().mandarMail( new MailConfirmacion( email ) );
-		Mailer.getInstancia().mandarMail( "email" );
-		
 		if (finalizar_btn != null){
-			getServletConfig().getServletContext().getRequestDispatcher("/signin.jsp").forward(request,response);
+			if (!existe){
+				response.sendRedirect(request.getContextPath() + "/signin.jsp");
+			}else{
+				request.setAttribute("errormsg", "Email existente.");
+				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);
+			}
 		}
+		
+		
+		
+		
 	}
 
 }

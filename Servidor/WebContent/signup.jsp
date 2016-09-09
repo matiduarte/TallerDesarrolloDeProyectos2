@@ -31,58 +31,80 @@
   </div>
 </div>
 
+<%
 
+		if(request.getAttribute("errormsg") != null){
+%>
+
+	<div class="alerta alert alert-danger">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>Error!</strong> Este email ya se ha utilizado. Por favor, introduzca otro.
+	</div>
  
-<form class="register" method="post" action="signup">
+ <%
+
+		}
+%>
+ 
+<form id="identicalForm" class="register" method="post" action="signup">
 
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Email</label>
-  <input class="form-control" id="focusedInput1" name="email" type="email" required>
+    <label class="control-label" for="focusedInput1">Email *</label>
+  <input class="form-control" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Contraseña</label>
-  <input class="form-control" id="focusedInput1" name="password" type="password" required>
+    <label class="control-label" for="focusedInput1">Contraseña *</label>
+  <input class="pepito form-control" id="password" name="password" oninput="checkLenghtPass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Repita Contraseña</label>
-  <input class="form-control" id="focusedInput1" name="password_confirmada" type="password" required>
+    <label class="control-label" for="focusedInput1">Repita Contraseña *</label>
+  <input class="form-control" id="passwordconf" name="passwordconf" oninput="checkSamePass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Nombre</label>
-  <input class="form-control" id="focusedInput1" name="nombre" type="text" required>
+    <label class="control-label" for="focusedInput1">Nombre *</label>
+  <input class="form-control" name="name" type="text" required>
   </div>
-  
+  <div class="form-group label-floating">
+    <label class="control-label" for="focusedInput1">Apellido *</label>
+  <input class="form-control" name="lastName" type="text" required>
+  </div>
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>
-</form>
+  <button class="btn btn-primary pull-left" onclick="volver()" type="button">Volver</button>
+	</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="bootstrap/js/ripples.min.js"></script>
-<script src="bootstrap/js/material.min.js"></script>
+	<script src="bootstrap/js/ripples.min.js"></script>
+	<script src="bootstrap/js/material.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	<script src="bootstrap/js/floating-label.js"></script>
+	
+	<script type='text/javascript'>
+
+	function volver(){	
+			window.location.href = "/Servidor/signin";
+	}
+	
+	function checkLenghtPass(input) {
+	    if (input.value.length < 6) {
+	        input.setCustomValidity('La contraseña debe tener al menos 6 caracteres.');
+	    } else {
+	        input.setCustomValidity('');
+	   }
+	}
+	
+	function checkSamePass(input) {
+	    if (input.value != document.getElementById('password').value) {
+	        input.setCustomValidity('Las contraseñas deben coincidir.');
+	    } else {
+	        input.setCustomValidity('');
+	   }
+	}
+</script>
+
 <script>
-  $(function () {
-    $.material.init();
-    $(".shor").noUiSlider({
-      start: 40,
-      connect: "lower",
-      range: {
-        min: 0,
-        max: 100
-      }
-    });
 
-    $(".svert").noUiSlider({
-      orientation: "vertical",
-      start: 40,
-      connect: "lower",
-      range: {
-        min: 0,
-        max: 100
-      }
-    });
-  });
 </script>
 
   </body>

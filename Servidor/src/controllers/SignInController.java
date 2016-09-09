@@ -47,18 +47,14 @@ public class SignInController extends HttpServlet {
     	User user = User.getByUserEmail(email);
     	boolean mismoPass = false;
     	
-    	System.out.println("PASS " + user.getPassword());
-    	
     	if (user != null){
     		if (user.getPassword().equals(password))
     			mismoPass = true;
     	}
     	
     	if (mismoPass){
-    		System.out.println("ENTRE MISMO");
     		request.setAttribute("error", "false");
     	} else {
-    		System.out.println("ENTRE MAL");
     		request.setAttribute("error", "true");
     	}
     	

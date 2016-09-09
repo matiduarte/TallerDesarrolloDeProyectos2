@@ -34,30 +34,55 @@
     <![endif]-->
   </head>
 
+
+
   <body>
+  <div class="alerta alert alert-success fade in">
+    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    	<strong>Felicitaciones!</strong> Usuario creado con éxito.
+  	</div>
   	<img src="bootstrap/img/icono.ico" class="logo" alt="Logo" style="width:100px;height:100px;"> 
     <div class="container">
     
 		<form name="loginForm" method="post" action="signin" class="form-signin">
+		<div class="form-group label-floating">
+    	<label class="control-label" for="focusedInput1">Email</label>
+ 		<input class="form-control" id="focusedInput1" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+  		</div>
+ 		 <div class="form-group label-floating">
+    	<label class="control-label" for="focusedInput1">Contraseña</label>
+  		<input class="form-control" id="focusedInput1" name ="password" type="password" required>
+  		</div>
 		
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Correo electrónico" required>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Contraseña" required>
-        <div class="checkbox">
-        </div>
-        <button class="btn btn-lg btn-raised btn-primary btn-block" type="submit">Iniciar Sesión</button>
+		<button class="btn btn-lg btn-raised btn-primary btn-block" type="submit">Iniciar Sesión</button>
+        <button class="btn btn-lg btn-raised btn-primary btn-block"  onclick="registro()" type="button">Registrate</button>
         <div class="login-register">
-				<a href="#" onclick="registro()">Registrate</a>
+				<a href="#" onclick="recuperarContrasenia()">¿Olvido su contraseña?</a>
 			</div>
+			
       </form>
 
+	
     </div> <!-- /container -->
 
+
+	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/ripples.min.js"></script>
+	<script src="bootstrap/js/material.min.js"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	<script src="bootstrap/js/floating-label.js"></script>
 	<script>
 	function registro(){	
 			window.location.href = "/Servidor/signup";
 	}
+	
+	function recuperarContrasenia(){	
+		window.location.href = "/Servidor/signup";
+	}
+	
+	
 	</script>
 
   </body>
