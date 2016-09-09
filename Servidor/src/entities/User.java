@@ -14,7 +14,14 @@ private String firstName;
 private String lastName;
 private String userName;
 private String password;
+private String email;
   
+public String getEmail() {
+	return email;
+}
+public void setEmail(String email) {
+	this.email = email;
+}
 public int getId() {  
     return id;  
 }  
@@ -38,11 +45,24 @@ public static User getById(int id){
 }
 
 public static User getByUserName(String userName){
+	
 	List<?> list = StoreData.getByField(User.class, "userName", userName);
-	if(list != null){
-		return (User)list.get(0);
+	User user = null;
+	if(list.size() > 0){
+		user = (User)list.get(0);
 	}
-	return (User)list;
+	return user;
+}
+
+public static User getByUserEmail(String email){
+	
+	List<?> list = StoreData.getByField(User.class, "email", email);
+	User user = null;
+	if(list.size() > 0){
+		user = (User)list.get(0);
+	}
+	
+	return user;
 }
 
 public void save(){

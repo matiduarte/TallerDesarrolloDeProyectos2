@@ -12,6 +12,12 @@
     <link rel="icon" href="bootstrap/img/icono.ico">
     <title>Nuevo Curso</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Material Design -->
+    <link href="bootstrap/css/bootstrap-material-design.css" rel="stylesheet">
+    <link href="bootstrap/css/ripples.min.css" rel="stylesheet">
+
+	<link href="//fezvrasta.github.io/snackbarjs/dist/snackbar.min.css" rel="stylesheet">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="bootstrap/css/newCourse.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   </head>
