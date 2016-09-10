@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="bootstrap/img/icono.ico">
     
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -68,8 +69,8 @@
     <label class="control-label" for="lastName">Apellido *</label>
   <input class="form-control" id="lastName" name="lastName" type="text" required>
   </div>
-  <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>
-  <button class="btn btn-primary pull-left" onclick="volver()" type="button">Volver</button>
+  <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Registrar</button>
+  <button class="btn-back btn btn-primary pull-left" onclick="volver()" type="button">Volver</button>
 	</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
