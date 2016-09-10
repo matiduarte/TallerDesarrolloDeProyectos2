@@ -1,11 +1,15 @@
 package controllers;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import service.mailing.Mailer;
+import entities.User;
 
 /**
  * Servlet implementation class SendMailController
@@ -38,7 +42,21 @@ public class RecuperarPassController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		
+		
+		String email = request.getParameter("email");
+		User user = User.getByUserEmail(email);
+		
+		if (user != null){
+			Mailer.getInstancia().mandarMailRecuperarPass(user.getEmail(), user.getFirstName(), user.getPassword());
+		}
+		
+		String finalizar_btn = request.getParameter("finalizar");
+		
+		if (finalizar_btn != null){
+			response.sendRedirect(request.getContextPath() + "/signin.jsp");
+		}
+		
 	}
 
 }

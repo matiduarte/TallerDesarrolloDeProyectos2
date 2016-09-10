@@ -13,9 +13,12 @@
 
 	<!-- Custom styles for this template -->
     <link href="bootstrap/css/recuperarPass.css" rel="stylesheet">
-    <style>
-    	p    {}
-    </style>
+    <style type="text/css">
+	h4 { color: #009688; 
+		text-align: center;
+		padding-top: 80px; }
+	</style>
+    
 </head>
 
 <body>
@@ -32,13 +35,15 @@
 </div>
 
 
-<form  class="register" method="post" action="signup">
+<h4><ins>Ingrese el email con el que se registro y le enviaremos los pasos a seguir
+						para recuperar su contraseña.</ins></h4>
 
-<p class="hola" align="center"><ins>Ingrese el email con el que se registro y le enviaremos los pasos a seguir</ins></p>
-<p align="center"><ins>para recuperar su contraseña.</ins></p>
+<form  class="register" method="post" action="recuperarPass">
+
+
 
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Email *</label>
+    <label class="control-label" for="focusedInput1">Email</label>
   <input class="form-control" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
   </div>
   
@@ -52,6 +57,15 @@
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
+
+	<script type='text/javascript'>
+
+	function volver(){	
+			window.location.href = "/Servidor/signin";
+	}
+	
+	</script>
+
 
 </body>
 </html>
