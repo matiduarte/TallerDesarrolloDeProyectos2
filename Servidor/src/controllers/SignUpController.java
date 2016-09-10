@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import service.mailing.MailConfirmacion;
+import service.mailing.IMail;
 import service.mailing.Mailer;
 
 import entities.User;
@@ -60,6 +60,7 @@ public class SignUpController extends HttpServlet {
     		user.setPassword(password);
     		user.setFirstName(name);
     		user.setLastName(lastName);
+    		user.setIsActive(false);
     	
     		user.save();
     		
@@ -69,16 +70,15 @@ public class SignUpController extends HttpServlet {
 		
 		if (finalizar_btn != null){
 			if (!existe){
+				
+				Mailer.getInstancia().mandarMailRegistracion( user.getEmail(), user.getFirstName() );
+				
 				response.sendRedirect(request.getContextPath() + "/signin.jsp");
 			}else{
 				request.setAttribute("errormsg", "Email existente.");
 				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);
 			}
 		}
-		
-		
-		
-		
 	}
 
 }
