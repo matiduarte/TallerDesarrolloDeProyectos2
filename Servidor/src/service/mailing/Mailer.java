@@ -19,7 +19,7 @@ public class Mailer {
 	
 	protected Mailer() {}
 	
-	public void mandarMailRegistracion( String mail_origen, String nombre_origen ) {
+	public void mandarMailConfirmarRegistracion( String mail_origen, String nombre_origen ) {
 		
 		IMail mail = this.crearMail( mail_origen, nombre_origen );
 		
