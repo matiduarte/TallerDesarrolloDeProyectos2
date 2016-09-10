@@ -71,6 +71,7 @@ public class SignUpController extends HttpServlet {
 			if (!existe){
 				
 				Mailer.getInstancia().mandarMailConfirmarRegistracion( user.getEmail(), user.getFirstName() );
+				
 				HttpSession session = request.getSession(true);
 				session.setAttribute("usuarioExitoso", true);
 				response.sendRedirect(request.getContextPath() + "/signin.jsp");

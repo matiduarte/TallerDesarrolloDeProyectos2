@@ -59,5 +59,14 @@
     <servlet-name>Recuperar Password</servlet-name>
     <url-pattern>/recuperarPass/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>Activar usuario</servlet-name>
+    <servlet-class>controllers.ActivarUsuarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Activar usuario</servlet-name>
+    <url-pattern>/activacion/*</url-pattern>
+  </servlet-mapping>  
 </web-app>
 
