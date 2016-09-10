@@ -50,6 +50,7 @@
     <servlet-name>NewCourse</servlet-name>
     <url-pattern>/newCourse/*</url-pattern>
   </servlet-mapping>
+
   <servlet>
     <servlet-name>Recuperar Password</servlet-name>
     <servlet-class>controllers.RecuperarPassController</servlet-class>
@@ -59,3 +60,4 @@
     <url-pattern>/recuperarPass/*</url-pattern>
   </servlet-mapping>
 </web-app>
+

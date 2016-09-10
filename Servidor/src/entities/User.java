@@ -15,6 +15,7 @@ private String lastName;
 private String userName;
 private String password;
 private String email;
+private Boolean isActive;
   
 public String getEmail() {
 	return email;
@@ -80,5 +81,10 @@ public String getPassword() {
 public void setPassword(String password) {
 	this.password = password;
 }
-
+public Boolean getIsActive() {  
+    return this.isActive;  
+}  
+public void setIsActive(Boolean isActive) {  
+    this.isActive = isActive;  
+}
 }  
