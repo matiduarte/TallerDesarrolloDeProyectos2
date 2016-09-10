@@ -1,4 +1,4 @@
-package fiuba.tallerdeproyectos2;
+package fiuba.tallerdeproyectos2.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
+import fiuba.tallerdeproyectos2.R;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,12 +36,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){};
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        setSupportActionBar(toolbar);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

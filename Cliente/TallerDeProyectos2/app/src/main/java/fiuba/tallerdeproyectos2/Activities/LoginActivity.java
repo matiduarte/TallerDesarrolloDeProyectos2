@@ -1,10 +1,12 @@
-package fiuba.tallerdeproyectos2;
+package fiuba.tallerdeproyectos2.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import fiuba.tallerdeproyectos2.R;
 
 public class LoginActivity extends AppCompatActivity {
 

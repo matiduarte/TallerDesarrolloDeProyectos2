@@ -1,4 +1,4 @@
-package fiuba.tallerdeproyectos2;
+package fiuba.tallerdeproyectos2.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import fiuba.tallerdeproyectos2.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

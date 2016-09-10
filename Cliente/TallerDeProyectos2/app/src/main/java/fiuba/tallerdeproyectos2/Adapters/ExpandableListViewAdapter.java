@@ -1,14 +1,17 @@
-package fiuba.tallerdeproyectos2;
+package fiuba.tallerdeproyectos2.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+
+import fiuba.tallerdeproyectos2.R;
 
 
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
