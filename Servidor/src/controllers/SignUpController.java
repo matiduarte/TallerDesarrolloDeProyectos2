@@ -7,7 +7,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import service.mailing.IMail;
+import service.mailing.Mailer;
 import entities.User;
 
 /**
@@ -41,7 +44,7 @@ public class SignUpController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		String email = request.getParameter("email");
     	String password = request.getParameter("password");
     	String name = request.getParameter("name");
@@ -57,25 +60,27 @@ public class SignUpController extends HttpServlet {
     		user.setPassword(password);
     		user.setFirstName(name);
     		user.setLastName(lastName);
+    		user.setIsActive(false);
     	
     		user.save();
     		
     	}
     	
 		String finalizar_btn = request.getParameter("finalizar");
-	
+		
 		if (finalizar_btn != null){
 			if (!existe){
+				
+				Mailer.getInstancia().mandarMailRegistracion( user.getEmail(), user.getFirstName() );
+				HttpSession session = request.getSession(true);
+				session.setAttribute("usuarioExitoso", true);
 				response.sendRedirect(request.getContextPath() + "/signin.jsp");
 			}else{
 				request.setAttribute("errormsg", "Email existente.");
 				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);
 			}
 		}
-		
-		
-		
-		
+
 	}
 
 }

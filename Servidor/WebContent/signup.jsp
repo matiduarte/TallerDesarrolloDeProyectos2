@@ -49,24 +49,24 @@
 <form id="identicalForm" class="register" method="post" action="signup">
 
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Email *</label>
-  <input class="form-control" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+    <label class="control-label" for="email">Email *</label>
+  <input class="form-control" id="email" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Contraseña *</label>
+    <label class="control-label" for="password">Contraseña *</label>
   <input class="pepito form-control" id="password" name="password" oninput="checkLenghtPass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Repita Contraseña *</label>
+    <label class="control-label" for="passwordconf">Repita Contraseña *</label>
   <input class="form-control" id="passwordconf" name="passwordconf" oninput="checkSamePass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Nombre *</label>
-  <input class="form-control" name="name" type="text" required>
+    <label class="control-label" for="name">Nombre *</label>
+  <input class="form-control" id="name" name="name" type="text" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="focusedInput1">Apellido *</label>
-  <input class="form-control" name="lastName" type="text" required>
+    <label class="control-label" for="lastName">Apellido *</label>
+  <input class="form-control" id="lastName" name="lastName" type="text" required>
   </div>
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Finalizar</button>
   <button class="btn btn-primary pull-left" onclick="volver()" type="button">Volver</button>
@@ -101,11 +101,10 @@
 	        input.setCustomValidity('');
 	   }
 	}
-</script>
+	
+	
+	</script>
 
-<script>
-
-</script>
 
   </body>
 </html>

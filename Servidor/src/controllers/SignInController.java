@@ -46,16 +46,32 @@ public class SignInController extends HttpServlet {
     	
     	User user = User.getByUserEmail(email);
     	boolean mismoPass = false;
+    	boolean existe = false;
+    	boolean estaActivo = false;
     	
     	if (user != null){
-    		if (user.getPassword().equals(password))
+    		existe = true;
+    		if (user.getPassword().equals(password)){
     			mismoPass = true;
+    			if (user.getIsActive() != null){
+    				estaActivo = true;
+    			}
+    		}
     	}
     	
-    	if (mismoPass){
-    		request.setAttribute("error", "false");
-    	} else {
-    		request.setAttribute("error", "true");
+    	if (!existe){
+    		request.setAttribute("errorUser", "true");
+    		mismoPass = true;
+    		estaActivo = true;
+    	}
+    	
+    	if (!mismoPass){
+    		request.setAttribute("errorPass", "true");    
+    		estaActivo = true;
+    	}
+    	
+    	if (!estaActivo){
+    		request.setAttribute("errorActive", "true");
     	}
     	
         processRequest(request, response);

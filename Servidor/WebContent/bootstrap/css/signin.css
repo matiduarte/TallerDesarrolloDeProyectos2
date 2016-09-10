@@ -52,10 +52,23 @@ body {
 	margin-right: auto;
 }
 
-.alerta{
+.alerta-error{
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	width: 50%;
-	display: none;
+}
+
+.alerta-exito{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+.alerta-activo{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
 }

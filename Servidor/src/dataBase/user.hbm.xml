@@ -14,6 +14,7 @@
     <property name="userName"></property>
     <property name="password"></property>
     <property name="email"></property>
+    <property name="isActive"></property>
     </class>  
             
  </hibernate-mapping>  
