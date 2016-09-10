@@ -79,7 +79,7 @@
 	}
 	
 	function recuperarContrasenia(){	
-		window.location.href = "/Servidor/signup";
+		window.location.href = "/Servidor/recuperarPass";
 	}
 	
 	
