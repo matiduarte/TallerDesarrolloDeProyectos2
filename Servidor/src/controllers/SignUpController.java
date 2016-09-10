@@ -7,10 +7,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import service.mailing.IMail;
 import service.mailing.Mailer;
-
 import entities.User;
 
 /**
@@ -71,7 +71,8 @@ public class SignUpController extends HttpServlet {
 			if (!existe){
 				
 				Mailer.getInstancia().mandarMailConfirmarRegistracion( user.getEmail(), user.getFirstName() );
-				
+				HttpSession session = request.getSession(true);
+				session.setAttribute("usuarioExitoso", true);
 				response.sendRedirect(request.getContextPath() + "/signin.jsp");
 				
 			}else{
@@ -79,6 +80,7 @@ public class SignUpController extends HttpServlet {
 				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);
 			}
 		}
+
 	}
 
 }

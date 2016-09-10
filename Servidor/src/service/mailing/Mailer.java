@@ -39,4 +39,14 @@ public class Mailer {
 		
 		return mail;
 	}
+	
+	public void mandarMailRecuperarPass( String mail_origen, String nombre_origen, String userPass ) {
+		
+		IMail mail = this.crearMail( mail_origen, nombre_origen );
+		
+		mail.enviar( new ContenidoMailRecuperarPassword(nombre_origen, userPass) );
+		
+	}
+	
+	
 }

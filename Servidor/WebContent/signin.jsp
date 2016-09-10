@@ -37,10 +37,72 @@
 
 
   <body>
-  <div class="alerta alert alert-success fade in">
+  
+  
+  <%
+
+		if(request.getSession(false).getAttribute("usuarioExitoso") != null){
+%>
+
+	<div class="alerta-exito alert alert-success fade in">
     	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     	<strong>Felicitaciones!</strong> Usuario creado con éxito.
   	</div>
+ 
+ <%
+ 			request.getSession(true).setAttribute("usuarioExitoso", null);
+		}
+%>
+  
+  
+  
+  <%
+
+		if(request.getAttribute("errorUser") != null){
+%>
+
+	<div class="alerta-error alert alert-danger">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>Error!</strong> El email no se encuentra registrado.Por favor, intente nuevamente.
+	</div>
+ 
+ <%
+			
+		}
+%>
+
+ <%
+
+		if(request.getAttribute("errorPass") != null){
+%>
+
+	<div class="alerta-error alert alert-danger">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>Error!</strong> Contraseña incorrecta.Por favor, intente nuevamente.
+	</div>
+ 
+ <%
+			
+		}
+%>
+
+
+ <%
+
+		if(request.getAttribute("errorActive") != null){
+%>
+
+	<div class="alerta-activo alert alert-warning">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		 Debe confirmar su mail para poder inicar sesión.
+	</div>
+ 
+ <%
+			
+		}
+%>
+  
+  
   	<img src="bootstrap/img/icono.ico" class="logo" alt="Logo" style="width:100px;height:100px;"> 
     <div class="container">
     
@@ -79,7 +141,7 @@
 	}
 	
 	function recuperarContrasenia(){	
-		window.location.href = "/Servidor/signup";
+		window.location.href = "/Servidor/recuperarPass";
 	}
 	
 	
