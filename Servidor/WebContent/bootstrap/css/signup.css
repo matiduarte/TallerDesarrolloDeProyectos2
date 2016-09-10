@@ -16,3 +16,7 @@ body {
 	margin-right: auto;
 	width: 50%;
 }
+
+.btn-back{
+	border: 2px solid;
+}

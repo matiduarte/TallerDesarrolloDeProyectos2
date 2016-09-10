@@ -53,7 +53,7 @@ public class SignInController extends HttpServlet {
     		existe = true;
     		if (user.getPassword().equals(password)){
     			mismoPass = true;
-    			if (user.getIsActive() != null){
+    			if (user.getIsActive()){
     				estaActivo = true;
     			}
     		}
