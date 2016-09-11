@@ -38,6 +38,10 @@ public class CourseCategory {
 		return (CourseCategory)StoreData.getById(CourseCategory.class, id);
 	}
 	
+	public static List<CourseCategory> getByCategoryId(int categoryId){
+		return (List<CourseCategory>)StoreData.getByField(CourseCategory.class, "categoryId", String.valueOf(categoryId));
+	}
+	
 	public void save(){
 		StoreData.save(this);
 	}
