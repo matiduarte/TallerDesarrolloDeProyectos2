@@ -2,34 +2,31 @@ package fiuba.tallerdeproyectos2.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Courses {
 
     @SerializedName("allCategories")
-    private List<String> allCategories = new ArrayList<String>();
+    private String allCategories;
     @SerializedName("soonCourses")
-    private List<String> soonCourses = new ArrayList<String>();
+    private String soonCourses;
 
-    public Courses(List<String> allCategories, List<String> soonCourses) {
+    public Courses(String allCategories, String soonCourses) {
         this.allCategories = allCategories;
         this.soonCourses = soonCourses;
     }
 
-    public List<String> getAllCategories() {
+    public String getAllCategories() {
         return allCategories;
     }
 
-    public void setAllCategories(List<String> allCategories) {
+    public void setAllCategories(String allCategories) {
         this.allCategories = allCategories;
     }
 
-    public List<String> getSoonCourses() {
+    public String getSoonCourses() {
         return soonCourses;
     }
 
-    public void setSoonCourses(List<String> soonCourses) {
+    public void setSoonCourses(String soonCourses) {
         this.soonCourses = soonCourses;
     }
 }

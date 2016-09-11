@@ -19,6 +19,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> parentDataSource;
     private HashMap<String, List<String>> childDataSource;
+    private int lastExpandedPosition = -1;
 
     public ExpandableListViewAdapter(Context context, List<String> childParent, HashMap<String, List<String>> child) {
         this.context = context;
@@ -74,6 +75,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         TextView parentItem = (TextView)view.findViewById(R.id.parent_layout);
         parentItem.setText(parentHeader);
+
         return view;
     }
 

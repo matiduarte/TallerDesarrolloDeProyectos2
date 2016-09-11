@@ -33,7 +33,7 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:src="@drawable/appicon" />
+                android:src="@drawable/appicon"/>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
