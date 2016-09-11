@@ -47,7 +47,12 @@
     	
 	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	<strong>Error!</strong> La imagen es muy pesada.
+		  	La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente
+		</div>
+		
+		<div class="alert alert-success" id="saveSucces" style="display:none;">
+	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  	Curso creado satisfactoriamente!
 		</div>
 
       <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
@@ -149,6 +154,15 @@ $(".tt-input").attr("required",true);
 
 $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 
+
+<%
+		if(request.getAttribute("saveSucces") != null){
+%>
+			$("#saveSucces").show();
+<%
+		}
+%>
+
 </script>
 
 	<script type="text/javascript">
@@ -174,7 +188,7 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 				
 				return false;
 			}
-			
+			return true;
 		}
 		
 		function readURL(input) {
