@@ -46,7 +46,8 @@
     <div class="container">
     	
 	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
-		  <strong>Error!</strong> La imagen es muy pesada.
+	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  	<strong>Error!</strong> La imagen es muy pesada.
 		</div>
 
       <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
@@ -66,7 +67,7 @@
         </br>
         <div class="form-group label-floating">	
         	<label class="control-label" for="inputName">Nombre</label>
-        	<input type="text" id="inputName" name="name" required="true" class="form-control" required>
+        	<input type="text" id="inputName" name="name" required="true"  class="form-control" required>
 		</div>
         </br>
         
@@ -77,8 +78,8 @@
         </br>
         
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Categor&iacute;as</label>
-        	<input type="text" id="categories" name="categories" class="form-control" required="true" required>
+        	<label class="control-label" id="labelCategories" for="categories">Categor&iacute;as</label>
+        	<input type="text" id="categories" name="categories" class="form-control">
        </div>
         </br>
         
@@ -132,9 +133,38 @@ elt.tagsinput({
 
 $(".bootstrap-tagsinput").addClass("form-control");
 
+$(".tt-input").blur(function(){
+	if($('#categories').val() != ""){
+		$("#labelCategories").hide()
+	}else{
+		$("#labelCategories").show()
+	}
+});
+
+$(".tt-input").focus(function(){
+	$("#labelCategories").show()
+});
+
+$(".tt-input").attr("required",true);
+
+$(".tt-input").attr("oninvalid", "return validateCategories(this)");
+
 </script>
 
 	<script type="text/javascript">
+	
+		function validateCategories(e){
+			debugger;
+			if($("#categories").val() == ""){
+				e.setCustomValidity('Campo requerido');	
+				return true;
+			}
+			//SUPER HACK
+			$(".tt-input").val(".")
+			$("#loginForm").submit();
+			return true
+			return false;
+		}
 	
 		function fileSizeValidated(input){
 			$("#pictureError").hide();
@@ -144,7 +174,7 @@ $(".bootstrap-tagsinput").addClass("form-control");
 				
 				return false;
 			}
-			return true
+			
 		}
 		
 		function readURL(input) {
