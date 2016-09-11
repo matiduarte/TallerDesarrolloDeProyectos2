@@ -7,10 +7,10 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    @GET("course/search/{search}")
+    @GET("proyectos2/course/search/{search}")
     Call<ServerResponse> getSearchCourses(@Path("search") String search);
 
-    @GET("categories")
+    @GET("proyectos2/categories")
     Call<ServerResponse> getCourses();
 }
 
