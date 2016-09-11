@@ -29,12 +29,12 @@
             android:label="@string/title_activity_main" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+                android:value=".Activities.SearchActivity" />
         </activity>
         <activity
             android:name=".Activities.SearchActivity"
             android:launchMode="singleTop"
-            android:label="Search Results"
+            android:label="@string/search_title"
             android:parentActivityName=".Activities.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

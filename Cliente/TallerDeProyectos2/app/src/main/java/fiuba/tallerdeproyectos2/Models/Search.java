@@ -2,23 +2,20 @@ package fiuba.tallerdeproyectos2.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Search {
 
     @SerializedName("courses")
-    private List<String> coursesData = new ArrayList<String>();
+    private String coursesData;
 
-    public Search(List<String> coursesData) {
+    public Search(String coursesData) {
         this.coursesData = coursesData;
     }
 
-    public List<String> getCoursesData() {
+    public String getCoursesData() {
         return coursesData;
     }
 
-    public void setCoursesData(List<String> coursesData) {
+    public void setCoursesData(String coursesData) {
         this.coursesData = coursesData;
     }
 }

@@ -8,11 +8,17 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Models.Search;
-import fiuba.tallerdeproyectos2.Models.SearchResponse;
+import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
@@ -25,6 +31,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = SearchActivity.class.getSimpleName();
     List<String> coursesList = new ArrayList<>();
     private ListView lv;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,34 +50,36 @@ public class SearchActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-            Call<SearchResponse> call = apiService.getSearchCourses(query);
-            call.enqueue(new Callback<SearchResponse>() {
+            Call<ServerResponse> call = apiService.getSearchCourses(query);
+            call.enqueue(new Callback<ServerResponse>() {
                 @Override
-                public void onResponse(Call<SearchResponse>call, Response<SearchResponse> response) {
-                    List<Search> data = response.body().getData();
-                    String success =response.body().getSuccess();
-                    String message =response.body().getMessage();
-                    Log.d(TAG, "Courses match search: " + data.size());
-                    Log.d(TAG, "Courses match: " + data.toString());
-                    Log.d(TAG, "Success: " + success);
-                    Log.d(TAG, "Message: " + message);
-
-                    if(success == "true"){
-                        for (int i=0; i< data.size(); i++) {
-                            coursesList.add("Taller 2");
+                public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
+                    try {
+                        Boolean success =response.body().getSuccess();
+                        if(success.equals(true)){
+                            String data = response.body().getData();
+                            Gson gson = new Gson();
+                            Search courses = gson.fromJson(data, Search.class);
+                            JSONArray coursesData = new JSONArray(courses.getCoursesData());
+                            for (int i=0; i<coursesData.length(); i++) {
+                                JSONObject coursesArray = new JSONObject(coursesData.getString(i));
+                                Object name = coursesArray.get("name");
+                                coursesList.add(name.toString());
+                            }
+                        } else {
+                            coursesList.add(getString(R.string.search_category_no_results) + query + getString(R.string.search_name_no_results) + query);
                         }
-                    } else {
-                        coursesList.add("No results for your search");
+                        ArrayAdapter<String> courses = new ArrayAdapter<>(getApplicationContext(),R.layout.list_item,coursesList);
+                        lv.setAdapter(courses);
+                    } catch (JSONException e) {
+                        Log.e(TAG, e.getLocalizedMessage());
                     }
-                    ArrayAdapter<String> courses = new ArrayAdapter<>(getApplicationContext(),R.layout.list_item,coursesList);
-                    lv.setAdapter(courses);
                 }
 
                 @Override
-                public void onFailure(Call<SearchResponse>call, Throwable t) {
+                public void onFailure(Call<ServerResponse>call, Throwable t) {
                     Log.e(TAG, t.toString());
                 }
             });

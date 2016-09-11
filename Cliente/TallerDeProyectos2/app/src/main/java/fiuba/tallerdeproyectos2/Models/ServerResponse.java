@@ -2,29 +2,27 @@ package fiuba.tallerdeproyectos2.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class SearchResponse {
+public class ServerResponse {
     @SerializedName("success")
-    private String success;
+    private Boolean success;
     @SerializedName("data")
-    private List<Search> data;
+    private String data;
     @SerializedName("message")
     private String message;
 
-    public String getSuccess() {
+    public Boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(String success) {
+    public void setSuccess(Boolean success) {
         this.success = success;
     }
 
-    public List<Search> getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(List<Search> data) {
+    public void setData(String data) {
         this.data = data;
     }
 
