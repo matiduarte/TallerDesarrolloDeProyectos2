@@ -8,6 +8,8 @@ import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 public class ContenidoMailRecuperarPassword extends IContenidoMail {
 
 	
@@ -43,8 +45,12 @@ public class ContenidoMailRecuperarPassword extends IContenidoMail {
 			try {
 				  InternetHeaders headers = new InternetHeaders();
 				  headers.addHeader("Content-type", "text/html; charset=UTF-8");
-				  String html = "Hola " + this.getUser() + '\n'
-						  + "Su contraseña es: " + this.getPass();
+				  
+				  StringBuilder sb = new StringBuilder();
+				  sb.append("Hola ").append(this.getUser()).append(",");
+				  sb.append(" su contraseña es ").append(this.getPass());
+				  
+				  String html = sb.toString();
 				  
 				  Multipart mime_multi_part = new MimeMultipart("alternative");
 				  
