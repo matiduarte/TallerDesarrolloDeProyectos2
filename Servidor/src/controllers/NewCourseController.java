@@ -41,6 +41,7 @@ public class NewCourseController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	getServletConfig().getServletContext().getRequestDispatcher("/newCourse.jsp").forward(request,response);
+    	return;
     }
     
     
@@ -83,7 +84,6 @@ public class NewCourseController extends HttpServlet {
 
             OutputStream out = null;
             InputStream filecontent = null;
-            final PrintWriter writer = response.getWriter();
             
             final File parent = new File(path);
             parent.mkdirs();
@@ -100,10 +100,10 @@ public class NewCourseController extends HttpServlet {
                 }
                 //writer.println("New file " + fileName + " created at " + path);
             } catch (FileNotFoundException fne) {
-                writer.println("You either did not specify a file to upload or are "
-                        + "trying to upload a file to a protected or nonexistent "
-                        + "location.");
-                writer.println("<br/> ERROR: " + fne.getMessage());
+//                writer.println("You either did not specify a file to upload or are "
+//                        + "trying to upload a file to a protected or nonexistent "
+//                        + "location.");
+//                writer.println("<br/> ERROR: " + fne.getMessage());
             } finally {
                 if (out != null) {
                     out.close();
@@ -111,16 +111,14 @@ public class NewCourseController extends HttpServlet {
                 if (filecontent != null) {
                     filecontent.close();
                 }
-                if (writer != null) {
-                    writer.close();
-                }
             }
             
             course.setPictureUrl(path + fileName);
             course.save();
         }
     	
-        processRequest(request, response);
+        request.setAttribute("saveSucces", true);
+		doGet(request,response);
     }
     
     private String getFileName(final Part part) {
