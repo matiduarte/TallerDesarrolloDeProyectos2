@@ -24,7 +24,7 @@
  	<meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Custom styles for this template -->
-    <link href="bootstrap/css/signin.css" rel="stylesheet">
+    <link href="bootstrap/css/activarUsuario.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -38,13 +38,13 @@
 
   <body>
   
-  	<img src="bootstrap/img/icono.ico" class="logo" alt="Logo" style="width:100px;height:100px;"> 
-    <div class="container">
+  	<img src="bootstrap/img/thumps_up.png" class="logo" alt="Logo" style="width:150px;height:150px;"> 
+    <div class="container text-center">
     
-		<form name="loginForm" method="post" action="signin" class="form-signin">
-			<button class="btn btn-lg btn-raised btn-primary btn-block" type="submit">Iniciar sesión</button>			
-      	</form>
-      	
+    
+	<h1 class="text-center">Su cuenta en <strong>FIUBA Cursos</strong> esta activada.</h1>
+	<h2 class="text-center">Inice su sesión para comenzar.</h2>
+	<button class="btn btn-lg btn-raised btn-primary" onclick="irAInicarSesion()">Comenzar</button>     	
     </div> <!-- /container -->
 
 
@@ -56,7 +56,9 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script>	
-	
+		function irAInicarSesion(){	
+			window.location.href = "/Servidor/signin";
+	}
 	</script>
 
   </body>
