@@ -42,7 +42,7 @@
     <div class="container text-center">
     
     
-	<h1 class="text-center">Su cuenta en <strong>FIUBA Cursos</strong> esta activada.</h1>
+	<h1 class="text-center">Su cuenta en <strong>FIUBA Cursos</strong> está activada.</h1>
 	<h2 class="text-center">Inice su sesión para comenzar.</h2>
 	<button class="btn btn-lg btn-raised btn-primary" onclick="irAInicarSesion()">Comenzar</button>     	
     </div> <!-- /container -->
