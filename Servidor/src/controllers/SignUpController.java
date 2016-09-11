@@ -53,7 +53,7 @@ public class SignUpController extends HttpServlet {
     	boolean existe = true;
     	
     	
-    	if (user == null){
+    	if (user == null) {
     		existe = false;
     		user = new User();
     		user.setEmail(email);
@@ -63,7 +63,6 @@ public class SignUpController extends HttpServlet {
     		user.setIsActive(false);
     	
     		user.save();
-    		
     	}
     	
 		String finalizar_btn = request.getParameter("finalizar");
@@ -71,10 +70,12 @@ public class SignUpController extends HttpServlet {
 		if (finalizar_btn != null){
 			if (!existe){
 				
-				Mailer.getInstancia().mandarMailRegistracion( user.getEmail(), user.getFirstName() );
+				Mailer.getInstancia().mandarMailConfirmarRegistracion( user.getEmail(), user.getFirstName() );
+				
 				HttpSession session = request.getSession(true);
 				session.setAttribute("usuarioExitoso", true);
 				response.sendRedirect(request.getContextPath() + "/signin.jsp");
+				
 			}else{
 				request.setAttribute("errormsg", "Email existente.");
 				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);

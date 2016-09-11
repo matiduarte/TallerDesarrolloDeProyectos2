@@ -19,14 +19,6 @@ public class Mailer {
 	
 	protected Mailer() {}
 	
-	public void mandarMailRegistracion( String mail_origen, String nombre_origen ) {
-		
-		IMail mail = this.crearMail( mail_origen, nombre_origen );
-		
-		mail.enviar( new ContenidoMailConfirmarRegistracion() );
-		
-	}
-	
 	public IMail crearMail( String mail_destino, String nombre_destino ) {
 		IMail mail = null;
 		
@@ -38,6 +30,14 @@ public class Mailer {
 		}
 		
 		return mail;
+	}
+	
+	public void mandarMailConfirmarRegistracion( String mail_origen, String nombre_origen ) {
+		
+		IMail mail = this.crearMail( mail_origen, nombre_origen );
+		
+		mail.enviar( new ContenidoMailConfirmarRegistracion( mail_origen ) );
+		
 	}
 	
 	public void mandarMailRecuperarPass( String mail_origen, String nombre_origen, String userPass ) {

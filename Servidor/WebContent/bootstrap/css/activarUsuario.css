@@ -1,0 +1,16 @@
+body {
+  padding-top: 100px;
+  padding-bottom: 40px;
+  background-color: #fff;
+}
+
+.logo{
+	display: block;
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.text-primary{
+	
+}

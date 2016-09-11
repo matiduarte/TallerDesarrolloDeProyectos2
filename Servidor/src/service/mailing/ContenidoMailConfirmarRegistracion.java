@@ -10,7 +10,12 @@ import javax.mail.internet.MimeMultipart;
 
 public class ContenidoMailConfirmarRegistracion extends IContenidoMail {
 
-	public ContenidoMailConfirmarRegistracion() {
+	String token;
+	
+	public ContenidoMailConfirmarRegistracion( String mail_origen ) {
+		
+		// aca en verdad se deberia generar un token con el mail.
+		this.token = mail_origen;
 		this.generar();
 	}
 	
@@ -22,7 +27,7 @@ public class ContenidoMailConfirmarRegistracion extends IContenidoMail {
 		try {
 			  InternetHeaders headers = new InternetHeaders();
 			  headers.addHeader("Content-type", "text/html; charset=UTF-8");
-			  String html = "Test\nholanda\n<a href='http://localhost:8080/Servidor/signin'>Test.com</a>";
+			  String html = "Gracias por registrarte en FIUBA Cursos! Para terminar de activar tu cuenta clickea <a href='http://localhost:8080/Servidor/activarUsuario?mail=" + this.token + "'>AQUÍ</a>.";
 			  
 			  Multipart mime_multi_part = new MimeMultipart("alternative");
 			  
