@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Educando</string>
+    <string name="title_activity_main">Cursos</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Ajustes</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_facebook">INGRESAR CON FACEBOOK</string>
+    <string name="btn_google">INGRESAR CON GOOGLE</string>
+    <string name="course_coming_soon">Proximamente</string>
+    <string name="txt_courses">Ver Cursos</string>
+    <string name="txt_my_courses">Mis Cursos</string>
+    <string name="txt_example_name">Matias</string>
+    <string name="txt_example_surname">Carreras</string>
+    <string name="txt_example_email">matias.carreras@gmail.com</string>
+    <string name="search_category_no_results">"No hay cursos pertenecientes a la categoria "</string>
+    <string name="search_name_no_results">" ni cuyos nombres contengan la palabra "</string>
+    <string name="search_title">Resultados de la Búsqueda</string>
+</resources>
