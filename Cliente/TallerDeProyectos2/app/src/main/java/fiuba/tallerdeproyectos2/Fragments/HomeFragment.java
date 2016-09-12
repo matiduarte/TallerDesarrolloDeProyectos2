@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     HashMap<String, List<String>> childContent;
     private static final String TAG = HomeFragment.class.getSimpleName();
     final DisplayMetrics displayMetrics = new DisplayMetrics();
+    private int lastExpandedPosition = -1;
 
     public HomeFragment() {}
 
@@ -149,6 +150,20 @@ public class HomeFragment extends Fragment {
         ExpandableListViewAdapter expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
         expandableListView.setAdapter(expandableListViewAdapter);
         expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
+
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    expandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
         return rootView;
     }
 
