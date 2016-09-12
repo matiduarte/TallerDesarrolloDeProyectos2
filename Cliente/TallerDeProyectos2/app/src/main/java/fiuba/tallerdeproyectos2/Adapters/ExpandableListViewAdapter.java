@@ -19,7 +19,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> parentDataSource;
     private HashMap<String, List<String>> childDataSource;
-    private int lastExpandedPosition = -1;
 
     public ExpandableListViewAdapter(Context context, List<String> childParent, HashMap<String, List<String>> child) {
         this.context = context;
