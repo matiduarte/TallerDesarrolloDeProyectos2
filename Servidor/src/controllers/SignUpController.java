@@ -74,7 +74,7 @@ public class SignUpController extends HttpServlet {
 				
 				HttpSession session = request.getSession(true);
 				session.setAttribute("usuarioExitoso", true);
-				response.sendRedirect(request.getContextPath() + "/signin.jsp");
+				response.sendRedirect(request.getContextPath() + "/signin");
 				
 			}else{
 				request.setAttribute("errormsg", "Email existente.");
