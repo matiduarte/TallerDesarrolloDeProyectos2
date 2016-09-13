@@ -77,7 +77,8 @@ public class NewCourseController extends HttpServlet {
 		}
     	
     	 // Create path components to save the file
-        final String path = System.getProperty("user.dir") + "/Files/Course/" + course.getId() + "/";
+        final String path = "WebContent/Files/Course/" + course.getId() + "/";
+        final String urlPath = "Files/Course/" + course.getId() + "/";
         final Part filePart = request.getPart("picture");
         final String fileName = getFileName(filePart);
         if(!(fileName.compareTo("") == 0)){
@@ -113,7 +114,7 @@ public class NewCourseController extends HttpServlet {
                 }
             }
             
-            course.setPictureUrl(path + fileName);
+            course.setPictureUrl(urlPath + fileName);
             course.save();
         }
     	
