@@ -116,10 +116,10 @@
   		<input class="form-control" id="focusedInput1" name ="password" type="password" required>
   		</div>
 		
-		<button class="btn btn-lg btn-raised btn-primary btn-block" type="submit">Iniciar Sesión</button>
+		<button class="btn btn-lg btn-raised btn-primary btn-block" name="btn_ini_ses" type="submit">Iniciar Sesión</button>
         <button class="btn btn-lg btn-raised btn-primary btn-block"  onclick="registro()" type="button">Registrate</button>
         <div class="login-register">
-				<a href="#" onclick="recuperarContrasenia()">¿Olvido su contraseña?</a>
+				<a href="#" onclick="recuperarContrasenia()">¿Olvidó su contraseña?</a>
 			</div>
 			
       </form>

@@ -74,7 +74,17 @@ public class SignInController extends HttpServlet {
     		request.setAttribute("errorActive", "true");
     	}
     	
-        processRequest(request, response);
+    	String btn_ini_ses = request.getParameter("btn_ini_ses");
+		
+		if (btn_ini_ses != null){
+			if (existe && mismoPass && estaActivo){
+				response.sendRedirect(request.getContextPath() + "/newCourse");
+			}else{
+				processRequest(request, response);
+			}
+		}
+		
+        
     }
 
 }

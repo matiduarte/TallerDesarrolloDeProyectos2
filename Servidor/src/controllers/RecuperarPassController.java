@@ -54,7 +54,7 @@ public class RecuperarPassController extends HttpServlet {
 		String finalizar_btn = request.getParameter("finalizar");
 		
 		if (finalizar_btn != null){
-			response.sendRedirect(request.getContextPath() + "/signin.jsp");
+			response.sendRedirect(request.getContextPath() + "/signin");
 		}
 		
 	}
