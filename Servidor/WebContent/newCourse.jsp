@@ -47,7 +47,7 @@
     	
 	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente
+		  	La foto elegida supera el tamaño máximo de 5 MB permitido. Seleccione otra e intente nuevamente
 		</div>
 		
 		<div class="alert alert-success" id="saveSucces" style="display:none;">
@@ -63,7 +63,7 @@
 		</label>
 		
 		<span>
-        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
+        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 5 mb</label>
 		</span>
 		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
 		
@@ -182,7 +182,7 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 	
 		function fileSizeValidated(input){
 			$("#pictureError").hide();
-			if((input.files[0].size / 1024) > 1024){
+			if((input.files[0].size / 1024) > 5120){
 				$("#pictureError").show();
 				$('#imageHolder').attr('src', "images/photo_upload.jpg")
 				
