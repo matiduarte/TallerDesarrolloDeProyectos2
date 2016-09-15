@@ -8,6 +8,11 @@
 
 .addImageButton{
 	margin-top: 25px;
+	border: 2px solid;
+}
+
+.backeButton{
+	border: 2px solid;
 }
 
 .newCurseImage{
@@ -15,4 +20,25 @@
     width: 80px;
     height: 80px;
 }
+
+.bootstrap-tagsinput {
+	display: inherit;
+}
+
+.maxPictureLabel {
+    margin-top: 44px;
+    margin-left: 25px;
+    position: absolute;
+	color: #009688;    
+}
+
+body {
+	background: #FFFFFF;
+}
+
+.form-control::-webkit-input-placeholder { color: #009688; }
+.form-control:-moz-placeholder { color: #009688; }
+.form-control::-moz-placeholder { color: #009688; }
+.form-control:-ms-input-placeholder { color: #009688; }
+
 

@@ -1,0 +1,14 @@
+body {
+  
+  background-color: #fff;
+}
+
+.register{
+	margin: 0 auto;
+	padding-top: 50px;
+	width: 60%;
+}
+
+.btn-back{
+	border: 2px solid;
+}

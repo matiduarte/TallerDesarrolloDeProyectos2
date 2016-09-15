@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.User;
+
 /**
  * Servlet implementation class SignInController
  */
@@ -42,10 +44,47 @@ public class SignInController extends HttpServlet {
     	String email = request.getParameter("email");
     	String password = request.getParameter("password");
     	
-    	System.out.println("Email " + email);
-    	System.out.println("Email " + password);
+    	User user = User.getByUserEmail(email);
+    	boolean mismoPass = false;
+    	boolean existe = false;
+    	boolean estaActivo = false;
     	
-        processRequest(request, response);
+    	if (user != null){
+    		existe = true;
+    		if (user.getPassword().equals(password)){
+    			mismoPass = true;
+    			if (user.getIsActive()){
+    				estaActivo = true;
+    			}
+    		}
+    	}
+    	
+    	if (!existe){
+    		request.setAttribute("errorUser", "true");
+    		mismoPass = true;
+    		estaActivo = true;
+    	}
+    	
+    	if (!mismoPass){
+    		request.setAttribute("errorPass", "true");    
+    		estaActivo = true;
+    	}
+    	
+    	if (!estaActivo){
+    		request.setAttribute("errorActive", "true");
+    	}
+    	
+    	String btn_ini_ses = request.getParameter("btn_ini_ses");
+		
+		if (btn_ini_ses != null){
+			if (existe && mismoPass && estaActivo){
+				response.sendRedirect(request.getContextPath() + "/newCourse");
+			}else{
+				processRequest(request, response);
+			}
+		}
+		
+        
     }
 
 }

@@ -15,6 +15,7 @@ private String lastName;
 private String userName;
 private String password;
 private String email;
+private Boolean isActive;
   
 public String getEmail() {
 	return email;
@@ -45,11 +46,24 @@ public static User getById(int id){
 }
 
 public static User getByUserName(String userName){
+	
 	List<?> list = StoreData.getByField(User.class, "userName", userName);
-	if(list != null){
-		return (User)list.get(0);
+	User user = null;
+	if(list.size() > 0){
+		user = (User)list.get(0);
 	}
-	return (User)list;
+	return user;
+}
+
+public static User getByUserEmail(String email){
+	
+	List<?> list = StoreData.getByField(User.class, "email", email);
+	User user = null;
+	if(list.size() > 0){
+		user = (User)list.get(0);
+	}
+	
+	return user;
 }
 
 public void save(){
@@ -67,5 +81,10 @@ public String getPassword() {
 public void setPassword(String password) {
 	this.password = password;
 }
-
+public Boolean getIsActive() {  
+    return this.isActive;  
+}  
+public void setIsActive(Boolean isActive) {  
+    this.isActive = isActive;  
+}
 }  

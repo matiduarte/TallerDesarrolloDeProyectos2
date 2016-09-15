@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="carousel_demo">
+        <item>@drawable/programacion</item>
+        <item>@drawable/proyecto</item>
+        <item>@drawable/programacion</item>
+        <item>@drawable/proyecto</item>
+        <item>@drawable/programacion</item>
+        <item>@drawable/proyecto</item>
+        <item>@drawable/programacion</item>
+        <item>@drawable/proyecto</item>
+    </string-array>
+
+</resources>
