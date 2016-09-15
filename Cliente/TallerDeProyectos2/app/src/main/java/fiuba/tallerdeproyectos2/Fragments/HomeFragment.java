@@ -1,5 +1,8 @@
 package fiuba.tallerdeproyectos2.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -18,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +88,6 @@ public class HomeFragment extends Fragment {
                                 categoryCoursesList.add(courseInCategoryName.toString());
                             }
                             childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
-                            Log.d("childContent", childContent.toString());
                         }
 
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
@@ -125,7 +129,15 @@ public class HomeFragment extends Fragment {
                             linearLayoutChild.addView(descTex);
 
                             imageItem = new ImageView(getActivity().getApplicationContext());
-                            imageItem.setImageResource(R.drawable.background2);
+                            if(soonCoursesArray.has("pictureUrl")){
+                                File imgFile = new File(soonCoursesArray.get("pictureUrl").toString());
+                                if(imgFile.exists()){
+                                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                                    imageItem.setImageBitmap(myBitmap);
+                                }
+                            } else {
+                                imageItem.setImageResource(R.drawable.background2);
+                            }
                             imageItem.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
 
                             linearLayoutChild.addView(imageItem);
@@ -176,4 +188,5 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
 }

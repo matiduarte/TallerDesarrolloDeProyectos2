@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -69,7 +70,13 @@ public class SearchActivity extends AppCompatActivity {
                                 coursesList.add(name.toString());
                             }
                         } else {
-                            coursesList.add(getString(R.string.search_category_no_results) + query + getString(R.string.search_name_no_results) + query);
+                            Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
+                            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(homeIntent);
+                            finish();
+                            //coursesList.add(getString(R.string.search_category_no_results) + query + getString(R.string.search_name_no_results) + query);
+                            Toast.makeText(getApplicationContext(), R.string.search_category_no_results, Toast.LENGTH_LONG).show();
                         }
                         ArrayAdapter<String> courses = new ArrayAdapter<>(getApplicationContext(),R.layout.list_item,coursesList);
                         lv.setAdapter(courses);
