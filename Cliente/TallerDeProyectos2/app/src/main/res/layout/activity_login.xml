@@ -51,7 +51,6 @@
                     android:text="@string/btn_facebook"
                     android:textStyle="bold"
                     android:background="#3b5998"
-                    android:layout_weight="1"
                     android:textColor="#ffffff"/>
 
                 <Button
@@ -63,7 +62,6 @@
                     android:text="@string/btn_google"
                     android:textStyle="bold"
                     android:background="#d62d20"
-                    android:layout_weight="1"
                     android:textColor="#ffffff"/>
             </RelativeLayout>
         </LinearLayout>

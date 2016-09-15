@@ -1,4 +1,7 @@
 <resources>
+    <string name="facebook_app_id">1768939200040744</string>
+    <string name="fb_login_protocol_scheme">fb1768939200040744</string>
+
     <string name="app_name">Educando</string>
     <string name="title_activity_main">Cursos</string>
 
@@ -19,4 +22,5 @@
     <string name="search_category_no_results">"No hay cursos pertenecientes a la categoría "</string>
     <string name="search_name_no_results">" ni cuyos nombres contengan la palabra "</string>
     <string name="search_title">Resultados de la Búsqueda</string>
+    <string name="facebook_cancel_login">Inicio de sesion con Facebook cancelado</string>
 </resources>
