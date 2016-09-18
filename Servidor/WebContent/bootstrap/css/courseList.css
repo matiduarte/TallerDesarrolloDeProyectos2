@@ -1,0 +1,40 @@
+body {
+  
+  background-color: #fff;
+}
+
+
+.courses_list{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 50px;
+	width: 80%;
+}
+
+.img_container {
+	display:inline-block;
+	position:relative;
+}
+
+.btn_ver {
+	position:absolute;
+	bottom:-10px;
+	right:81px;
+}
+
+.btn_course {
+	position:relative;
+	top: 25px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 60%;
+}
+
+.my_badge{
+	background-color: #009688;
+	white-space:normal;
+}

@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,8 +15,15 @@ public class Course {
 	private String description;
 	private String name;
 	private String pictureUrl;
+	private int teacherId;
 	
 	
+	public int getTeacherId() {
+		return teacherId;
+	}
+	public void setTeacherId(int teacherId) {
+		this.teacherId = teacherId;
+	}
 	public int getId() {
 		return id;
 	}
@@ -59,6 +67,11 @@ public class Course {
 		return listOfCourses;
 	}
 	
+	public static List<Course> getByTeacherId(int teacherId){
+		return (List<Course>)StoreData.getByField(Course.class, "teacherId", String.valueOf(teacherId));
+	}
+	
+	
 	public static List<Course> getAll(){
 		return (List<Course>)StoreData.getByField(Course.class, "1", "1");
 	}
@@ -75,6 +88,20 @@ public class Course {
 			courses.addAll(categoryCourses);
 		}
 		return courses;
+	}
+	
+	public List<Category> getCategories(){
+		List<Category> categories = new ArrayList<Category>();
+		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCourseId(this.getId());	
+		
+		for (CourseCategory courseCategory : listOfCouseCategory) {
+			Category c = Category.getById(courseCategory.getCategoryId());
+			if(c != null){
+				categories.add(c);
+			}
+		}
+		
+		return categories;
 	}
 
 

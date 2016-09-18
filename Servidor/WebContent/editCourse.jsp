@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="entities.Category" %>
+<%@ page import="entities.Course" %>
+<%@ page import="entities.User" %>
+
+<% Course course = (Course)request.getAttribute("course"); 
+%> 
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -10,7 +15,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="bootstrap/img/icono.ico">
-    <title>Nuevo Curso</title>
+    <title>Detalles del curso</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-material-design.min.css" rel="stylesheet">
@@ -25,6 +30,7 @@
 	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	
   </head>
@@ -36,7 +42,7 @@
 	    <div class="navbar-header">
 	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
 	      </button>
-	      <a class="navbar-brand" href="javascript:void(0)">Nuevo Curso</a>
+	      <a class="navbar-brand" href="javascript:void(0)">Detalles del curso</a>
 	    </div>
 	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
 	    </div>
@@ -47,43 +53,45 @@
     	
 	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	La foto elegida supera el tamaño máximo de 5 MB permitido. Seleccione otra e intente nuevamente
-		</div>
-
-		<div class="alert alert-danger" id="pictureTypeError" style="display:none;">
-	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	Debe subir un archivo de tipo imagen
+		  	La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente
 		</div>
 		
 		<div class="alert alert-success" id="saveSucces" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	Curso creado satisfactoriamente!
+		  	Curso modificado satisfactoriamente!
 		</div>
 
-      <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
+      <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
         </br>
         
         <label class="btn btn-primary btn-file addImageButton">
-		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileValidated(this))readURL(this);"  accept="image/*">
+		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileSizeValidated(this))readURL(this);">
 		</label>
 		
 		<span>
-        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 5 mb</label>
+        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
 		</span>
-		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
+		
+		<% 
+		String pictureUrl = "images/photo_upload.jpg";
+		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+			pictureUrl = course.getPictureUrl(); 
+		} %>
+		<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
 		
         </br>
         </br>
         </br>
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Nombre</label>
-        	<input type="text" id="inputName" name="name" required="true"  class="form-control" required>
+        	<label class="control-label" for="inputName">Nombre </label>
+        	<input type="text" id="inputName" name="name" required="true"  class="form-control" value="<% out.print(course.getName()); %>" 
+        			required>
 		</div>
         </br>
         
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Descripci&oacute;n</label>
-        	<input type="text" id="inputDescription" name="description" required="true" class="form-control" required>
+        	<label class="control-label" for="inputDescription">Descripci&oacute;n</label>
+        	<input type="text" id="inputDescription" name="description" required="true" class="form-control" value="<% out.print(course.getDescription()); %>" required>
         </div>
         </br>
         
@@ -93,8 +101,15 @@
        </div>
         </br>
         
+       <div class="form-group label-floating ui-widget">	
+        	<label class="control-label" for="inputTeacher">Docente</label>
+        	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="" >
+        	
+        	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" >
+        </div>
+        
         <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
-        <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Crear Curso</button>
+        <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Confirmar</button>
       </form>
 
 
@@ -102,6 +117,7 @@
     
     <script>
 
+//Categories
 var data = [
 <%
     ArrayList<Category> categories = (java.util.ArrayList)request.getAttribute("categories");
@@ -123,7 +139,6 @@ var citynames = new Bloodhound({
     })
 });
 citynames.initialize();
-
 var elt = $('#categories');
 elt.tagsinput({
 	itemValue: 'id',
@@ -140,6 +155,15 @@ elt.tagsinput({
     }],
     freeInput: true
 });
+
+<%
+ArrayList<Category> currentCategories = (java.util.ArrayList)request.getAttribute("currentCategories");
+ for (Category currentCategory: currentCategories)
+ { 
+	 out.print("elt.tagsinput('add',  { 'id': " + currentCategory.getId() + " , 'name': '" + currentCategory.getName() + "'});\n");
+ }
+%>
+
 
 $(".bootstrap-tagsinput").addClass("form-control");
 
@@ -160,6 +184,7 @@ $(".tt-input").attr("required",true);
 $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 
 
+
 <%
 		if(request.getAttribute("saveSucces") != null){
 %>
@@ -168,6 +193,24 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		}
 %>
 
+//Teachers
+var availableTeachers = [
+<%
+ArrayList<User> teachers = (java.util.ArrayList)request.getAttribute("teachers");
+ for (User teacher: teachers)
+ { 
+	 out.print("{label:'" + teacher.getFirstName() + " " + teacher.getLastName() + "', id:" + teacher.getId() + "},");
+ }
+%>
+];
+
+$("#inputTeacher").autocomplete({
+ 	source: availableTeachers,
+ 	 select: function (event, ui) {
+         $("#teacherSelectedId").val(ui.item.id);
+     }
+});
+
 </script>
 
 	<script type="text/javascript">
@@ -175,28 +218,19 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		function validateCategories(e){
 			debugger;
 			if($("#categories").val() == ""){
-				e.setCustomValidity('Complete este campo');	
+				e.setCustomValidity('Campo requerido');	
 				return true;
 			}
 			//SUPER HACK
 			$(".tt-input").val(".")
-			$("#loginForm").submit();
+			$("#editCurseForm").submit();
 			return true
 			return false;
 		}
 	
-		function fileValidated(input){
+		function fileSizeValidated(input){
 			$("#pictureError").hide();
-			$("#pictureTypeError").hide();
-			var ext = $('#picture').val().split('.').pop().toLowerCase();
-			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
-				$("#pictureTypeError").show();
-				$('#imageHolder').attr('src', "images/photo_upload.jpg")				
-				return false;
-			}
-
-
-			if((input.files[0].size / 1024) > 5120){
+			if((input.files[0].size / 1024) > 1024){
 				$("#pictureError").show();
 				$('#imageHolder').attr('src', "images/photo_upload.jpg")
 				
@@ -206,17 +240,17 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		}
 		
 		function readURL(input) {
-			if (input.files && input.files[0]) {
-			    var reader = new FileReader();
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
 	
-			    reader.onload = function (e) {
-			        $('#imageHolder')
-			            .attr('src', e.target.result)
-			    };
+	            reader.onload = function (e) {
+	                $('#imageHolder')
+	                    .attr('src', e.target.result)
+	            };
 	
-			    reader.readAsDataURL(input.files[0]);
-			}
-	    	}
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
 	
 	</script>
   </body>
