@@ -1,0 +1,12 @@
+body {
+  padding-top: 100px;
+  padding-bottom: 40px;
+  background-color: #fff;
+}
+
+.tabla{
+    border-radius: 5px;
+    width: 50%;
+  	margin: 0px auto;
+    float: none;
+}

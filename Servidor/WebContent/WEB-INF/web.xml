@@ -68,5 +68,13 @@
   <servlet-mapping>
     <servlet-name>Activar usuario</servlet-name>
     <url-pattern>/activacion/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Principal admin</servlet-name>
+    <servlet-class>controllers.PrincipalAdminController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Principal admin</servlet-name>
+    <url-pattern>/cursos/admin/*</url-pattern>
   </servlet-mapping>  
 </web-app>
