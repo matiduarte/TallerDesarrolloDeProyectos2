@@ -72,7 +72,16 @@
     <servlet-class>controllers.CourseListController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Activar usuario</servlet-name>
+    <servlet-name>Lista de Cursos</servlet-name>
     <url-pattern>/courselist/*</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>EditCourse</servlet-name>
+    <servlet-class>controllers.EditCourseController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditCourse</servlet-name>
+    <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
 </web-app>
