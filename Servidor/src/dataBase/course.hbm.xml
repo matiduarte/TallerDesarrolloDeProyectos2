@@ -11,7 +11,8 @@
             
     <property name="description"></property>  
     <property name="name"></property>  
-    <property name="pictureUrl"></property>            
+    <property name="pictureUrl"></property>
+    <property name="teacherId" type="int"></property>          
   </class>  
             
  </hibernate-mapping>  

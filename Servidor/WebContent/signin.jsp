@@ -46,7 +46,7 @@
 
 	<div class="alerta-exito alert alert-success fade in">
     	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    	<strong>Felicitaciones!</strong> Usuario creado con éxito.
+    	<strong>Felicitaciones!</strong> Usuario creado con éxito. Revise su casilla de mail.
   	</div>
  
  <%
