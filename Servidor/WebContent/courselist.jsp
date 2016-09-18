@@ -1,3 +1,5 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!doctype html>
 <html lang="en-us">
   <head>
@@ -19,12 +21,16 @@
  	<title>Cursos</title>
  	
  </head>
-  <body>
+  <body data-spy="scroll" data-target=".navbar" data-offset="50">  
+  
 <div class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
       </button>
+     
+      <img class="navbar-brand" src="bootstrap/img/icono.ico" alt="Logo" style="width:60px;height:60px;">
+     
       <a class="navbar-brand">FIUBA Cursos</a>
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse"> 
@@ -34,21 +40,28 @@
 
 
 
-<div class="prueba container">
+<div class="courses_list container">
+
   <div class="row">
+  <c:forEach items="${list}" var="courses">
     <div class="col-md-4">
-          <img src="bootstrap/img/algo1.jpg" class="img-rounded" alt="Pulpit Rock" style="width:180px;height:180px">
-   
+    	<div id="img_container">
+    	<span class="my_badge btn_course badge">${courses.getName()}</span>
+    	<c:choose>
+    	<c:when test="${courses.getPictureUrl() != NULL}">
+          <img src="${courses.getPictureUrl()}" class="img-rounded" style="width:180px;height:180px">
+          
+          </c:when>
+          <c:otherwise>
+            	<img src="bootstrap/img/no-img.png" class="img-rounded" style="width:180px;height:180px">
+          </c:otherwise>
+          </c:choose>
+          <input type="button" class="btn_ver btn btn-sm btn-raised btn-primary" value="Ver más" />
+   		</div>
     </div>
-    <div class="col-md-4">
-        <img src="bootstrap/img/algo1.jpg" class="img-rounded alt="Moustiers Sainte Marie" style="width:180px;height:180px">
-     
-    </div>
-    <div class="col-md-4">
-          <img src="bootstrap/img/algo1.jpg" class="img-rounded alt="Cinque Terre" style="width:180px;height:180px">
-      
-    </div>
+      </c:forEach>
   </div>
+
 </div>
 
 

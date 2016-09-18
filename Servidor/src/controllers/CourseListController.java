@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import antlr.collections.List;
 import entities.Course;
 import entities.User;
 
@@ -26,7 +25,6 @@ public class CourseListController extends HttpServlet {
      */
     public CourseListController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -39,7 +37,7 @@ public class CourseListController extends HttpServlet {
 		
 		if (user != null){
 			ArrayList<Course> list = (ArrayList<Course>) Course.getByTeacherId(user.getId());
-			request.setAttribute("courses", list);
+			request.setAttribute("list", list);
 		}
 		
 		getServletConfig().getServletContext().getRequestDispatcher("/courselist.jsp").forward(request,response);
@@ -49,7 +47,7 @@ public class CourseListController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 	}
 
 }
