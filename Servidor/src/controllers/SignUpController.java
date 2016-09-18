@@ -78,6 +78,9 @@ public class SignUpController extends HttpServlet {
 				
 			}else{
 				request.setAttribute("errormsg", "Email existente.");
+				request.setAttribute("email", email);
+				request.setAttribute("name", name);
+				request.setAttribute("lastName", lastName);
 				getServletConfig().getServletContext().getRequestDispatcher("/signup.jsp").forward(request,response);
 			}
 		}
