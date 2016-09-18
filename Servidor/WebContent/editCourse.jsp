@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="entities.Category" %>
+<%@ page import="entities.Course" %>
+
+<% Course course = (Course)request.getAttribute("course"); 
+%> 
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -10,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="bootstrap/img/icono.ico">
-    <title>Nuevo Curso</title>
+    <title>Detalles del curso</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-material-design.min.css" rel="stylesheet">
@@ -36,7 +40,7 @@
 	    <div class="navbar-header">
 	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
 	      </button>
-	      <a class="navbar-brand" href="javascript:void(0)">Nuevo Curso</a>
+	      <a class="navbar-brand" href="javascript:void(0)">Detalles del curso</a>
 	    </div>
 	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
 	    </div>
@@ -55,7 +59,7 @@
 		  	Curso creado satisfactoriamente!
 		</div>
 
-      <form id="loginForm" name="loginForm" method="post" action="newCourse" class="form-signin" enctype="multipart/form-data">
+      <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
         </br>
         
         <label class="btn btn-primary btn-file addImageButton">
@@ -71,14 +75,15 @@
         </br>
         </br>
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Nombre</label>
-        	<input type="text" id="inputName" name="name" required="true"  class="form-control" required>
+        	<label class="control-label" for="inputName">Nombre </label>
+        	<input type="text" id="inputName" name="name" required="true"  class="form-control" value="<% out.print(course.getName()); %>" 
+        			required>
 		</div>
         </br>
         
         <div class="form-group label-floating">	
         	<label class="control-label" for="inputName">Descripci&oacute;n</label>
-        	<input type="text" id="inputDescription" name="description" required="true" class="form-control" required>
+        	<input type="text" id="inputDescription" name="description" required="true" class="form-control" value="<% out.print(course.getDescription()); %>" required>
         </div>
         </br>
         
@@ -118,7 +123,6 @@ var citynames = new Bloodhound({
     })
 });
 citynames.initialize();
-
 var elt = $('#categories');
 elt.tagsinput({
 	itemValue: 'id',
@@ -135,6 +139,15 @@ elt.tagsinput({
     }],
     freeInput: true
 });
+
+<%
+ArrayList<Category> currentCategories = (java.util.ArrayList)request.getAttribute("currentCategories");
+ for (Category currentCategory: currentCategories)
+ { 
+	 out.print("elt.tagsinput('add',  { 'id': " + currentCategory.getId() + " , 'name': '" + currentCategory.getName() + "'});\n");
+ }
+%>
+
 
 $(".bootstrap-tagsinput").addClass("form-control");
 
@@ -155,6 +168,7 @@ $(".tt-input").attr("required",true);
 $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 
 
+
 <%
 		if(request.getAttribute("saveSucces") != null){
 %>
@@ -170,7 +184,7 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		function validateCategories(e){
 			debugger;
 			if($("#categories").val() == ""){
-				e.setCustomValidity('Complete este campo');	
+				e.setCustomValidity('Campo requerido');	
 				return true;
 			}
 			//SUPER HACK

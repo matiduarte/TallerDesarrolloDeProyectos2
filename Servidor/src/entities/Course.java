@@ -76,6 +76,20 @@ public class Course {
 		}
 		return courses;
 	}
+	
+	public List<Category> getCategories(){
+		List<Category> categories = new ArrayList<Category>();
+		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCourseId(this.getId());	
+		
+		for (CourseCategory courseCategory : listOfCouseCategory) {
+			Category c = Category.getById(courseCategory.getCategoryId());
+			if(c != null){
+				categories.add(c);
+			}
+		}
+		
+		return categories;
+	}
 
 
 }

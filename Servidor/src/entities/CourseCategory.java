@@ -42,6 +42,10 @@ public class CourseCategory {
 		return (List<CourseCategory>)StoreData.getByField(CourseCategory.class, "categoryId", String.valueOf(categoryId));
 	}
 	
+	public static List<CourseCategory> getByCourseId(int courseId){
+		return (List<CourseCategory>)StoreData.getByField(CourseCategory.class, "courseId", String.valueOf(courseId));
+	}
+	
 	public void save(){
 		StoreData.save(this);
 	}
