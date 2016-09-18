@@ -46,7 +46,18 @@ public class CourseCategory {
 		return (List<CourseCategory>)StoreData.getByField(CourseCategory.class, "courseId", String.valueOf(courseId));
 	}
 	
+	public static void deleteByCourseId(int courseId){
+		List<CourseCategory> courseCategoryToDelete = (List<CourseCategory>)StoreData.getByField(CourseCategory.class, "courseId", String.valueOf(courseId));
+		for (CourseCategory courseCategory : courseCategoryToDelete) {
+			courseCategory.delete();
+		}
+	}
+	
 	public void save(){
 		StoreData.save(this);
+	}
+	
+	public void delete(){
+		StoreData.delete(this);
 	}
 }

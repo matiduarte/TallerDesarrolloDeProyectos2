@@ -23,6 +23,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import entities.Category;
 import entities.Course;
 import entities.CourseCategory;
+import entities.User;
 
 
 @WebServlet("/editCourse")
@@ -54,6 +55,7 @@ public class EditCourseController extends HttpServlet {
         request.setAttribute("categories", allCategories);
         request.setAttribute("course", course);
         request.setAttribute("currentCategories", currentCategories);
+        request.setAttribute("teachers", (ArrayList<User>)User.getAllPossibleTeachers());
         
         processRequest(request, response);
     } 
@@ -67,10 +69,13 @@ public class EditCourseController extends HttpServlet {
     	String categoryIdsEntry = request.getParameter("categories");
     	String[] categoryIds = categoryIdsEntry.split(",");
 
-    	Course course = new Course();
+    	Course course = Course.getById(5);
     	course.setName(name);
     	course.setDescription(description);
     	course.save();
+    	
+    	//Borro todas las categorias del curso
+    	CourseCategory.deleteByCourseId(course.getId());
     	
     	for (String categoryId : categoryIds) {
 			CourseCategory courseCategory = new CourseCategory();

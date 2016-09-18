@@ -2,6 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="entities.Category" %>
 <%@ page import="entities.Course" %>
+<%@ page import="entities.User" %>
 
 <% Course course = (Course)request.getAttribute("course"); 
 %> 
@@ -29,6 +30,7 @@
 	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	
   </head>
@@ -56,7 +58,7 @@
 		
 		<div class="alert alert-success" id="saveSucces" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	Curso creado satisfactoriamente!
+		  	Curso modificado satisfactoriamente!
 		</div>
 
       <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
@@ -69,7 +71,13 @@
 		<span>
         	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
 		</span>
-		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
+		
+		<% 
+		String pictureUrl = "images/photo_upload.jpg";
+		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+			pictureUrl = course.getPictureUrl(); 
+		} %>
+		<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
 		
         </br>
         </br>
@@ -82,7 +90,7 @@
         </br>
         
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Descripci&oacute;n</label>
+        	<label class="control-label" for="inputDescription">Descripci&oacute;n</label>
         	<input type="text" id="inputDescription" name="description" required="true" class="form-control" value="<% out.print(course.getDescription()); %>" required>
         </div>
         </br>
@@ -93,8 +101,15 @@
        </div>
         </br>
         
+       <div class="form-group label-floating ui-widget">	
+        	<label class="control-label" for="inputTeacher">Docente</label>
+        	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="" >
+        	
+        	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" >
+        </div>
+        
         <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
-        <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Crear Curso</button>
+        <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Confirmar</button>
       </form>
 
 
@@ -102,6 +117,7 @@
     
     <script>
 
+//Categories
 var data = [
 <%
     ArrayList<Category> categories = (java.util.ArrayList)request.getAttribute("categories");
@@ -177,6 +193,24 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		}
 %>
 
+//Teachers
+var availableTeachers = [
+<%
+ArrayList<User> teachers = (java.util.ArrayList)request.getAttribute("teachers");
+ for (User teacher: teachers)
+ { 
+	 out.print("{label:'" + teacher.getFirstName() + " " + teacher.getLastName() + "', id:" + teacher.getId() + "},");
+ }
+%>
+];
+
+$("#inputTeacher").autocomplete({
+ 	source: availableTeachers,
+ 	 select: function (event, ui) {
+         $("#teacherSelectedId").val(ui.item.id);
+     }
+});
+
 </script>
 
 	<script type="text/javascript">
@@ -189,7 +223,7 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 			}
 			//SUPER HACK
 			$(".tt-input").val(".")
-			$("#loginForm").submit();
+			$("#editCurseForm").submit();
 			return true
 			return false;
 		}
