@@ -1,12 +1,15 @@
 body {
-  padding-top: 100px;
-  padding-bottom: 40px;
-  background-color: #fff;
+  background: #FFFFFF;
 }
 
-.tabla{
+.tabla {
     border-radius: 5px;
     width: 50%;
   	margin: 0px auto;
     float: none;
+}
+
+.newCourseButton{
+	float: right;
+	border: 2px solid;
 }

@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="bootstrap/img/icono.ico">
+    <link rel="icon" href="../bootstrap/img/icono.ico">
 
     <title>Cursos</title>
 
@@ -38,8 +38,28 @@
 
 
 
-  <body> 
+  <body>
+  
+  	<div class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+	      </button>
+	      <a class="navbar-brand" href="javascript:void(0)">Cursos - Admin</a>
+	    </div>
+	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
+	    </div>
+	  </div>
+	</div>
+  
     <div class="container">
+    
+     <label class="btn btn-primary btn-file newCourseButton">
+   	   Nuevo curso
+     </label>
+    <br>
+    <br>
+    <br>
      <div class="table-responsive">
 	  <table class="table">
 	   <thead>
@@ -49,7 +69,7 @@
 	     	<th>Categorías</th>
 	     	<th>Docente</th>
 	     	<th>Editar</th>
-	     	<th>Eliminar</th>
+	     	<th>Borrar</th>
 	     </tr>
 	   </thead>
 	   <tbody>
@@ -61,11 +81,14 @@
 		  <td> <%=item.getCourse().getDescription()%> </td>
 		  <td> <%=String.join(", ", item.getCategoriesNames() )%> </td>
 		  <td> <%=item.getTeacher().getFirstName()%> </td>
+		  <td> edit </td>
+		  <td> erase </td>
 		<% } %>   	
 	   </tbody>
 	   </table>
 	  </div>
     </div> <!-- /container -->
+    
 
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
