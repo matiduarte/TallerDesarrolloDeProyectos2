@@ -20,7 +20,7 @@ body {
 .btn_ver {
 	position:absolute;
 	bottom:-10px;
-	right:91px;
+	right:81px;
 }
 
 .btn_course {
@@ -31,7 +31,7 @@ body {
     margin-right: auto;
     padding-bottom: 10px;
     padding-top: 10px;
-    width: 54%;
+    width: 60%;
 }
 
 .my_badge{

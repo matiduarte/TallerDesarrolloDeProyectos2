@@ -49,11 +49,11 @@
     	<span class="my_badge btn_course badge">${courses.getName()}</span>
     	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
-          <img src="${courses.getPictureUrl()}" class="img-rounded" style="width:180px;height:180px">
+          <img src="${courses.getPictureUrl()}" class="img-rounded" style="width:200px;height:150px">
           
           </c:when>
           <c:otherwise>
-            	<img src="bootstrap/img/no-img.png" class="img-rounded" style="width:180px;height:180px">
+            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded" style="width:200px;height:150px">
           </c:otherwise>
           </c:choose>
           <input type="button" class="btn_ver btn btn-sm btn-raised btn-primary" value="Ver más" />

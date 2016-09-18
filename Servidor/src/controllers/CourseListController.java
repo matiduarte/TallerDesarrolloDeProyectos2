@@ -2,6 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.mysql.cj.api.x.Collection;
 
 import entities.Course;
 import entities.User;
@@ -36,7 +41,13 @@ public class CourseListController extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		if (user != null){
-			ArrayList<Course> list = (ArrayList<Course>) Course.getByTeacherId(user.getId());
+			List<Course> list = (ArrayList<Course>) Course.getByTeacherId(user.getId());
+			Collections.sort(list, new Comparator<Course>() {
+			    @Override
+			    public int compare(Course c1, Course c2) {
+			        return c1.getName().compareTo(c2.getName());
+			    }
+			});
 			request.setAttribute("list", list);
 		}
 		
