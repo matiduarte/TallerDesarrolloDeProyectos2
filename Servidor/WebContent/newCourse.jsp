@@ -47,7 +47,12 @@
     	
 	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente
+		  	La foto elegida supera el tamaño máximo de 5 MB permitido. Seleccione otra e intente nuevamente
+		</div>
+
+		<div class="alert alert-danger" id="pictureTypeError" style="display:none;">
+	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  	Debe subir un archivo de tipo imagen
 		</div>
 		
 		<div class="alert alert-success" id="saveSucces" style="display:none;">
@@ -59,11 +64,11 @@
         </br>
         
         <label class="btn btn-primary btn-file addImageButton">
-		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileSizeValidated(this))readURL(this);">
+		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileValidated(this))readURL(this);"  accept="image/*">
 		</label>
 		
 		<span>
-        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
+        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 5 mb</label>
 		</span>
 		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
 		
@@ -180,9 +185,18 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 			return false;
 		}
 	
-		function fileSizeValidated(input){
+		function fileValidated(input){
 			$("#pictureError").hide();
-			if((input.files[0].size / 1024) > 1024){
+			$("#pictureTypeError").hide();
+			var ext = $('#picture').val().split('.').pop().toLowerCase();
+			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+				$("#pictureTypeError").show();
+				$('#imageHolder').attr('src', "images/photo_upload.jpg")				
+				return false;
+			}
+
+
+			if((input.files[0].size / 1024) > 5120){
 				$("#pictureError").show();
 				$('#imageHolder').attr('src', "images/photo_upload.jpg")
 				
@@ -192,17 +206,17 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		}
 		
 		function readURL(input) {
-	        if (input.files && input.files[0]) {
-	            var reader = new FileReader();
+			if (input.files && input.files[0]) {
+			    var reader = new FileReader();
 	
-	            reader.onload = function (e) {
-	                $('#imageHolder')
-	                    .attr('src', e.target.result)
-	            };
+			    reader.onload = function (e) {
+			        $('#imageHolder')
+			            .attr('src', e.target.result)
+			    };
 	
-	            reader.readAsDataURL(input.files[0]);
-	        }
-	    }
+			    reader.readAsDataURL(input.files[0]);
+			}
+	    	}
 	
 	</script>
   </body>
