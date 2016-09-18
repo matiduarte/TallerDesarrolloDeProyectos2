@@ -1,9 +1,10 @@
 
 <!doctype html>
+<%@page import="com.mysql.cj.core.util.StringUtils"%>
 <%@page import="entities.CourseCategory"%>
 <%@page import="controllers.PrincipalAdminController" %>
-<%@page import="entities.CourseCategory"%>
-<%@page import="entities.Course"%>
+<%@page import="entities.Category" %>
+<%@page import="utils.TableCourse"%>
 <%@page import="java.util.*" %>
 <html lang="en">
   <head>
@@ -46,22 +47,21 @@
 	     	<th>Nombre</th>
 	     	<th>Descripción</th>
 	     	<th>Categorías</th>
-	     	<th>Docentes</th>
+	     	<th>Docente</th>
 	     	<th>Editar</th>
 	     	<th>Eliminar</th>
 	     </tr>
 	   </thead>
 	   <tbody>
 		<%
-		Course cursito = new Course();
-		PrincipalAdminController.TableCourse
-		for ( TableCourse curso : PrincipalAdminController.getAllTableCourses() ) {
+		ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
+		for ( TableCourse item : tabla_de_cursos ) {
 		%><tr>
-		  <td> <%=curso.getName()%> </td>
-		  <td> <%=curso.getDescription()%> </td>
-		  <td> <%=curso.getCategories()%> </td>
-		  <td> <%=curso.getDocentes()%> </td>
-		<% } %>	   	
+		  <td> <%=item.getCourse().getName()%> </td>
+		  <td> <%=item.getCourse().getDescription()%> </td>
+		  <td> <%=String.join(", ", item.getCategoriesNames() )%> </td>
+		  <td> <%=item.getTeacher().getFirstName()%> </td>
+		<% } %>   	
 	   </tbody>
 	   </table>
 	  </div>

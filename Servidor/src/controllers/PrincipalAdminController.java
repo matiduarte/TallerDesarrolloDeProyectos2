@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,7 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.Category;
 import entities.Course;
+import entities.User;
+import utils.TableCourse;
 
 /**
  * Servlet implementation class PrincipalAdminController
@@ -36,14 +40,17 @@ public class PrincipalAdminController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
     	
-    	// de aca tengo q recuperar todos los cursos: nombre, descrip, categorias, docente
-    	// IDEA: recuperar y poner los datos en:
-    	// 								- poner todo en la clase TableCourse y llamar desde el jsp.
+    	ArrayList<TableCourse> cursos_de_tabla = new ArrayList<TableCourse>();
     	
     	for ( Course curso : Course.getAll() ) {
-    		// 1: recupero los docentes del curso.
-    		// 2: recupero las categorias del curso.
+    		List<Category> categorias = curso.getCategories();
+    		User docente = User.getById( curso.getTeacherId() );
+    		
+    		TableCourse curso_de_tabla = new TableCourse( curso, docente, categorias );
+    		cursos_de_tabla.add( curso_de_tabla );
     	}
+    	
+    	request.setAttribute("table_courses", cursos_de_tabla);
     	
         processRequest(request, response);
     } 
