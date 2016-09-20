@@ -52,10 +52,18 @@ public class EditCourseController extends HttpServlet {
         Course course = Course.getById(5);
         ArrayList<Category> currentCategories = (ArrayList<Category>) course.getCategories();
         
+        User teacher = User.getById(course.getTeacherId());
+        String currentTeacherName = "";
+        if(teacher != null){
+        	currentTeacherName = teacher.getFirstName() + " " + teacher.getLastName();
+        }
+        
+        
         request.setAttribute("categories", allCategories);
         request.setAttribute("course", course);
         request.setAttribute("currentCategories", currentCategories);
         request.setAttribute("teachers", (ArrayList<User>)User.getAllPossibleTeachers());
+        request.setAttribute("currentTeacherName", currentTeacherName);
         
         processRequest(request, response);
     } 
@@ -67,11 +75,13 @@ public class EditCourseController extends HttpServlet {
     	String name = request.getParameter("name");
     	String description = request.getParameter("description");
     	String categoryIdsEntry = request.getParameter("categories");
+    	String teacherSelectedId = request.getParameter("teacherSelectedId");
     	String[] categoryIds = categoryIdsEntry.split(",");
 
     	Course course = Course.getById(5);
     	course.setName(name);
     	course.setDescription(description);
+    	course.setTeacherId(Integer.valueOf(teacherSelectedId));
     	course.save();
     	
     	//Borro todas las categorias del curso

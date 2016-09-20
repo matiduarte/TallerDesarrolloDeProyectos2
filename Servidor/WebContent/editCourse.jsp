@@ -103,9 +103,9 @@
         
        <div class="form-group label-floating ui-widget">	
         	<label class="control-label" for="inputTeacher">Docente</label>
-        	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="" >
+        	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="<% out.print(request.getAttribute("currentTeacherName")); %>" >
         	
-        	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" >
+        	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" value="<% out.print(course.getTeacherId()); %>">
         </div>
         
         <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
