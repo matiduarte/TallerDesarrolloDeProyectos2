@@ -66,6 +66,11 @@ public static User getByUserEmail(String email){
 	return user;
 }
 
+public static List<User> getAllPossibleTeachers(){
+	//TODO: filtrar los estudiantes
+	return (List<User>)StoreData.getByField(User.class, "1", "1");
+}
+
 public void save(){
 	StoreData.save(this);
 }

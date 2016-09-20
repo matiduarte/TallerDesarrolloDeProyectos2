@@ -1,0 +1,15 @@
+body {
+  background: #FFFFFF;
+}
+
+.tabla {
+    border-radius: 5px;
+    width: 50%;
+  	margin: 0px auto;
+    float: none;
+}
+
+.newCourseButton{
+	float: right;
+	border: 2px solid;
+}

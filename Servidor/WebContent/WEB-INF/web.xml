@@ -9,6 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <servlet-name>Jersey Web Application</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -67,11 +68,28 @@
     <url-pattern>/activacion/*</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>Principal admin</servlet-name>
+    <servlet-class>controllers.PrincipalAdminController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Principal admin</servlet-name>
+    <url-pattern>/cursos/admin/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>Lista de Cursos</servlet-name>
     <servlet-class>controllers.CourseListController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Activar usuario</servlet-name>
+    <servlet-name>Lista de Cursos</servlet-name>
     <url-pattern>/courselist/*</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>EditCourse</servlet-name>
+    <servlet-class>controllers.EditCourseController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditCourse</servlet-name>
+    <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -1,0 +1,64 @@
+package controllers;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import entities.Category;
+import entities.Course;
+import entities.User;
+import utils.TableCourse;
+
+/**
+ * Servlet implementation class PrincipalAdminController
+ */
+@WebServlet("/cursos/admin")
+public class PrincipalAdminController extends HttpServlet {
+	private static final long serialVersionUID = 1L;	
+	
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PrincipalAdminController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    	    throws ServletException, IOException {
+    	       getServletConfig().getServletContext().getRequestDispatcher("/principalAdmin.jsp").forward(request,response);
+    	    }
+    
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+    	
+    	ArrayList<TableCourse> cursos_de_tabla = new ArrayList<TableCourse>();
+    	
+    	for ( Course curso : Course.getAll() ) {
+    		List<Category> categorias = curso.getCategories();
+    		User docente = User.getById( curso.getTeacherId() );
+    		
+    		TableCourse curso_de_tabla = new TableCourse( curso, docente, categorias );
+    		cursos_de_tabla.add( curso_de_tabla );
+    	}
+    	
+    	request.setAttribute("table_courses", cursos_de_tabla);
+    	
+        processRequest(request, response);
+    } 
+ 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {   
+    	getServletConfig().getServletContext().getRequestDispatcher("/signin.jsp");
+    }
+
+}
