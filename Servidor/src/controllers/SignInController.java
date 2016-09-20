@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entities.User;
 
@@ -78,7 +79,10 @@ public class SignInController extends HttpServlet {
 		
 		if (btn_ini_ses != null){
 			if (existe && mismoPass && estaActivo){
-				response.sendRedirect(request.getContextPath() + "/newCourse");
+				
+				HttpSession session = request.getSession(true);
+				session.setAttribute("user", user);
+				response.sendRedirect(request.getContextPath() + "/courselist");
 			}else{
 				processRequest(request, response);
 			}
