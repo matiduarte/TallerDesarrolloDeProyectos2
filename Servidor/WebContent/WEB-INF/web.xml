@@ -50,7 +50,6 @@
     <servlet-name>NewCourse</servlet-name>
     <url-pattern>/newCourse/*</url-pattern>
   </servlet-mapping>
-
   <servlet>
     <servlet-name>Recuperar Password</servlet-name>
     <servlet-class>controllers.RecuperarPassController</servlet-class>
@@ -59,7 +58,6 @@
     <servlet-name>Recuperar Password</servlet-name>
     <url-pattern>/recuperarPass/*</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>Activar usuario</servlet-name>
     <servlet-class>controllers.ActivarUsuarioController</servlet-class>
@@ -77,5 +75,16 @@
     <servlet-name>EditCourse</servlet-name>
     <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>Lista de Cursos</servlet-name>
+    <servlet-class>controllers.CourseListController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Activar usuario</servlet-name>
+    <url-pattern>/courselist/*</url-pattern>
+  </servlet-mapping>
 </web-app>
 
+
+  
