@@ -65,7 +65,7 @@
 		<span>
         	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
 		</span>
-		<img src="images/photo_upload.jpg" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
+		<img src="images/photo_upload.png" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
 		
         </br>
         </br>
@@ -88,7 +88,7 @@
        </div>
         </br>
         
-        <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
+        <button class="btn btn-primary btn-file backeButton" onclick="goBack();return false">Volver</button>
         <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Crear Curso</button>
       </form>
 
@@ -168,7 +168,6 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 	<script type="text/javascript">
 	
 		function validateCategories(e){
-			debugger;
 			if($("#categories").val() == ""){
 				e.setCustomValidity('Complete este campo');	
 				return true;
@@ -184,7 +183,7 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 			$("#pictureError").hide();
 			if((input.files[0].size / 1024) > 1024){
 				$("#pictureError").show();
-				$('#imageHolder').attr('src', "images/photo_upload.jpg")
+				$('#imageHolder').attr('src', "images/photo_upload.png")
 				
 				return false;
 			}
@@ -203,6 +202,10 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 	            reader.readAsDataURL(input.files[0]);
 	        }
 	    }
+		
+		function goBack(){
+			window.location.href = "principalAdmin.jsp";
+		}
 	
 	</script>
   </body>
