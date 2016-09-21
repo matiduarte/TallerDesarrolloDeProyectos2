@@ -42,4 +42,6 @@ body {
 .form-control::-moz-placeholder { color: #009688; }
 .form-control:-ms-input-placeholder { color: #009688; }
 
+.ui-helper-hidden-accessible { display:none; }
+
 
