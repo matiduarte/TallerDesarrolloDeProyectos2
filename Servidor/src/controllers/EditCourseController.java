@@ -52,11 +52,14 @@ public class EditCourseController extends HttpServlet {
         Course course = Course.getById(5);
         ArrayList<Category> currentCategories = (ArrayList<Category>) course.getCategories();
         
-        User teacher = User.getById(course.getTeacherId());
         String currentTeacherName = "";
-        if(teacher != null){
-        	currentTeacherName = teacher.getFirstName() + " " + teacher.getLastName();
+        if(course.getTeacherId() != null){
+        	User teacher = User.getById(course.getTeacherId());     
+            if(teacher != null){
+            	currentTeacherName = teacher.getFirstName() + " " + teacher.getLastName();
+            }
         }
+        
         
         
         request.setAttribute("categories", allCategories);

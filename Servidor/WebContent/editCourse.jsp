@@ -62,7 +62,12 @@
 		</div>
 
       <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
-        </br>
+        <% 
+		String pictureUrl = "images/photo_upload.jpg";
+		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+			pictureUrl = course.getPictureUrl(); 
+		} %>
+		<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
         
         <label class="btn btn-primary btn-file addImageButton">
 		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileSizeValidated(this))readURL(this);">
@@ -72,12 +77,7 @@
         	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
 		</span>
 		
-		<% 
-		String pictureUrl = "images/photo_upload.jpg";
-		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
-			pictureUrl = course.getPictureUrl(); 
-		} %>
-		<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
+		
 		
         </br>
         </br>
