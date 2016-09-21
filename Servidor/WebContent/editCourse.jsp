@@ -62,6 +62,7 @@
 		</div>
 
       <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<% out.print(course.getId()); %>">
         <% 
 		String pictureUrl = "images/photo_upload.jpg";
 		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){

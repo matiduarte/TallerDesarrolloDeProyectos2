@@ -48,25 +48,27 @@ public class EditCourseController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ArrayList<Category> allCategories = (ArrayList<Category>) Category.getAll();
+        request.setAttribute("categories", allCategories);
+        request.setAttribute("teachers", (ArrayList<User>)User.getAllPossibleTeachers());
         
-        Course course = Course.getById(5);
-        ArrayList<Category> currentCategories = (ArrayList<Category>) course.getCategories();
-        
-        String currentTeacherName = "";
-        if(course.getTeacherId() != null){
-        	User teacher = User.getById(course.getTeacherId());     
-            if(teacher != null){
-            	currentTeacherName = teacher.getFirstName() + " " + teacher.getLastName();
-            }
+        if(request.getParameter("id") != null){
+        	 int courseId = Integer.valueOf(request.getParameter("id")); 
+             Course course = Course.getById(courseId);
+             ArrayList<Category> currentCategories = (ArrayList<Category>) course.getCategories();
+             
+             String currentTeacherName = "";
+             if(course.getTeacherId() != null){
+             	User teacher = User.getById(course.getTeacherId());     
+                 if(teacher != null){
+                 	currentTeacherName = teacher.getFirstName() + " " + teacher.getLastName();
+                 }
+             }
+             
+             request.setAttribute("course", course);
+             request.setAttribute("currentCategories", currentCategories);
+             request.setAttribute("currentTeacherName", currentTeacherName);
         }
         
-        
-        
-        request.setAttribute("categories", allCategories);
-        request.setAttribute("course", course);
-        request.setAttribute("currentCategories", currentCategories);
-        request.setAttribute("teachers", (ArrayList<User>)User.getAllPossibleTeachers());
-        request.setAttribute("currentTeacherName", currentTeacherName);
         
         processRequest(request, response);
     } 
@@ -80,66 +82,70 @@ public class EditCourseController extends HttpServlet {
     	String categoryIdsEntry = request.getParameter("categories");
     	String teacherSelectedId = request.getParameter("teacherSelectedId");
     	String[] categoryIds = categoryIdsEntry.split(",");
-
-    	Course course = Course.getById(5);
-    	course.setName(name);
-    	course.setDescription(description);
-    	course.setTeacherId(Integer.valueOf(teacherSelectedId));
-    	course.save();
     	
-    	//Borro todas las categorias del curso
-    	CourseCategory.deleteByCourseId(course.getId());
     	
-    	for (String categoryId : categoryIds) {
-			CourseCategory courseCategory = new CourseCategory();
-			courseCategory.setCategoryId(Integer.parseInt(categoryId));
-			courseCategory.setCourseId(course.getId());
-			courseCategory.save();
-		}
-    	
-    	 // Create path components to save the file
-        final String path = "WebContent/Files/Course/" + course.getId() + "/";
-        final String urlPath = "Files/Course/" + course.getId() + "/";
-        final Part filePart = request.getPart("picture");
-        final String fileName = getFileName(filePart);
-        if(!(fileName.compareTo("") == 0)){
-
-            OutputStream out = null;
-            InputStream filecontent = null;
-            
-            final File parent = new File(path);
-            parent.mkdirs();
-
-            try {
-                out = new FileOutputStream(new File(path, fileName));
-                filecontent = filePart.getInputStream();
-
-                int read = 0;
-                final byte[] bytes = new byte[1024];
-
-                while ((read = filecontent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                //writer.println("New file " + fileName + " created at " + path);
-            } catch (FileNotFoundException fne) {
-//                writer.println("You either did not specify a file to upload or are "
-//                        + "trying to upload a file to a protected or nonexistent "
-//                        + "location.");
-//                writer.println("<br/> ERROR: " + fne.getMessage());
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
-                if (filecontent != null) {
-                    filecontent.close();
-                }
-            }
-            
-            course.setPictureUrl(urlPath + fileName);
-            course.save();
-        }
-    	
-        request.setAttribute("saveSucces", true);
+    	if(request.getParameter("id") != null){
+    		int courseId = Integer.valueOf(request.getParameter("id"));
+	    	Course course = Course.getById(courseId);
+	    	course.setName(name);
+	    	course.setDescription(description);
+	    	course.setTeacherId(Integer.valueOf(teacherSelectedId));
+	    	course.save();
+	    	
+	    	//Borro todas las categorias del curso
+	    	CourseCategory.deleteByCourseId(course.getId());
+	    	
+	    	for (String categoryId : categoryIds) {
+				CourseCategory courseCategory = new CourseCategory();
+				courseCategory.setCategoryId(Integer.parseInt(categoryId));
+				courseCategory.setCourseId(course.getId());
+				courseCategory.save();
+			}
+	    	
+	    	 // Create path components to save the file
+	        final String path = "WebContent/Files/Course/" + course.getId() + "/";
+	        final String urlPath = "Files/Course/" + course.getId() + "/";
+	        final Part filePart = request.getPart("picture");
+	        final String fileName = getFileName(filePart);
+	        if(!(fileName.compareTo("") == 0)){
+	
+	            OutputStream out = null;
+	            InputStream filecontent = null;
+	            
+	            final File parent = new File(path);
+	            parent.mkdirs();
+	
+	            try {
+	                out = new FileOutputStream(new File(path, fileName));
+	                filecontent = filePart.getInputStream();
+	
+	                int read = 0;
+	                final byte[] bytes = new byte[1024];
+	
+	                while ((read = filecontent.read(bytes)) != -1) {
+	                    out.write(bytes, 0, read);
+	                }
+	                //writer.println("New file " + fileName + " created at " + path);
+	            } catch (FileNotFoundException fne) {
+	//                writer.println("You either did not specify a file to upload or are "
+	//                        + "trying to upload a file to a protected or nonexistent "
+	//                        + "location.");
+	//                writer.println("<br/> ERROR: " + fne.getMessage());
+	            } finally {
+	                if (out != null) {
+	                    out.close();
+	                }
+	                if (filecontent != null) {
+	                    filecontent.close();
+	                }
+	            }
+	            
+	            course.setPictureUrl(urlPath + fileName);
+	            course.save();
+	        }
+	    	
+	        request.setAttribute("saveSucces", true);
+    	}
 		doGet(request,response);
     }
     
