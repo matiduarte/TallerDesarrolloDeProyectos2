@@ -16,6 +16,8 @@ private String userName;
 private String password;
 private String email;
 private Boolean isActive;
+private Boolean isStudent;
+private String source;
   
 public String getEmail() {
 	return email;
@@ -86,5 +88,17 @@ public Boolean getIsActive() {
 }  
 public void setIsActive(Boolean isActive) {  
     this.isActive = isActive;  
+}
+public Boolean getIsStudent() {
+	return isStudent;
+}
+public void setIsStudent(Boolean isStudent) {
+	this.isStudent = isStudent;
+}
+public String getSource() {
+	return source;
+}
+public void setSource(String source) {
+	this.source = source;
 }
 }  

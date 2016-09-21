@@ -44,4 +44,24 @@ public class CourseService {
 		return new ServiceResponse(false, "", "");
 	}
 	
+	@Path("{id}")
+	@GET
+	@Produces("application/json")
+	public ServiceResponse getCourse(@PathParam("id") int id){
+		Course course = Course.getById(id);	 
+		if (course != null){
+	    	JSONObject jo = new JSONObject();
+			try {
+				Gson g = new Gson();
+				String courseString = g.toJson(course);
+				jo.put("course", courseString);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return new ServiceResponse(true, "", jo.toString());
+	    }
+		
+		return new ServiceResponse(false, "No se encontro curso con id " + id, "");
+	}
+	
 }
