@@ -17,8 +17,9 @@
 
 .newCurseImage{
 	float: right;
-    width: 80px;
-    height: 80px;
+    width: 200px;
+    height: 160px;
+    margin-top: -16px;
 }
 
 .bootstrap-tagsinput {

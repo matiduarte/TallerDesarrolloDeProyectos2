@@ -15,13 +15,13 @@ public class Course {
 	private String description;
 	private String name;
 	private String pictureUrl;
-	private int teacherId;
+	private Integer teacherId;
 	
 	
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 	public int getId() {
@@ -88,6 +88,20 @@ public class Course {
 			courses.addAll(categoryCourses);
 		}
 		return courses;
+	}
+	
+	public List<Category> getCategories(){
+		List<Category> categories = new ArrayList<Category>();
+		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCourseId(this.getId());	
+		
+		for (CourseCategory courseCategory : listOfCouseCategory) {
+			Category c = Category.getById(courseCategory.getCategoryId());
+			if(c != null){
+				categories.add(c);
+			}
+		}
+		
+		return categories;
 	}
 
 

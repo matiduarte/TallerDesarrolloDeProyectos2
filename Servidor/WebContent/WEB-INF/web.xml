@@ -65,7 +65,17 @@
   <servlet-mapping>
     <servlet-name>Activar usuario</servlet-name>
     <url-pattern>/activacion/*</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>EditCourse</servlet-name>
+    <servlet-class>controllers.EditCourseController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditCourse</servlet-name>
+    <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Lista de Cursos</servlet-name>
     <servlet-class>controllers.CourseListController</servlet-class>
@@ -75,3 +85,6 @@
     <url-pattern>/courselist/*</url-pattern>
   </servlet-mapping>
 </web-app>
+
+
+  
