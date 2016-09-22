@@ -17,8 +17,9 @@
 
 .newCurseImage{
 	float: right;
-    width: 80px;
-    height: 80px;
+    width: 200px;
+    height: 160px;
+    margin-top: -16px;
 }
 
 .bootstrap-tagsinput {
@@ -40,5 +41,7 @@ body {
 .form-control:-moz-placeholder { color: #009688; }
 .form-control::-moz-placeholder { color: #009688; }
 .form-control:-ms-input-placeholder { color: #009688; }
+
+.ui-helper-hidden-accessible { display:none; }
 
 

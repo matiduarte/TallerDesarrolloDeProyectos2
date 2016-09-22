@@ -15,13 +15,13 @@ public class Course {
 	private String description;
 	private String name;
 	private String pictureUrl;
-	private int teacherId;
+	private Integer teacherId;
 	
 	
-	public int getTeacherId() {
+	public Integer getTeacherId() {
 		return teacherId;
 	}
-	public void setTeacherId(int teacherId) {
+	public void setTeacherId(Integer teacherId) {
 		this.teacherId = teacherId;
 	}
 	public int getId() {

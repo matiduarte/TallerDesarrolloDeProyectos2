@@ -53,7 +53,7 @@
     	
 	   	<div class="alert alert-danger" id="pictureError" style="display:none;">
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  	La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente
+		  	La foto elegida supera el tamaño máximo de 5 MB permitido. Seleccione otra e intente nuevamente
 		</div>
 		
 		<div class="alert alert-success" id="saveSucces" style="display:none;">
@@ -62,22 +62,23 @@
 		</div>
 
       <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
-        </br>
+        <input type="hidden" name="id" value="<% out.print(course.getId()); %>">
+        <% 
+		String pictureUrl = "images/photo_upload.png";
+		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+			pictureUrl = course.getPictureUrl(); 
+		} %>
+		<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
         
         <label class="btn btn-primary btn-file addImageButton">
 		    Agregar Foto <input type="file" style="display: none;" id="picture" name="picture" onchange="if(fileSizeValidated(this))readURL(this);">
 		</label>
 		
 		<span>
-        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 1 mb</label>
+        	<label class="maxPictureLabel">Tama&ntilde;o m&aacute;ximo: 5 mb</label>
 		</span>
 		
-		<% 
-		String pictureUrl = "images/photo_upload.jpg";
-		if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
-			pictureUrl = course.getPictureUrl(); 
-		} %>
-		<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage img-circle" id="imageHolder">
+		
 		
         </br>
         </br>
@@ -87,28 +88,27 @@
         	<input type="text" id="inputName" name="name" required="true"  class="form-control" value="<% out.print(course.getName()); %>" 
         			required>
 		</div>
-        </br>
         
         <div class="form-group label-floating">	
         	<label class="control-label" for="inputDescription">Descripci&oacute;n</label>
         	<input type="text" id="inputDescription" name="description" required="true" class="form-control" value="<% out.print(course.getDescription()); %>" required>
         </div>
-        </br>
         
         <div class="form-group label-floating">	
         	<label class="control-label" id="labelCategories" for="categories">Categor&iacute;as</label>
         	<input type="text" id="categories" name="categories" class="form-control">
        </div>
-        </br>
         
        <div class="form-group label-floating ui-widget">	
         	<label class="control-label" for="inputTeacher">Docente</label>
-        	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="" >
+        	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="<% out.print(request.getAttribute("currentTeacherName")); %>" >
         	
-        	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" >
+        	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" value="<% out.print(course.getTeacherId()); %>">
         </div>
         
-        <button class="btn btn-primary btn-file backeButton" onclick="return false;">Volver</button>
+        </br>
+        
+        <button class="btn btn-primary btn-file backeButton" onclick="goBack();return false">Volver</button>
         <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Confirmar</button>
       </form>
 
@@ -218,7 +218,7 @@ $("#inputTeacher").autocomplete({
 		function validateCategories(e){
 			debugger;
 			if($("#categories").val() == ""){
-				e.setCustomValidity('Campo requerido');	
+				e.setCustomValidity('Complete este campo');	
 				return true;
 			}
 			//SUPER HACK
@@ -230,9 +230,9 @@ $("#inputTeacher").autocomplete({
 	
 		function fileSizeValidated(input){
 			$("#pictureError").hide();
-			if((input.files[0].size / 1024) > 1024){
+			if((input.files[0].size / 1024) > 5120){
 				$("#pictureError").show();
-				$('#imageHolder').attr('src', "images/photo_upload.jpg")
+				$('#imageHolder').attr('src', "images/photo_upload.png")
 				
 				return false;
 			}
@@ -251,6 +251,10 @@ $("#inputTeacher").autocomplete({
 	            reader.readAsDataURL(input.files[0]);
 	        }
 	    }
+		
+		function goBack(){
+			window.location.href = "principalAdmin.jsp";
+		}
 	
 	</script>
   </body>
