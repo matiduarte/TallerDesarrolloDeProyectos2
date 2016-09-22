@@ -1,4 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="en-us">
@@ -44,19 +45,19 @@
 
   <div class="row">
   <c:forEach items="${list}" var="courses">
-    <div class="col-md-4">
+    <div class="${col}">
     	<div id="img_container">
-    	<span class="my_badge btn_course badge">${courses.getName()}</span>
+    	<span class="my_badge ${course} badge">${courses.getName()}</span>
     	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
-          <img src="${courses.getPictureUrl()}" class="img-rounded" style="width:200px;height:150px">
-          
+          <img src="${courses.getPictureUrl()}" class="img-rounded" style="${max}">
           </c:when>
           <c:otherwise>
-            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded" style="width:200px;height:150px">
+            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded" style="${max}">
           </c:otherwise>
           </c:choose>
-          <input type="button" class="btn_ver btn btn-sm btn-raised btn-primary" value="Ver más" />
+         <button class="btn btn-sm ${btn_ver} btn-raised btn-primary">Ver más</button>
+          
    		</div>
     </div>
       </c:forEach>
