@@ -84,7 +84,7 @@
 		  <td><%=item.getTeacher().getFirstName()%></td>
 		  <td>
 		  <button id="btn_borrar" name="btn_borrar" class="btn btnBorrar" onclick="editar(this)"></button>
-		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" onclick="borrar(this)"></button>
+		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" data-toggle="modal" data-target="#myModal"></button>
 		  </td>
 		  </tr>
 		<% } %>
@@ -93,7 +93,24 @@
 	  </div>
     </div> <!-- /container -->
     
-
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">¿Confirma que desea eliminar curso?</h4>
+	      </div>
+	      <div class="modal-body">
+	      Una vez eliminado el curso no podrá crear sesiones del mismo. Para restaurarlo deberá crearlo de nuevo.
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No, mantener curso</button>
+	        <button type="button" class="btn btn-primary">Si, quiero borrarlo</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
