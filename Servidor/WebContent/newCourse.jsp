@@ -71,19 +71,19 @@
         </br>
         </br>
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Nombre</label>
+        	<label class="control-label" for="inputName">Nombre(*)</label>
         	<input type="text" id="inputName" name="name" required="true"  class="form-control" required>
 		</div>
         </br>
         
         <div class="form-group label-floating">	
-        	<label class="control-label" for="inputName">Descripci&oacute;n</label>
+        	<label class="control-label" for="inputName">Descripci&oacute;n(*)</label>
         	<input type="text" id="inputDescription" name="description" required="true" class="form-control" required>
         </div>
         </br>
         
         <div class="form-group label-floating">	
-        	<label class="control-label" id="labelCategories" for="categories">Categor&iacute;as</label>
+        	<label class="control-label" id="labelCategories" for="categories">Categor&iacute;as(*)</label>
         	<input type="text" id="categories" name="categories" class="form-control">
        </div>
         </br>
