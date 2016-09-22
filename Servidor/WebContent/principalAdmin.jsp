@@ -64,6 +64,7 @@
 	  <table class="table tabla">
 	   <thead>
 	     <tr>
+	     	<th class="hide-col">id</th>
 	     	<th>Nombre</th>
 	     	<th>Descripción</th>
 	     	<th>Categorías</th>
@@ -76,13 +77,14 @@
 		ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
 		for ( TableCourse item : tabla_de_cursos ) {
 		%><tr class="clickable-row">
-		  <td> <%=item.getCourse().getName()%> </td>
-		  <td> <%=item.getCourse().getDescription()%> </td>
-		  <td> <%=String.join(", ", item.getCategoriesNames() )%> </td>
-		  <td> <%=item.getTeacher().getFirstName()%> </td>
+		  <td class="hide-col"><%=Integer.toString(item.getCourse().getId())%></td>
+		  <td><%=item.getCourse().getName()%></td>
+		  <td><%=item.getCourse().getDescription()%></td>
+		  <td><%=String.join(", ", item.getCategoriesNames() )%></td>
+		  <td><%=item.getTeacher().getFirstName()%></td>
 		  <td>
-		  <button id="btn_editar" class="btn btnEditar" onclick="editar(<%=item.getTeacher()%>)"></button>
-		  <button id="btn_borrar" class="btn btnBorrar" onclick="borrar(<%=item.getTeacher()%>)"></button>
+		  <button id="btn_borrar" name="btn_borrar" class="btn btnBorrar" onclick="editar(this)"></button>
+		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" onclick="borrar(this)"></button>
 		  </td>
 		  </tr>
 		<% } %>
@@ -102,11 +104,15 @@
 	<script src="../bootstrap/js/floating-label.js"></script>
 	<script>
 	
-	function editar(id){	
-		alert( "editar:" + id);
+	function editar(btn) {
+		var curso_id = btn.parentElement.parentElement.getElementsByTagName("td")[0].textContent;
+		
+		window.location.href = "/Servidor/editCourse?id=" + curso_id;
 	}
-	function borrar(id){	
-		alert( "borrar:" + id);
+    
+	function borrar(btn) {
+		var id = btn.parentElement.parentElement.getElementsByTagName("td")[0].innerText;
+		alert(id);
 	}
 	
 	</script>

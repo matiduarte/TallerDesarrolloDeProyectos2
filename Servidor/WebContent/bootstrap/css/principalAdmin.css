@@ -17,6 +17,10 @@ body {
     height: %100;
 }
 
+.hide-col {
+	display: none;
+}
+
 .newCourseButton{
 	float: right;
 	border: 2px solid;
