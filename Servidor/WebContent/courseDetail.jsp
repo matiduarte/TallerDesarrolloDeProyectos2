@@ -46,42 +46,85 @@
 	</div>
 	
     <div class="container">
-    	
-	<input type="hidden" name="id" value="<% out.print(course.getId()); %>">
-       <% 
-	String pictureUrl = "images/photo_upload.png";
-	if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
-		pictureUrl = course.getPictureUrl(); 
-	} %>
-	<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
-
-       <div class="form-group label-floating">	
-       	<label class="control-label" for="inputName">Nombre(*)</label>
-       	<input type="text" id="inputName" name="name" required="true"  class="form-control" value="<% out.print(course.getName()); %>" 
-       			required>
-	</div>
-       
-       <div class="form-group label-floating">	
-       	<label class="control-label" for="inputDescription">Descripci&oacute;n(*)</label>
-       	<input type="text" id="inputDescription" name="description" required="true" class="form-control" value="<% out.print(course.getDescription()); %>" required>
-       </div>
-       
-       <div class="form-group label-floating">	
-       	<label class="control-label" id="labelCategories" for="categories">Categor&iacute;as(*)</label>
-       	<input type="text" id="categories" name="categories" class="form-control">
-      </div>
-       
-      <div class="form-group label-floating ui-widget">	
-       	<label class="control-label" for="inputTeacher">Docente</label>
-       	<input type="text" id="inputTeacher" name="teacher" required="false" class="form-control" value="<% out.print(request.getAttribute("currentTeacherName")); %>" >
-       	
-       	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" value="<% out.print(course.getTeacherId()); %>">
-       </div>
-       
-       </br>
-       
-       <button class="btn btn-primary btn-file backeButton" onclick="goBack();return false">Volver</button>
-       <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Volver</button>
+    	<div class="staticInfoContainer">
+			<input type="hidden" name="id" value="<% out.print(course.getId()); %>">
+		       <% 
+			String pictureUrl = "images/photo_upload.png";
+			if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+				pictureUrl = course.getPictureUrl(); 
+			} %>
+			<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
+		
+		    <div>
+			   	<div>
+			    	<label class="detail-label">Nombre:</label>
+			    	<label class="detail-value"><% out.print(course.getName()); %></label>
+			   	</div>
+			    	
+			    </br>	
+			    <div>	
+			    	<label class="detail-label">Descripci&oacute;n:</label>
+			    	<label class="detail-value"><% out.print(course.getDescription()); %></label>
+				</div>
+		     
+		     </div>   
+	     </div>
+	     </br>
+	     </br>
+	     
+	     <div>
+	     	<div class="tableSessionContainer">
+			     <label class="detail-label">Sesiones activas:</label>
+			     <button class="btn btn-raised btn-primary newCourseButton btnNew">Crear nueva<br/>sesion</button>
+			     
+			     <table class="tg">
+					  <tr>
+					    <th class="tg-zyzu">Id</th>
+					    <th class="tg-zyzu">Fecha de inicio</th>
+					    <th class="tg-zyzu">Acciones</th>
+					  </tr>
+					  <tr>
+					    <td class="tg-yw4l"></td>
+					    <td class="tg-yw4l"></td>
+					    <td class="tg-yw4l"></td>
+					  </tr>
+					  <tr>
+					    <td class="tg-yw4l"></td>
+					    <td class="tg-yw4l"></td>
+					    <td class="tg-yw4l"></td>
+					  </tr>
+				</table>
+			</div>
+			<div>
+				<div class="tableUnityContainer">
+				     <label class="detail-label">Unidades:</label>
+				     <button class="btn btn-raised btn-primary newCourseButton btnNew">Crear unidad</button>
+				     
+				     <table class="tg">
+						  <tr>
+						    <th class="tg-zyzu">Id</th>
+						    <th class="tg-zyzu">Fecha de inicio</th>
+						    <th class="tg-zyzu">Acciones</th>
+						  </tr>
+						  <tr>
+						    <td class="tg-yw4l"></td>
+						    <td class="tg-yw4l"></td>
+						    <td class="tg-yw4l"></td>
+						  </tr>
+						  <tr>
+						    <td class="tg-yw4l"></td>
+						    <td class="tg-yw4l"></td>
+						    <td class="tg-yw4l"></td>
+						  </tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	     
+	     <br/>
+	     <br>
+	     
+	    <button class="btn btn-raised btn-primary newCourseButton btnBack" type="submit">Volver</button>
 
 
     </div> <!-- /container -->
