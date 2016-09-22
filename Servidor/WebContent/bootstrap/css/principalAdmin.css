@@ -3,13 +3,37 @@ body {
 }
 
 .tabla {
-    border-radius: 5px;
-    width: 50%;
-  	margin: 0px auto;
-    float: none;
+    table-layout: fixed;
+}
+
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table th {
+    vertical-align: middle;
+    text-align: center;
+    height: %100;
 }
 
 .newCourseButton{
 	float: right;
 	border: 2px solid;
+}
+
+.btnEditar {
+	background-image: url('../img/icono.ico');
+	background-size: 100% 100%;
+	width: 40px;
+	height: 40px;
+	padding: 0px 0px;
+}
+
+.btnBorrar {
+	background-image: url('../img/icono.ico');
+	background-size: 100% 100%;
+	width: 40px;
+	height: 40px;
+	padding: 0px 0px;
 }

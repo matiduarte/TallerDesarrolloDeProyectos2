@@ -61,29 +61,31 @@
     <br>
     <br>
      <div class="table-responsive">
-	  <table class="table">
+	  <table class="table tabla">
 	   <thead>
 	     <tr>
 	     	<th>Nombre</th>
 	     	<th>Descripción</th>
 	     	<th>Categorías</th>
 	     	<th>Docente</th>
-	     	<th>Editar</th>
-	     	<th>Borrar</th>
+	     	<th>Acciones</th>
 	     </tr>
 	   </thead>
 	   <tbody>
 		<%
 		ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
 		for ( TableCourse item : tabla_de_cursos ) {
-		%><tr>
+		%><tr class="clickable-row">
 		  <td> <%=item.getCourse().getName()%> </td>
 		  <td> <%=item.getCourse().getDescription()%> </td>
 		  <td> <%=String.join(", ", item.getCategoriesNames() )%> </td>
 		  <td> <%=item.getTeacher().getFirstName()%> </td>
-		  <td> edit </td>
-		  <td> erase </td>
-		<% } %>   	
+		  <td>
+		  <button id="btn_editar" class="btn btnEditar" onclick="editar(<%=item.getTeacher()%>)"></button>
+		  <button id="btn_borrar" class="btn btnBorrar" onclick="borrar(<%=item.getTeacher()%>)"></button>
+		  </td>
+		  </tr>
+		<% } %>
 	   </tbody>
 	   </table>
 	  </div>
@@ -98,10 +100,15 @@
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="../bootstrap/js/floating-label.js"></script>
-	<script>	
-		function irAInicarSesion(){	
-			window.location.href = "/Servidor/signin";
+	<script>
+	
+	function editar(id){	
+		alert( "editar:" + id);
 	}
+	function borrar(id){	
+		alert( "borrar:" + id);
+	}
+	
 	</script>
 
   </body>
