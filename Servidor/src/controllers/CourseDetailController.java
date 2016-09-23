@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +24,8 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import entities.Category;
 import entities.Course;
 import entities.CourseCategory;
+import entities.CourseSession;
+import entities.CourseUnity;
 import entities.User;
 
 
@@ -52,7 +55,20 @@ public class CourseDetailController extends HttpServlet {
         	 int courseId = Integer.valueOf(request.getParameter("id")); 
              Course course = Course.getById(courseId);
              
-             request.setAttribute("course", course);
+             if(course != null){
+            	 request.setAttribute("course", course);
+            	 List<CourseUnity> courseUnities = CourseUnity.getByCourseId(courseId);
+            	 if(courseUnities != null){
+            		 request.setAttribute("courseUnities", courseUnities);
+            	 }
+            	 
+            	 List<CourseSession> courseSessions = CourseSession.getByCourseId(courseId);
+            	 if(courseSessions != null){
+            		 request.setAttribute("courseSessions", courseSessions);
+            	 }
+             }
+             
+             
         }else{
         	request.setAttribute("course", new Course());
         }
