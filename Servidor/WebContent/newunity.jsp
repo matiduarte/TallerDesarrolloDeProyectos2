@@ -32,7 +32,7 @@
 </div>
  
 <form id="identicalForm" class="register" method="post" action="newunity">
-
+<input type="hidden" name="id" value="${id}">
   <div class="form-group label-floating">
     <label class="control-label" for="name">Nombre</label>
   <input class="form-control" id="name" name="name" type="text">
@@ -42,7 +42,7 @@
   <input class="form-control" id="description" name="description" type="text">
   </div>
  
-  <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Crear</button>
+  <button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
 	</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
