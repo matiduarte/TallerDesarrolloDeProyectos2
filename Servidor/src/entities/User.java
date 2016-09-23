@@ -16,7 +16,14 @@ private String userName;
 private String password;
 private String email;
 private Boolean isActive;
+private String speciality;
   
+public String getSpeciality() {
+	return speciality;
+}
+public void setSpeciality(String speciality) {
+	this.speciality = speciality;
+}
 public String getEmail() {
 	return email;
 }
