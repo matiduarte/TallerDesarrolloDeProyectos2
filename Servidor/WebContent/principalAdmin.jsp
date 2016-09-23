@@ -84,7 +84,7 @@
 		  <td><%=item.getTeacher().getFirstName()%></td>
 		  <td>
 		  <button id="btn_borrar" name="btn_borrar" class="btn btnBorrar" onclick="editar(this)"></button>
-		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" data-toggle="modal" data-target="#myModal"></button>
+		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" data-toggle="modal" data-target="#myModal" onclick="setIdABorrar(this)"></button>
 		  </td>
 		  </tr>
 		<% } %>
@@ -106,11 +106,13 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">No, mantener curso</button>
-	        <button type="button" class="btn btn-primary">Si, quiero borrarlo</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="borrarCurso()">Si, quiero borrarlo</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
+
+	<div id="id_a_borrar" class="hide"></div>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
@@ -127,9 +129,18 @@
 		window.location.href = "/Servidor/editCourse?id=" + curso_id;
 	}
     
-	function borrar(btn) {
-		var id = btn.parentElement.parentElement.getElementsByTagName("td")[0].innerText;
-		alert(id);
+	function setIdABorrar(btn) {
+		var curso_id = btn.parentElement.parentElement.getElementsByTagName("td")[0].textContent;
+		
+		$('#id_a_borrar').text(curso_id);
+	}
+	
+	function borrarCurso() {
+		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
+		
+		$('#id_a_borrar').text("FUCK");
+		
+		$.get("/principalAdmin.jsp");
 	}
 	
 	</script>
