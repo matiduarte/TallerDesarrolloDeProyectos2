@@ -56,7 +56,8 @@
             	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded" style="${max}">
           </c:otherwise>
           </c:choose>
-         <button class="btn btn-sm ${btn_ver} btn-raised btn-primary">Ver más</button>
+         <button class="btn btn-sm ${btn_ver} btn-raised btn-primary" onclick="getCourseId(${courses.getId()});">Ver más</button>
+      
           
    		</div>
     </div>
@@ -74,7 +75,16 @@
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
+	<script type="text/javascript">
 	
+	
+		function getCourseId(id){
+			window.location.href = '/Servidor/courseDetail?id=' + id;
+		}
+	
+	
+	
+	</script>
 	
 
 

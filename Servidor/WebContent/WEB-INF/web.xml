@@ -65,8 +65,7 @@
   <servlet-mapping>
     <servlet-name>Activar usuario</servlet-name>
     <url-pattern>/activacion/*</url-pattern>
-  </servlet-mapping>  
-  
+  </servlet-mapping>
   <servlet>
     <servlet-name>EditCourse</servlet-name>
     <servlet-class>controllers.EditCourseController</servlet-class>
@@ -75,7 +74,6 @@
     <servlet-name>EditCourse</servlet-name>
     <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>CourseDetail</servlet-name>
     <servlet-class>controllers.CourseDetailController</servlet-class>
@@ -84,7 +82,6 @@
     <servlet-name>CourseDetail</servlet-name>
     <url-pattern>/courseDetail/*</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>Lista de Cursos</servlet-name>
     <servlet-class>controllers.CourseListController</servlet-class>
@@ -93,7 +90,13 @@
     <servlet-name>Activar usuario</servlet-name>
     <url-pattern>/courselist/*</url-pattern>
   </servlet-mapping>
-</web-app>
-
-
+  <servlet>
+    <servlet-name>New Unity</servlet-name>
+    <servlet-class>controllers.NewUnityController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>New Unity</servlet-name>
+    <url-pattern>/newunity/*</url-pattern>
+  </servlet-mapping>
   
+</web-app>
