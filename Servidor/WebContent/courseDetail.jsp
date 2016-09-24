@@ -70,6 +70,12 @@
 			    	<label class="detail-label">Descripci&oacute;n:</label>
 			    	<label class="detail-value"><% out.print(course.getDescription()); %></label>
 				</div>
+				
+				</br>	
+			    <div>	
+			    	<label class="detail-label">Categorias:</label>
+			    	<label class="detail-value"><% out.print(request.getAttribute("categories")); %></label>
+				</div>
 		     
 		     </div>   
 	     </div>
@@ -150,7 +156,7 @@
 	     <br/>
 	     <br>
 	     
-	    <button class="btn btn-raised btn-primary newCourseButton btnBack" type="submit">Volver</button>
+	    <button class="btn btn-raised btn-primary newCourseButton btnBack" type="submit" onclick="goBack();" >Volver</button>
 
 	<div id="newSessionPopup">
 		<input type="hidden" name="sessionId" id="sessionId" value="">
@@ -241,7 +247,7 @@
 	    	"<button class='btn btnAction' type='submit' onclick='editSession(" + session.id + ")'>"+
 				"<img  src='images/edit_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button>"+
 			
-			"<button class='btn btnAction' type='submit' onclick='deleteSession(); %>)'>"+
+			"<button class='btn btnAction' type='submit' onclick='deleteSession(" + session.id + ")'>"+
 				"<img  src='images/delete_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button></td></tr>");
     	}
     	
@@ -311,6 +317,10 @@
     		
     		window.location.href = "newunity?courseId=" + courseId + "&id=" + unityId;
     	}
+    	
+    	function goBack(){
+			window.location.href = "principalAdmin.jsp";
+		}
     
     </script>
   </body>

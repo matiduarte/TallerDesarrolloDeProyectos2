@@ -66,6 +66,18 @@ public class CourseDetailController extends HttpServlet {
             	 if(courseSessions != null){
             		 request.setAttribute("courseSessions", courseSessions);
             	 }
+            	 
+            	 ArrayList<Category> currentCategories = (ArrayList<Category>) course.getCategories();
+            	 String categoriesString = "";
+            	 if(currentCategories != null){
+            		 for (Category category : currentCategories) {
+            			 if(!categoriesString.equals("")){
+            				 categoriesString += ", ";
+            			 }
+            			 categoriesString += category.getName();
+					}
+            	 }
+            	 request.setAttribute("categories", categoriesString);
              }
              
              
