@@ -28,6 +28,13 @@
     <!-- Custom styles for this template -->
     <link href="../bootstrap/css/principalAdmin.css" rel="stylesheet">
 
+	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../bootstrap/js/ripples.min.js"></script>
+	<script src="../bootstrap/js/material.min.js"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+	<script src="../bootstrap/js/floating-label.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -106,7 +113,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">No, mantener curso</button>
-	        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="borrarCurso()">Si, quiero borrarlo</button>
+	        <button id="confirmar_borrar" type="button" class="btn btn-primary" data-dismiss="modal">Si, quiero borrarlo</button>
 	      </div>
 	    </div>
 	  </div>
@@ -114,34 +121,29 @@
 
 	<div id="id_a_borrar" class="hide"></div>
 
-	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
-	<script src="../bootstrap/js/ripples.min.js"></script>
-	<script src="../bootstrap/js/material.min.js"></script>
-
-	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
-	<script src="../bootstrap/js/floating-label.js"></script>
 	<script>
 	
 	function editar(btn) {
 		var curso_id = btn.parentElement.parentElement.getElementsByTagName("td")[0].textContent;
-		
 		window.location.href = "/Servidor/editCourse?id=" + curso_id;
 	}
     
 	function setIdABorrar(btn) {
 		var curso_id = btn.parentElement.parentElement.getElementsByTagName("td")[0].textContent;
-		
 		$('#id_a_borrar').text(curso_id);
 	}
 	
 	function borrarCurso() {
 		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
-		
 		$('#id_a_borrar').text("FUCK");
-		
-		$.get("/principalAdmin.jsp");
 	}
+	
+	$("#confirmar_borrar").click(function(btn) {
+		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
+		
+		$.post('../cursos/admin', { id : curso_id_a_borrar });
+		
+		});
 	
 	</script>
 

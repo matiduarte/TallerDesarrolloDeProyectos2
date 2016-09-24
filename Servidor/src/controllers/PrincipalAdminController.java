@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import entities.Category;
 import entities.Course;
+import entities.CourseCategory;
 import entities.User;
 import utils.TableCourse;
 
@@ -57,8 +58,23 @@ public class PrincipalAdminController extends HttpServlet {
  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {   
-    	getServletConfig().getServletContext().getRequestDispatcher("/signin.jsp");
+    throws ServletException, IOException {
+    	
+    	System.out.print( "id:" + request.getParameter("id") );
+    	
+    	Integer id_curso = Integer.parseInt( request.getParameter("id") );
+    	
+    	System.out.print( id_curso );
+    	
+    	Course curso_a_eliminar = Course.getById( id_curso );
+    	
+    	if ( false == curso_a_eliminar.hasStudents() && false == curso_a_eliminar.hasStarted() ) {
+    		request.setAttribute("borrado", "true");
+    		curso_a_eliminar.delete();
+    		CourseCategory.deleteByCourseId( id_curso );
+    	}
+    	
+    	doGet(request, response);
     }
 
 }

@@ -79,6 +79,7 @@ public class Course {
 	public void save(){
 		StoreData.save(this);
 	}
+	
 	public static List<Course> search(String search) {
 		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "name", search);
 		List<Category> cateogries = Category.search(search);
@@ -103,6 +104,19 @@ public class Course {
 		
 		return categories;
 	}
+	
+	public void delete() {
+		StoreData.delete(this);
+	}
 
+	public boolean hasStarted() {
+		// ACA HAY Q HACER LA LOGICA QUE CHEQUEE SI YA ARRANCO O NO
+		return false;
+	}
 
+	public boolean hasStudents() {
+		// ACA HAY Q HACER LA LOGICA QUE CHEQUEE SI TIENE UNA SESION ABIERTA O NO		
+		return false;
+	}
+	
 }
