@@ -319,7 +319,7 @@
     	}
     	
     	function goBack(){
-			window.location.href = "principalAdmin.jsp";
+			window.location.href = "courselist";
 		}
     
     </script>
