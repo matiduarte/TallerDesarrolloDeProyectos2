@@ -1,5 +1,6 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,8 @@ import com.google.gson.Gson;
 
 import entities.Category;
 import entities.Course;
+import entities.CourseSession;
+import entities.CourseUnity;
 
 @Path("/course")
 public class CourseService {
@@ -50,6 +53,9 @@ public class CourseService {
 	public ServiceResponse getCourse(@PathParam("id") int id){
 		Course course = Course.getById(id);	 
 		if (course != null){
+			ArrayList<CourseSession> courseSessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(course.getId());
+			ArrayList<CourseUnity> courseUnities= ((ArrayList<CourseUnity>) CourseUnity.getByCourseId(course.getId()));
+			
 	    	JSONObject jo = new JSONObject();
 			try {
 				Gson g = new Gson();

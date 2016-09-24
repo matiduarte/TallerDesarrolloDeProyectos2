@@ -27,15 +27,18 @@ public class StudentService {
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json")
     public ServiceResponse saveTreatment(@FormParam("email")String email, @FormParam("firstName")String firstName, @FormParam("lastName")String lastName, @FormParam("source")String source) {
-		User user = new User();
-		user.setEmail(email);
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setIsStudent(true);
-		user.setSource(source);
-		user.save();
+		User user = User.getByAndEmailSource(email, source); 
+		if(user == null){
+			user = new User();
+			user.setEmail(email);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setIsStudent(true);
+			user.setSource(source);
+			user.save();
+		}
 		
-		return new ServiceResponse(true, "", "");
+		return new ServiceResponse(true, "", String.valueOf(user.getId()));
     }
 	
 }

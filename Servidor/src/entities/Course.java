@@ -17,6 +17,9 @@ public class Course {
 	private String pictureUrl;
 	private Integer teacherId;
 	
+	private ArrayList<CourseSession> courseSessions;
+	private ArrayList<CourseUnity> courseUnities;
+	
 	
 	public Integer getTeacherId() {
 		return teacherId;
@@ -48,9 +51,27 @@ public class Course {
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
 	}
+	public ArrayList<CourseSession> getCourseSessions() {
+		return courseSessions;
+	}
+	public void setCourseSessions(ArrayList<CourseSession> courseSessions) {
+		this.courseSessions = courseSessions;
+	}
+	public ArrayList<CourseUnity> getCourseUnities() {
+		return courseUnities;
+	}
+	public void setCourseUnities(ArrayList<CourseUnity> courseUnities) {
+		this.courseUnities = courseUnities;
+	}
+	
 	
 	public static Course getById(int id){
-		return (Course)StoreData.getById(Course.class, id);
+		Course c = (Course)StoreData.getById(Course.class, id);
+		if(c != null){
+			c.setCourseSessions((ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId()));
+			c.setCourseUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(c.getId()));
+		}
+		return c;
 	}
 	
 	public static List<Course> getByCategoryId(int categoryId){

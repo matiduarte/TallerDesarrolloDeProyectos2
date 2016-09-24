@@ -114,4 +114,13 @@ public String getSource() {
 public void setSource(String source) {
 	this.source = source;
 }
+public static User getByAndEmailSource(String email, String source) {
+	List<?> list = StoreData.getByTwoFields(User.class, "email", email, "source", source);
+	User user = null;
+	if(list!= null && list.size() > 0){
+		user = (User)list.get(0);
+	}
+	
+	return user;
+}
 }  
