@@ -17,6 +17,7 @@
     <property name="isActive"></property>
     <property name="isStudent"></property>
     <property name="source"></property>
+    <property name="speciality"></property>
     </class>  
             
  </hibernate-mapping>  

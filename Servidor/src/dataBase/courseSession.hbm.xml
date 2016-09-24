@@ -4,15 +4,13 @@
  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  
   
  <hibernate-mapping>  
-  <class name="entities.Course" table="Course">  
+  <class name="entities.CourseSession" table="CourseSession">  
     <id name="id">  
     	<generator class="increment"></generator>  
     </id>  
-            
-    <property name="description"></property>  
-    <property name="name"></property>  
-    <property name="pictureUrl"></property>
-    <property name="teacherId" type="int"></property>          
-  </class>  
+ 	
+ 	<property name="courseId" type="int"></property>             
+   	<property name="date"></property>  
+   </class>  
             
  </hibernate-mapping>  

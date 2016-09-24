@@ -1,0 +1,83 @@
+body {
+  
+  background-color: #fff;
+}
+
+
+.courses_list{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 20px;
+	width: 80%;
+}
+
+.img_container {
+	display:inline-block;
+	position:relative;
+}
+
+.btn_ver_1 {
+	position:relative;
+	margin-left: auto;
+    margin-right: auto;
+    bottom: 37px;
+    right:	-133px;
+	display: block;
+}
+
+.btn_course_1 {
+	position:relative;
+	top: 25px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    width: 35%;
+}
+
+.btn_ver_2 {
+	position:relative;
+	margin-left: auto;
+    margin-right: auto;
+    bottom: 37px;
+    right:	-133px;
+	display: block;
+}
+
+.btn_course_2 {
+	position:relative;
+	top: 25px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    width: 75%;
+}
+
+.btn_ver_more {
+	position:relative;
+	margin-left: auto;
+    margin-right: auto;
+    bottom: 38px;
+    right:	-99px;
+	display: block;
+}
+
+.btn_course_more {
+	position:relative;
+	top: 25px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    width: 95%;
+}
+
+.my_badge{
+	background-color: #009688;
+	white-space:normal;
+}

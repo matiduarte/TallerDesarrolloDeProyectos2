@@ -18,7 +18,15 @@ private String email;
 private Boolean isActive;
 private Boolean isStudent;
 private String source;
+private String speciality;
+
   
+public String getSpeciality() {
+	return speciality;
+}
+public void setSpeciality(String speciality) {
+	this.speciality = speciality;
+}
 public String getEmail() {
 	return email;
 }
@@ -66,6 +74,11 @@ public static User getByUserEmail(String email){
 	}
 	
 	return user;
+}
+
+public static List<User> getAllPossibleTeachers(){
+	//TODO: filtrar los estudiantes
+	return (List<User>)StoreData.getByField(User.class, "1", "1");
 }
 
 public void save(){
