@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import entities.CourseSession;
+import entities.CourseUnity;
 import entities.User;
 
 /**
@@ -36,11 +37,11 @@ public class DeleteCourseUnityActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {   
-    	String sessionId = request.getParameter("sessionId");
+    	String unityId = request.getParameter("unityId");
     	
-    	if(sessionId != null && !sessionId.equals("")){
-    		CourseSession courseSession = CourseSession.getById(Integer.valueOf(sessionId));
-    		courseSession.delete();
+    	if(unityId != null && !unityId.equals("")){
+    		CourseUnity courseUnity = CourseUnity.getById(Integer.valueOf(unityId));
+    		courseUnity.delete();
     	}
 
     	

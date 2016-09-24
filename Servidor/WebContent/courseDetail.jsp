@@ -4,6 +4,7 @@
 <%@ page import="entities.Course" %>
 <%@ page import="entities.User" %>
 <%@ page import="entities.CourseSession" %>
+<%@ page import="entities.CourseUnity" %>
 
 <% Course course = (Course)request.getAttribute("course"); 
 %> 
@@ -98,11 +99,11 @@
 							    </td>
 							    <td class="tg-yw4l">
 							    	<button class="btn btnAction" type="submit" onclick="editSession(<%  out.print(courseSession.getId()); %>)">
-										<img  src="images/edit_icon.png" class="actionButtonImage" alt="Agregar fecha de inicio" >
+										<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
 									</button>
 									
 									<button class="btn btnAction" type="submit" onclick="deleteSession(<%  out.print(courseSession.getId()); %>)">
-										<img  src="images/delete_icon.png" class="actionButtonImage" alt="Agregar fecha de inicio" >
+										<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 									</button>
 							    </td>
 						  </tr>
@@ -112,7 +113,7 @@
 			<div>
 				<div class="tableUnityContainer">
 				     <label class="detail-label">Unidades:</label>
-				     <button class="btn btn-raised btn-primary newCourseButton btnNew">Crear unidad</button>
+				     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
 				     
 				     <table class="tg">
 						  <tr>
@@ -120,16 +121,27 @@
 						    <th class="tg-zyzu">Nombre</th>
 						    <th class="tg-zyzu">Acciones</th>
 						  </tr>
-						  <tr>
-						    <td class="tg-yw4l"></td>
-						    <td class="tg-yw4l"></td>
-						    <td class="tg-yw4l"></td>
-						  </tr>
-						  <tr>
-						    <td class="tg-yw4l"></td>
-						    <td class="tg-yw4l"></td>
-						    <td class="tg-yw4l"></td>
-						  </tr>
+						   <%ArrayList<CourseUnity> courseUnities = (java.util.ArrayList)request.getAttribute("courseUnities");
+							 for (CourseUnity courseUnity: courseUnities)
+							 { %>
+							 	<tr id="tr_unity_<%  out.print(courseUnity.getId()); %>">
+								    <td class="tg-yw4l">
+								    	<%  out.print(courseUnity.getId()); %>
+								    </td>
+								    <td class="tg-yw4l">
+								    	<%  out.print(courseUnity.getName()); %>
+								    </td>
+								    <td class="tg-yw4l">
+								    	<button class="btn btnAction" type="submit" onclick="editUnity(<%  out.print(courseUnity.getId()); %>)">
+											<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+										</button>
+										
+										<button class="btn btnAction" type="submit" onclick="deleteUnity(<%  out.print(courseUnity.getId()); %>)">
+											<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+										</button>
+								    </td>
+							  </tr>
+							<%}%>
 					</table>
 				</div>
 			</div>
@@ -265,6 +277,39 @@
 			         console.log( "La solicitud a fallado: " +  textStatus);
 			     }
 			});
+    	}
+    	
+    	function deleteUnity(unityId){	
+			$.ajax({
+			    data: {unityId: unityId},
+			    //Cambiar a type: POST si necesario
+			    type: "POST",
+			    // Formato de datos que se espera en la respuesta
+			    dataType: "json",
+			    // URL a la que se enviará la solicitud Ajax
+			    url: "DeleteCourseUnityActionServlet",
+			})
+			 .done(function( data, textStatus, jqXHR ) {
+				 deleteUnityRow(unityId);
+			 })
+			 .fail(function( jqXHR, textStatus, errorThrown ) {
+			     if ( console && console.log ) {
+			         console.log( "La solicitud a fallado: " +  textStatus);
+			     }
+			});
+    	}
+    	
+    	function deleteUnityRow(unityId){
+    		$("#tr_unity_" + unityId).remove();
+    	}
+    	
+    	function editUnity(unityId){
+    		var courseId = $('#courseId').val();
+    		if(unityId == undefined){
+    			unityId = "";
+    		}
+    		
+    		window.location.href = "newunity?courseId=" + courseId + "&id=" + unityId;
     	}
     
     </script>

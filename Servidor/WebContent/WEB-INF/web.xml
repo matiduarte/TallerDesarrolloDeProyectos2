@@ -119,17 +119,8 @@
 </servlet-mapping>
 
 <servlet>
-	<servlet-name>SaveCourseUnityActionServlet</servlet-name>
-	<servlet-class>actions.SaveCourseUnityActionServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-	<servlet-name>SaveCourseUnityActionServlet</servlet-name>
-	<url-pattern>/SaveCourseUnityActionServlet/*</url-pattern>
-</servlet-mapping>
-
-<servlet>
 	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
-	<servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
+	<servlet-class>actions.DeleteCourseUnityActionServlet</servlet-class>
 </servlet>
 <servlet-mapping>
 	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
