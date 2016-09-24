@@ -21,13 +21,15 @@
 	<link href="bootstrap/css/bootstrap-material-design.min.css" rel="stylesheet">
     <link href="bootstrap/css/ripples.min.css" rel="stylesheet">
     <link href="bootstrap/css/courseDetail.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/js/ripples.min.js"></script>
 	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
-	
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="bootstrap/js/floating-label.js"></script>
 	
   </head>
 
@@ -75,7 +77,7 @@
 	     <div>
 	     	<div class="tableSessionContainer">
 			     <label class="detail-label">Sesiones activas:</label>
-			     <button class="btn btn-raised btn-primary newCourseButton btnNew">Crear nueva<br/>sesion</button>
+			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="showPopup();">Crear nueva<br/>sesion</button>
 			     
 			     <table class="tg">
 					  <tr>
@@ -126,7 +128,47 @@
 	     
 	    <button class="btn btn-raised btn-primary newCourseButton btnBack" type="submit">Volver</button>
 
-
+	<div id="newSessionPopup">
+		<label class="labelPopup">Crear sesión</label>
+		<br/>
+		
+		<div class="form-group label-floating inputSessionDate">	
+			<label class="control-label" id="labelDate" for="sessionDate">Fecha de inicio</label>
+			<input type="text" id="sessionDate" class="form-control">
+		</div>
+		
+		<button class="btn btnCalendar" type="submit" onclick="showCalendar()">
+			<img  src="images/calendar_icon.png" class="calendarIcon" alt="Agregar fecha de inicio" >
+		</button>
+		
+		<br/>
+		<br/>
+		<hr>
+		
+		<div class="popupButtonsContainer">
+			<button class="btn btnPopup" type="submit" onclick="showHide();">Cancelar</button>
+			<button class="btn btnPopup" type="submit" onclick="">Crear</button>
+		</div>
+	</div>
+	
     </div> <!-- /container -->
+    
+    <script type="text/javascript">	    
+	    $( "#sessionDate" ).datepicker()
+    
+    
+    	function showPopup(){
+    		$("#newSessionPopup").show();
+    	}
+    	
+    	function showHide(){
+    		$("#newSessionPopup").hide();
+    	}
+    	
+    	function showCalendar(){
+    		$( "#sessionDate" ).datepicker("show");
+    	}
+    
+    </script>
   </body>
 </html>

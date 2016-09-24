@@ -71,3 +71,56 @@ table, th, td {
 	clear: both;
 	margin-top: 30px;
 }
+
+#newSessionPopup{
+	box-shadow: 1px 3px 11px 2px #999;
+    z-index: 1000;
+    width: 250px;
+    height: 175px;
+    position: absolute;
+    background: white;
+    left: 540px;
+    top: 305px;
+    display: none;
+}
+
+#newSessionPopup .btnPopup{
+	font-size: smaller;
+    color: #009688;
+    font-weight: bold;
+    width: 80px;
+    padding: 0 5px 5px 5px;
+}
+
+.labelPopup{
+	color: #009688;
+	margin-top: 5px;
+    margin-left: 10px;
+}
+
+.calendarIcon{
+	height: 50px;
+    width: 50px;
+    padding: 0px;
+}
+
+.btnCalendar{
+	padding: 0px;
+    margin-left: 15px;
+    height: 50px;
+    width: 50px;
+}
+
+.inputSessionDate{
+	width: 60%;
+    float: left;
+    margin-left: 10px;
+}
+
+hr {
+    margin: 8px;
+}
+
+.popupButtonsContainer{
+	float: right;
+}
