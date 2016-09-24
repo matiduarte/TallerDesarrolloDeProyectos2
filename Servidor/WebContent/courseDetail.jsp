@@ -3,6 +3,7 @@
 <%@ page import="entities.Category" %>
 <%@ page import="entities.Course" %>
 <%@ page import="entities.User" %>
+<%@ page import="entities.CourseSession" %>
 
 <% Course course = (Course)request.getAttribute("course"); 
 %> 
@@ -49,7 +50,7 @@
 	
     <div class="container">
     	<div class="staticInfoContainer">
-			<input type="hidden" name="id" value="<% out.print(course.getId()); %>">
+			<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
 		       <% 
 			String pictureUrl = "images/photo_upload.png";
 			if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
@@ -79,22 +80,33 @@
 			     <label class="detail-label">Sesiones activas:</label>
 			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="showPopup();">Crear nueva<br/>sesion</button>
 			     
-			     <table class="tg">
+			     <table class="tg" id="tableSession">
 					  <tr>
 					    <th class="tg-zyzu">Id</th>
 					    <th class="tg-zyzu">Fecha de inicio</th>
 					    <th class="tg-zyzu">Acciones</th>
 					  </tr>
-					  <tr>
-					    <td class="tg-yw4l"></td>
-					    <td class="tg-yw4l"></td>
-					    <td class="tg-yw4l"></td>
-					  </tr>
-					  <tr>
-					    <td class="tg-yw4l"></td>
-					    <td class="tg-yw4l"></td>
-					    <td class="tg-yw4l"></td>
-					  </tr>
+					   <%ArrayList<CourseSession> courseSessions = (java.util.ArrayList)request.getAttribute("courseSessions");
+						 for (CourseSession courseSession: courseSessions)
+						 { %>
+						 	<tr id="tr_session_<%  out.print(courseSession.getId()); %>">
+							    <td class="tg-yw4l">
+							    	<%  out.print(courseSession.getId()); %>
+							    </td>
+							    <td class="tg-yw4l">
+							    	<%  out.print(courseSession.getDate()); %>
+							    </td>
+							    <td class="tg-yw4l">
+							    	<button class="btn btnAction" type="submit" onclick="editSession(<%  out.print(courseSession.getId()); %>)">
+										<img  src="images/edit_icon.png" class="actionButtonImage" alt="Agregar fecha de inicio" >
+									</button>
+									
+									<button class="btn btnAction" type="submit" onclick="deleteSession(<%  out.print(courseSession.getId()); %>)">
+										<img  src="images/delete_icon.png" class="actionButtonImage" alt="Agregar fecha de inicio" >
+									</button>
+							    </td>
+						  </tr>
+						<%}%>
 				</table>
 			</div>
 			<div>
@@ -105,7 +117,7 @@
 				     <table class="tg">
 						  <tr>
 						    <th class="tg-zyzu">Id</th>
-						    <th class="tg-zyzu">Fecha de inicio</th>
+						    <th class="tg-zyzu">Nombre</th>
 						    <th class="tg-zyzu">Acciones</th>
 						  </tr>
 						  <tr>
@@ -129,12 +141,13 @@
 	    <button class="btn btn-raised btn-primary newCourseButton btnBack" type="submit">Volver</button>
 
 	<div id="newSessionPopup">
-		<label class="labelPopup">Crear sesión</label>
+		<input type="hidden" name="sessionId" id="sessionId" value="">
+		<label class="labelPopup" id="popupSessionTitle">Crear sesión</label>
 		<br/>
 		
 		<div class="form-group label-floating inputSessionDate">	
 			<label class="control-label" id="labelDate" for="sessionDate">Fecha de inicio</label>
-			<input type="text" id="sessionDate" class="form-control">
+			<input type="text" id="sessionDate" class="form-control"/>
 		</div>
 		
 		<button class="btn btnCalendar" type="submit" onclick="showCalendar()">
@@ -146,8 +159,8 @@
 		<hr>
 		
 		<div class="popupButtonsContainer">
-			<button class="btn btnPopup" type="submit" onclick="showHide();">Cancelar</button>
-			<button class="btn btnPopup" type="submit" onclick="">Crear</button>
+			<button class="btn btnPopup" type="submit" onclick="hidePopup();">Cancelar</button>
+			<button class="btn btnPopup" type="submit" onclick="saveSession()" id="popupSessionSubmit">Crear</button>
 		</div>
 	</div>
 	
@@ -158,15 +171,100 @@
     
     
     	function showPopup(){
+	    	$("#sessionId").val("")
+    		$("#popupSessionTitle")[0].innerHTML = "Crear Sesión";
+    		$("#popupSessionSubmit")[0].innerHTML = "Crear";
+    		$("#sessionDate").val("");
     		$("#newSessionPopup").show();
     	}
     	
-    	function showHide(){
+    	function hidePopup(){
     		$("#newSessionPopup").hide();
     	}
     	
     	function showCalendar(){
     		$( "#sessionDate" ).datepicker("show");
+    	}
+    	
+    	function saveSession(){
+    		var sessionDate = $('#sessionDate').val();
+    		var courseId = $('#courseId').val();
+    		var sessionId = $('#sessionId').val();
+			
+			$.ajax({
+			    data: {sessionDate: sessionDate, courseId: courseId, sessionId: sessionId},
+			    //Cambiar a type: POST si necesario
+			    type: "POST",
+			    // Formato de datos que se espera en la respuesta
+			    dataType: "json",
+			    // URL a la que se enviará la solicitud Ajax
+			    url: "SaveCourseSessionActionServlet",
+			})
+			 .done(function( data, textStatus, jqXHR ) {
+				 if(sessionId != ""){
+					 editSessionRow(data);
+				 }else{
+					 addNewSessionRow(data);	 
+				 }
+				 hidePopup();
+			 })
+			 .fail(function( jqXHR, textStatus, errorThrown ) {
+			     if ( console && console.log ) {
+			         console.log( "La solicitud a fallado: " +  textStatus);
+			     }
+			});
+    	}
+    	
+    	function editSessionRow(session){
+    		$("#tr_session_" + session.id).children()[1].innerHTML = session.date;
+    	}
+    	
+    	function addNewSessionRow(session){
+    		$('#tableSession tr:last').after("<tr id='tr_session_" + session.id + "'>"+
+    				"<td class='tg-yw4l'>" +
+	    				session.id +
+	    			"</td><td class='tg-yw4l'>" +
+	    				session.date +
+	    			"</td><td class='tg-yw4l'>"+
+	    	"<button class='btn btnAction' type='submit' onclick='editSession(" + session.id + ")'>"+
+				"<img  src='images/edit_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button>"+
+			
+			"<button class='btn btnAction' type='submit' onclick='deleteSession(); %>)'>"+
+				"<img  src='images/delete_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button></td></tr>");
+    	}
+    	
+    	function deleteSessionRow(sessionId){
+    		$("#tr_session_" + sessionId).remove();
+    	}
+    	
+    	function editSession(sessionId){
+    		$("#sessionId").val(sessionId);
+    		$("#popupSessionTitle")[0].innerHTML = "Editar Sesión";
+    		$("#popupSessionSubmit")[0].innerHTML = "Guardar";
+    		$("#newSessionPopup").show();
+    		//HACK
+    		$( "#sessionDate" ).focus();
+    		$("#sessionDate").val($("#tr_session_" + sessionId).children()[1].innerHTML.replace(/\s/g, ""));
+    	}
+    	
+    	function deleteSession(sessionId){	
+			$.ajax({
+			    data: {sessionId: sessionId},
+			    //Cambiar a type: POST si necesario
+			    type: "POST",
+			    // Formato de datos que se espera en la respuesta
+			    dataType: "json",
+			    // URL a la que se enviará la solicitud Ajax
+			    url: "DeleteCourseSessionActionServlet",
+			})
+			 .done(function( data, textStatus, jqXHR ) {
+				 deleteSessionRow(sessionId);
+			 })
+			 .fail(function( jqXHR, textStatus, errorThrown ) {
+			     if ( console && console.log ) {
+			         console.log( "La solicitud a fallado: " +  textStatus);
+			     }
+			});
     	}
     
     </script>

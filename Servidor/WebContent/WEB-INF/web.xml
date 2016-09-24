@@ -9,6 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <servlet-name>Jersey Web Application</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -98,5 +99,42 @@
     <servlet-name>New Unity</servlet-name>
     <url-pattern>/newunity/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
+	<servlet-class>actions.SaveCourseSessionActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
+	<url-pattern>/SaveCourseSessionActionServlet/*</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
+	<servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
+	<url-pattern>/DeleteCourseSessionActionServlet/*</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>SaveCourseUnityActionServlet</servlet-name>
+	<servlet-class>actions.SaveCourseUnityActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>SaveCourseUnityActionServlet</servlet-name>
+	<url-pattern>/SaveCourseUnityActionServlet/*</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
+	<servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
+	<url-pattern>/DeleteCourseUnityActionServlet/*</url-pattern>
+</servlet-mapping>
+
   
 </web-app>

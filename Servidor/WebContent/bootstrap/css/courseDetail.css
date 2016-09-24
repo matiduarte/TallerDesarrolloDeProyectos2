@@ -36,7 +36,7 @@ body {
  
  }
  
-.tg  {border-collapse:collapse;border-spacing:0; width: 350px;}
+.tg  {border-collapse:collapse;border-spacing:0; width: 350px; text-align: center;}
 .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
@@ -123,4 +123,15 @@ hr {
 
 .popupButtonsContainer{
 	float: right;
+}
+
+.actionButtonImage{
+	height: 20px;
+    width: 20px;
+}
+
+.btnAction{
+	width: 20px;
+    height: 20px;
+    padding: 0;
 }

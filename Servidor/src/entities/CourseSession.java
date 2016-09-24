@@ -11,7 +11,7 @@ public class CourseSession {
 	
 	private int id;  
 	private int courseId;
-	private Integer date;
+	private String date;
 	
 	
 	public int getId() {
@@ -27,10 +27,10 @@ public class CourseSession {
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
 	}
-	public Integer getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Integer date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	
