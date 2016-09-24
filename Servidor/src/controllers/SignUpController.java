@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import service.mailing.IMail;
 import service.mailing.Mailer;
 import entities.User;
 
@@ -49,9 +48,9 @@ public class SignUpController extends HttpServlet {
     	String password = request.getParameter("password");
     	String name = request.getParameter("name");
     	String lastName = request.getParameter("lastName");
+    	String speciality = request.getParameter("speciality");
     	User user = User.getByUserEmail(email);
     	boolean existe = true;
-    	
     	
     	if (user == null) {
     		existe = false;
@@ -61,7 +60,9 @@ public class SignUpController extends HttpServlet {
     		user.setFirstName(name);
     		user.setLastName(lastName);
     		user.setIsActive(false);
-    	
+    		if (speciality != null)
+    			user.setSpeciality(speciality);
+    		
     		user.save();
     	}
     	

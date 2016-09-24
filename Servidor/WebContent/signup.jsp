@@ -69,6 +69,10 @@
     <label class="control-label" for="lastName">Apellido *</label>
   <input class="form-control" id="lastName" name="lastName" type="text" required>
   </div>
+  <div class="form-group label-floating">
+    <label class="control-label" for="lastName">Especialidad</label>
+  	<input class="form-control" id="speciality" name="speciality" type="text">
+  </div>
   <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Registrar</button>
   <button class="btn-back btn btn-primary pull-left" onclick="volver()" type="button">Volver</button>
 	</form>

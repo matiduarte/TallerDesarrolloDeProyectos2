@@ -1,0 +1,137 @@
+.container{
+	width: 80%;
+}
+
+.newCourseButton{
+	float: right;
+}
+
+
+.backeButton{
+	border: 2px solid;
+}
+
+.newCurseImage{
+	float: right;
+    width: 400px;
+    height: 250px;
+    margin-top: -16px;
+}
+
+
+
+body {
+	background: #FFFFFF;
+}
+
+.detail-label{
+	color: #009688;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.detail-value{
+	color: #000000;
+	padding-left: 30px;
+ 
+ }
+ 
+.tg  {border-collapse:collapse;border-spacing:0; width: 350px; text-align: center;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
+.tg .tg-yw4l{vertical-align:top}
+
+table, th, td {
+   border: 1px solid #009688;
+}
+
+.tableSessionContainer{
+	float: left;
+}
+
+.tableUnityContainer{
+	float: right;
+}
+
+.staticInfoContainer{
+	height: 210px;
+}
+
+.btnNew{
+	width: 116px;
+	height: 48px;
+    margin-top: -4px;
+    margin-left: 50px;
+    font-size: smaller;
+    padding-left: 17px;
+}
+
+.btnBack{
+	clear: both;
+	margin-top: 30px;
+}
+
+#newSessionPopup{
+	box-shadow: 1px 3px 11px 2px #999;
+    z-index: 1000;
+    width: 250px;
+    height: 175px;
+    position: absolute;
+    background: white;
+    left: 540px;
+    top: 305px;
+    display: none;
+}
+
+#newSessionPopup .btnPopup{
+	font-size: smaller;
+    color: #009688;
+    font-weight: bold;
+    width: 80px;
+    padding: 0 5px 5px 5px;
+}
+
+.labelPopup{
+	color: #009688;
+	margin-top: 5px;
+    margin-left: 10px;
+}
+
+.calendarIcon{
+	height: 50px;
+    width: 50px;
+    padding: 0px;
+}
+
+.btnCalendar{
+	padding: 0px;
+    margin-left: 15px;
+    height: 50px;
+    width: 50px;
+}
+
+.inputSessionDate{
+	width: 60%;
+    float: left;
+    margin-left: 10px;
+}
+
+hr {
+    margin: 8px;
+}
+
+.popupButtonsContainer{
+	float: right;
+}
+
+.actionButtonImage{
+	height: 20px;
+    width: 20px;
+}
+
+.btnAction{
+	width: 20px;
+    height: 20px;
+    padding: 0;
+}

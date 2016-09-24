@@ -9,6 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <servlet-name>Jersey Web Application</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -65,8 +66,7 @@
   <servlet-mapping>
     <servlet-name>Activar usuario</servlet-name>
     <url-pattern>/activacion/*</url-pattern>
-  </servlet-mapping>  
-  
+  </servlet-mapping>
   <servlet>
     <servlet-name>EditCourse</servlet-name>
     <servlet-class>controllers.EditCourseController</servlet-class>
@@ -75,7 +75,14 @@
     <servlet-name>EditCourse</servlet-name>
     <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>CourseDetail</servlet-name>
+    <servlet-class>controllers.CourseDetailController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CourseDetail</servlet-name>
+    <url-pattern>/courseDetail/*</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>Lista de Cursos</servlet-name>
     <servlet-class>controllers.CourseListController</servlet-class>
@@ -84,7 +91,41 @@
     <servlet-name>Activar usuario</servlet-name>
     <url-pattern>/courselist/*</url-pattern>
   </servlet-mapping>
-</web-app>
+  <servlet>
+    <servlet-name>New Unity</servlet-name>
+    <servlet-class>controllers.NewUnityController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>New Unity</servlet-name>
+    <url-pattern>/newunity/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
+	<servlet-class>actions.SaveCourseSessionActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
+	<url-pattern>/SaveCourseSessionActionServlet/*</url-pattern>
+</servlet-mapping>
 
+<servlet>
+	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
+	<servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
+	<url-pattern>/DeleteCourseSessionActionServlet/*</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
+	<servlet-class>actions.DeleteCourseUnityActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
+	<url-pattern>/DeleteCourseUnityActionServlet/*</url-pattern>
+</servlet-mapping>
 
   
+</web-app>
