@@ -52,9 +52,12 @@
 	    <div class="navbar-header">
 	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
 	      </button>
-	      <a class="navbar-brand" href="javascript:void(0)">Cursos - Admin</a>
+	      <img class="navbar-logo" src="../bootstrap/img/icono.ico">
+	      <a class="navbar-brand" href="javascript:void(0)">FIUBA Cursos</a>
 	    </div>
 	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
+	      <a class="navbar-brand navbar-userName">Administrador</a>
+	      <button class="btn btn-primary logoutButton btnNew" onclick="logout();">Cerrar Sesión</button>
 	    </div>
 	  </div>
 	</div>
@@ -62,99 +65,102 @@
     <div class="container">
     	<button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="createCourse();">Nuevo Curso</button>
     	<br>
-	<table class="tg" id="tableCourse">
-		<tr>
-		<th class="tg-zyzu">Nombre</th>
-		<th class="tg-zyzu">Descripción</th>
-		<th class="tg-zyzu">Categorías</th>
-		<th class="tg-zyzu">Docente</th>
-		<th class="tg-zyzu">Acciones</th>
-		</tr>
-		<%ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
-			for ( TableCourse item : tabla_de_cursos ) { %>
-				<tr id="tr_course_<%  out.print(item.getCourse().getId()); %>">
-					<td class="tg-yw4l">
-						<%  out.print(item.getCourse().getName()); %>
-					</td>
-					<td class="tg-yw4l">
-					  	<%  out.print(item.getCourse().getDescription()); %>
-					</td>
-					<td class="tg-yw4l">
-					  	<%  out.print(String.join(", ", item.getCategoriesNames() )); %>
-					</td>
-					<td class="tg-yw4l">
-					  	<%  out.print(item.getTeacher().getFirstName()); %>
-					</td>
-					<td class="tg-yw4l">
-						<button class="btn btnAction" type="submit" onclick="editar(<%out.print(item.getCourse().getId());%>)">
-							<img  src="../images/edit_icon.png" class="actionButtonImage" alt="Editar" >
-						</button>
-						<button class="btn btnAction" type="submit" onclick="setIdABorrar(<%out.print(item.getCourse().getId());%>)">
-							<img  src="../images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
-						</button>
-					</td>
-				</tr>
-			<%}%>
-	</table>
-    </div> <!-- /container -->
-    
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">¿Confirma que desea eliminar curso?</h4>
-	      </div>
-	      <div class="modal-body">
-	      Una vez eliminado el curso no podrá crear sesiones del mismo. Para restaurarlo deberá crearlo de nuevo.
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No, mantener curso</button>
-	        <button id="confirmar_borrar" type="button" class="btn btn-primary" data-dismiss="modal">Si, quiero borrarlo</button>
-	      </div>
-	    </div>
-	  </div>
+	<br>
+	<br>
+	<br>
+	<div class="tableCourseContainer">
+		<table class="tg" id="tableCourse">
+			<tr>
+			<th class="tg-zyzu">Nombre</th>
+			<th class="tg-zyzu">Descripción</th>
+			<th class="tg-zyzu">Categorías</th>
+			<th class="tg-zyzu">Docente</th>
+			<th class="tg-zyzu">Acciones</th>
+			</tr>
+			<%ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
+				for ( TableCourse item : tabla_de_cursos ) { %>
+					<tr id="tr_course_<%  out.print(item.getCourse().getId()); %>">
+						<td class="tg-yw4l">
+							<%  out.print(item.getCourse().getName()); %>
+						</td>
+						<td class="tg-yw4l">
+						  	<%  out.print(item.getCourse().getDescription()); %>
+						</td>
+						<td class="tg-yw4l">
+						  	<%  out.print(String.join(", ", item.getCategoriesNames() )); %>
+						</td>
+						<td class="tg-yw4l">
+						  	<%  out.print(item.getTeacher().getFirstName() + " " + item.getTeacher().getLastName()); %>
+						</td>
+						<td class="tg-yw4l">
+							<button class="btn btnAction" type="submit" onclick="editeCourse(<%out.print(item.getCourse().getId());%>)">
+								<img  src="../images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+							</button>
+							<button class="btn btnAction" onclick="showPopup(<%out.print(item.getCourse().getId());%>)">
+								<img  src="../images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+							</button>
+						</td>
+					</tr>
+				<%}%>
+		</table>
 	</div>
 
-	<div id="id_a_borrar" class="hide"></div>
+	<div id="deleteCoursePopup">
+		<label class="labelPopup" id="popupDeleteCourseTitle">¿Está seguro que quiere eliminar el curso?</label>
+		<br/>
+		<hr>
+		
+		<div class="popupButtonsContainer">
+			<button class="btn btnPopup" type="submit" onclick="hidePopup();">Cancelar</button>
+			<button class="btn btnPopup" type="submit" onclick="deleteCourse()" id="popupDeleteCourseSubmit">Aceptar</button>
+		</div>
+	</div>
+
+    </div> <!-- /container -->
+    
+	<div id="deleteCourseId" class="hide"></div>
 
 	<script>
 	
-	function editar(courseId) {
-		window.location.href = "/Servidor/editCourse?id=" + courseId;
+	function editeCourse(courseId) {
+		window.location.href = "../editCourse?id=" + courseId;
 	}
     
-	function setIdABorrar(courseId) {
-		$('#id_a_borrar').text(courseId);
-	}
+	function showPopup(courseId){
+		$('#deleteCourseId').text(courseId);
+    		$("#deleteCoursePopup").show();
+    	}
+    	
+    	function hidePopup(){
+    		$("#deleteCoursePopup").hide();
+    	}
 	
-	$("#confirmar_borrar").click(function(btn) {
-		var courseId = document.getElementById("id_a_borrar").textContent;
+	function deleteCourse(){
+        	var courseId = document.getElementById("deleteCourseId").textContent;
 				
 		$.ajax({
 		    data: {id : courseId},
-		    //Cambiar a type: POST si necesario
 		    type: "POST",
-		    // Formato de datos que se espera en la respuesta
-		    dataType: "json",
-		    // URL a la que se enviará la solicitud Ajax
 		    url: "../cursos/admin",
 		})
 		 .done(function( data, textStatus, jqXHR ) {
 			 deleteCourseRow(courseId);
+			hidePopup();
 		 })
 		 .fail(function( jqXHR, textStatus, errorThrown ) {
 		     if ( console && console.log ) {
 		         console.log( "La solicitud a fallado: " +  textStatus);
 		     }
 		});
-
-	});
+	}
     	
-    function deleteUnityRow(courseId){
-    	$("#tr_course_" + courseId).remove();
-    }
+	function deleteCourseRow(courseId){
+      	    $("#tr_course_" + courseId).remove();
+        }
+
+	function createCourse(){
+            window.location.href = "../newCourse";
+	}
 
 	</script>
 

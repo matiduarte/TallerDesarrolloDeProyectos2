@@ -2,42 +2,99 @@ body {
   background: #FFFFFF;
 }
 
-.tabla {
-    table-layout: fixed;
-}
-
-.table td {
-    vertical-align: middle;
-    text-align: center;
-}
-
-.table th {
-    vertical-align: middle;
-    text-align: center;
-    height: %100;
-}
-
-.hide-col {
-	display: none;
+.container{
+	width: 80%;
 }
 
 .newCourseButton{
+    float: right;
+}
+
+.logoutButton {
+    color: inherit !important;
+    border: 2px solid;
+}
+
+.logoutButton:hover {
+    background-color:#00aa9a !important;
+    border-color: rgba(255, 255, 255, 0.843137);
+}
+
+.tg  {border-collapse:collapse;border-spacing:0; text-align: center;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
+.tg .tg-yw4l{vertical-align:middle}
+
+table, th, td {
+   border: 1px solid #009688;
+}
+
+.actionButtonImage{
+	height: 20px;
+    width: 20px;
+}
+
+.btnAction{
+	width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+.tableCourseContainer{
+	display: inline-block;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 25px; 
+}
+
+.navbar-logo {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-left: 130px;
+    margin-right: 15px;
+}
+
+.navbar-userName {
+    font-weight: normal;
+    font-size: 16px;
+    padding-left: 580px;
+}
+
+#deleteCoursePopup{
+    box-shadow: 1px 3px 11px 2px #999;
+    z-index: 1000;
+    width: 350px;
+    height: 100px;
+    position: absolute;
+    background: white;
+    left: 500px;
+    top: 300px;
+    display: none;
+}
+
+#deleteCoursePopup .btnPopup{
+    font-size: smaller;
+    color: #009688;
+    font-weight: bold;
+    width: 80px;
+    padding: 0px;
+}
+
+.labelPopup{
+    color: #009688;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+hr {
+    margin: 8px;
+}
+
+.popupButtonsContainer{
 	float: right;
-	border: 2px solid;
 }
 
-.btnEditar {
-	background-image: url('../img/edit.png');
-	background-size: 100% 100%;
-	width: 40px;
-	height: 40px;
-	padding: 0px 0px;
-}
-
-.btnBorrar {
-	background-image: url('../img/delete.png');
-	background-size: 100% 100%;
-	width: 40px;
-	height: 40px;
-	padding: 0px 0px;
-}

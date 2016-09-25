@@ -45,8 +45,13 @@ public class PrincipalAdminController extends HttpServlet {
     	
     	for ( Course curso : Course.getAll() ) {
     		List<Category> categorias = curso.getCategories();
-    		User docente = User.getById( curso.getTeacherId() );
-    		
+    		//@Todo: ver mejor solucion para cuando no tiene docente asignado
+    		User docente = new User();
+    		docente.setFirstName("");
+    		docente.setLastName("");
+    		if (curso.getTeacherId() != null){
+        		docente = User.getById( curso.getTeacherId() );
+    		}
     		TableCourse curso_de_tabla = new TableCourse( curso, docente, categorias );
     		cursos_de_tabla.add( curso_de_tabla );
     	}
