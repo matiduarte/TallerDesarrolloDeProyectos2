@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import entities.CourseSession;
 import entities.User;
+import service.ServiceResponse;
 
 /**
  * Servlet implementation class SignInController
@@ -38,13 +39,20 @@ public class DeleteCourseSessionActionServlet extends HttpServlet {
     throws ServletException, IOException {   
     	String sessionId = request.getParameter("sessionId");
     	
+    	ServiceResponse message = null;
     	if(sessionId != null && !sessionId.equals("")){
     		CourseSession courseSession = CourseSession.getById(Integer.valueOf(sessionId));
-    		courseSession.delete();
+    		if(!courseSession.isActive()){
+    			courseSession.delete();
+    			message = new ServiceResponse(true, "", "");
+    		}else{
+    			message = new ServiceResponse(false, "No se puede borrar una sesion activa!", "");
+    		}
+    		
     	}
 
     	
-    	String json = new Gson().toJson("ok");
+    	String json = new Gson().toJson(message);
     	response.setContentType("application/json");
     	response.setCharacterEncoding("UTF-8"); 
     	response.getWriter().write(json); 

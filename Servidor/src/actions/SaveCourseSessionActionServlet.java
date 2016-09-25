@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import entities.CourseSession;
 import entities.User;
+import service.ServiceResponse;
 
 /**
  * Servlet implementation class SignInController
@@ -40,20 +41,39 @@ public class SaveCourseSessionActionServlet extends HttpServlet {
     	int courseId = Integer.valueOf(request.getParameter("courseId"));
     	String sessionId = request.getParameter("sessionId");
     	
-    	CourseSession courseSession = new CourseSession();
-    	courseSession.setCourseId(courseId);
-    	courseSession.setDate(sessionDate);
-    	
+    	boolean isActive = false;
     	if(sessionId != null && !sessionId.equals("")){
     		//Edit
-    		courseSession.setId(Integer.valueOf(sessionId));
+    		CourseSession c = CourseSession.getById(Integer.valueOf(sessionId));
+    		if(c != null){
+    			isActive = c.isActive();
+    		}
     	}
-    	courseSession.save();
     	
-    	String json = new Gson().toJson(courseSession);
-    	response.setContentType("application/json");
-    	response.setCharacterEncoding("UTF-8"); 
-    	response.getWriter().write(json); 
+    	if(!isActive){
+    		CourseSession courseSession = new CourseSession();
+        	courseSession.setCourseId(courseId);
+        	courseSession.setDate(sessionDate);
+        	
+        	if(sessionId != null && !sessionId.equals("")){
+        		//Edit
+        		courseSession.setId(Integer.valueOf(sessionId));
+        	}
+        	courseSession.save();
+        	
+        	String json = new Gson().toJson(courseSession);
+        	response.setContentType("application/json");
+        	response.setCharacterEncoding("UTF-8"); 
+        	response.getWriter().write(json); 
+    	}else{
+    		String json = new Gson().toJson(new  ServiceResponse(true, "No se puede modificar una sesion activa!", ""));
+        	response.setContentType("application/json");
+        	response.setCharacterEncoding("UTF-8"); 
+        	response.getWriter().write(json); 
+    	}
+    	
+    	
+    	
     }
 
 }
