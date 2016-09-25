@@ -28,6 +28,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/js/ripples.min.js"></script>
+	<script src="bootstrap/js/bootbox.min.js"></script>
 	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -49,6 +50,7 @@
 	  </div>
 	</div>
 	
+		
     <div class="container">
     	<div class="staticInfoContainer">
 			<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
@@ -84,6 +86,16 @@
 	     
 	     <div>
 	     	<div class="tableSessionContainer">
+	     		<div class="alert alert-danger" id="sessionError" style="display:none;">
+			   		<button onclick="$('#sessionError').hide()" class="close" aria-label="close">&times;</button>
+				  	<span id="sessionErrorMessage">La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente</span>
+				</div>
+				
+				<div class="alert alert-success" id="sessionSucces" style="display:none;">
+			   		<button onclick="$('#sessionSucces').hide()" class="close" aria-label="close">&times;</button>
+				  	<span id="sessionSuccesMessage">Session creada satisfactoriamente!</span>
+				</div>
+	     	
 			     <label class="detail-label">Sesiones activas:</label>
 			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="showPopup();">Crear nueva<br/>sesion</button>
 			     
@@ -165,7 +177,7 @@
 		
 		<div class="form-group label-floating inputSessionDate">	
 			<label class="control-label" id="labelDate" for="sessionDate">Fecha de inicio</label>
-			<input type="text" id="sessionDate" class="form-control"/>
+			<input type="text" id="sessionDate" class="form-control" required required="true"/>
 		</div>
 		
 		<button class="btn btnCalendar" type="submit" onclick="showCalendar()">
@@ -205,36 +217,45 @@
     	}
     	
     	function saveSession(){
-    		var sessionDate = $('#sessionDate').val();
-    		var courseId = $('#courseId').val();
-    		var sessionId = $('#sessionId').val();
-			
-			$.ajax({
-			    data: {sessionDate: sessionDate, courseId: courseId, sessionId: sessionId},
-			    //Cambiar a type: POST si necesario
-			    type: "POST",
-			    // Formato de datos que se espera en la respuesta
-			    dataType: "json",
-			    // URL a la que se enviará la solicitud Ajax
-			    url: "SaveCourseSessionActionServlet",
-			})
-			 .done(function( data, textStatus, jqXHR ) {
-				 if(sessionId != ""){
-					 editSessionRow(data);
-				 }else{
-					 addNewSessionRow(data);	 
-				 }
-				 hidePopup();
-			 })
-			 .fail(function( jqXHR, textStatus, errorThrown ) {
-			     if ( console && console.log ) {
-			         console.log( "La solicitud a fallado: " +  textStatus);
-			     }
-			});
+    		if($("#sessionDate").val() != ""){
+    			var sessionDate = $('#sessionDate').val();
+        		var courseId = $('#courseId').val();
+        		var sessionId = $('#sessionId').val();
+    			
+    			$.ajax({
+    			    data: {sessionDate: sessionDate, courseId: courseId, sessionId: sessionId},
+    			    //Cambiar a type: POST si necesario
+    			    type: "POST",
+    			    // Formato de datos que se espera en la respuesta
+    			    dataType: "json",
+    			    // URL a la que se enviará la solicitud Ajax
+    			    url: "SaveCourseSessionActionServlet",
+    			})
+    			 .done(function( data, textStatus, jqXHR ) {
+    				 if(sessionId != ""){
+    					 editSessionRow(data);
+    				 }else{
+    					 addNewSessionRow(data);	 
+    				 }
+    				 hidePopup();
+    			 })
+    			 .fail(function( jqXHR, textStatus, errorThrown ) {
+    			     if ( console && console.log ) {
+    			         console.log( "La solicitud a fallado: " +  textStatus);
+    			     }
+    			});
+    		}else{
+    			
+    		}
+    		
+    		
     	}
     	
     	function editSessionRow(session){
     		$("#tr_session_" + session.id).children()[1].innerHTML = session.date;
+    		
+    		$("#sessionSuccesMessage")[0].innerHTML = "Sesion modificada satisfactoriamente!";
+    		$("#sessionSucces").show();
     	}
     	
     	function addNewSessionRow(session){
@@ -249,6 +270,9 @@
 			
 			"<button class='btn btnAction' type='submit' onclick='deleteSession(" + session.id + ")'>"+
 				"<img  src='images/delete_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button></td></tr>");
+    	
+    		$("#sessionSuccesMessage")[0].innerHTML = "Sesion creada satisfactoriamente!";
+    		$("#sessionSucces").show();
     	}
     	
     	function deleteSessionRow(sessionId){
@@ -256,17 +280,26 @@
     	}
     	
     	function editSession(sessionId){
-    		$("#sessionId").val(sessionId);
-    		$("#popupSessionTitle")[0].innerHTML = "Editar Sesión";
-    		$("#popupSessionSubmit")[0].innerHTML = "Guardar";
-    		$("#newSessionPopup").show();
-    		//HACK
-    		$( "#sessionDate" ).focus();
-    		$("#sessionDate").val($("#tr_session_" + sessionId).children()[1].innerHTML.replace(/\s/g, ""));
+    		var dateValue = $("#tr_session_" + sessionId).children()[1].innerHTML.replace(/\s/g, "");
+    		var sessionDate = new Date(dateValue)
+    		var currentDate = new Date();
+    		if(sessionDate > currentDate){
+    			$("#sessionId").val(sessionId);
+        		$("#popupSessionTitle")[0].innerHTML = "Editar Sesión";
+        		$("#popupSessionSubmit")[0].innerHTML = "Guardar";
+        		$("#newSessionPopup").show();
+        		//HACK
+        		$( "#sessionDate" ).focus();
+        		$("#sessionDate").val(dateValue);	
+    		}else{
+    			$("#sessionErrorMessage")[0].innerHTML = "No se puede modificar una sesion activa!";
+		    	$("#sessionError").show();	
+    		}
+    		
     	}
     	
-    	function deleteSession(sessionId){	
-			$.ajax({
+    	function deleteSessionAfterConfirm(sessionId){
+    		$.ajax({
 			    data: {sessionId: sessionId},
 			    //Cambiar a type: POST si necesario
 			    type: "POST",
@@ -276,7 +309,13 @@
 			    url: "DeleteCourseSessionActionServlet",
 			})
 			 .done(function( data, textStatus, jqXHR ) {
-				 deleteSessionRow(sessionId);
+				 if(data.success == true){
+					 deleteSessionRow(sessionId);	 
+				 }else{
+					$("#sessionErrorMessage")[0].innerHTML = data.message;
+			    	$("#sessionError").show();
+				 }
+				 
 			 })
 			 .fail(function( jqXHR, textStatus, errorThrown ) {
 			     if ( console && console.log ) {
@@ -285,7 +324,39 @@
 			});
     	}
     	
-    	function deleteUnity(unityId){	
+    	function deleteSession(sessionId){	
+    		bootbox.confirm({ 
+    		    size: 'small',
+    		    message: "Estas seguro que queres eliminar la sesion?", 
+    		    callback: function(result){if(result){deleteSessionAfterConfirm(sessionId);} },
+    		    buttons: {
+    		        confirm: {
+    		            label: 'Aceptar',
+    		        },
+    		        cancel: {
+    		            label: 'Cancelar',
+    		        }
+    		    },
+    		})
+    	}
+    	
+    	function deleteUnity(unityId){
+    		bootbox.confirm({ 
+    		    size: 'small',
+    		    message: "Estas seguro que queres borrar la unidad?", 
+    		    callback: function(result){if(result){deleteUnityAfterConfirm(unityId);} },
+    		    buttons: {
+    		        confirm: {
+    		            label: 'Aceptar',
+    		        },
+    		        cancel: {
+    		            label: 'Cancelar',
+    		        }
+    		    },
+    		})
+    	}
+    	
+    	function deleteUnityAfterConfirm(unityId){	
 			$.ajax({
 			    data: {unityId: unityId},
 			    //Cambiar a type: POST si necesario

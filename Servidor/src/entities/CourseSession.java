@@ -1,5 +1,8 @@
 package entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -48,5 +51,24 @@ public class CourseSession {
 	
 	public void delete(){
 		StoreData.delete(this);
+	}
+	public boolean isActive() {
+		String date = this.getDate();
+		if(date != null){
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+
+		    Date date1;
+			try {
+				date1 = format.parse(date);
+			} catch (ParseException e) {
+				return false;
+			}
+		    Date currenDate = new Date();
+		    
+		    if (date1.compareTo(currenDate) <= 0) {
+		    	return true;
+		    }
+		}
+		return false;
 	}
 }
