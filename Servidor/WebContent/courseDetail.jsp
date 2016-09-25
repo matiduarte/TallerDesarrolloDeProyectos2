@@ -280,13 +280,22 @@
     	}
     	
     	function editSession(sessionId){
-    		$("#sessionId").val(sessionId);
-    		$("#popupSessionTitle")[0].innerHTML = "Editar Sesión";
-    		$("#popupSessionSubmit")[0].innerHTML = "Guardar";
-    		$("#newSessionPopup").show();
-    		//HACK
-    		$( "#sessionDate" ).focus();
-    		$("#sessionDate").val($("#tr_session_" + sessionId).children()[1].innerHTML.replace(/\s/g, ""));
+    		var dateValue = $("#tr_session_" + sessionId).children()[1].innerHTML.replace(/\s/g, "");
+    		var sessionDate = new Date(dateValue)
+    		var currentDate = new Date();
+    		if(sessionDate > currentDate){
+    			$("#sessionId").val(sessionId);
+        		$("#popupSessionTitle")[0].innerHTML = "Editar Sesión";
+        		$("#popupSessionSubmit")[0].innerHTML = "Guardar";
+        		$("#newSessionPopup").show();
+        		//HACK
+        		$( "#sessionDate" ).focus();
+        		$("#sessionDate").val(dateValue);	
+    		}else{
+    			$("#sessionErrorMessage")[0].innerHTML = "No se puede modificar una sesion activa!";
+		    	$("#sessionError").show();	
+    		}
+    		
     	}
     	
     	function deleteSessionAfterConfirm(sessionId){
