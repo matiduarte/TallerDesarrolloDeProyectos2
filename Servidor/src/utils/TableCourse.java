@@ -38,6 +38,11 @@ public class TableCourse {
 	}
 	
 	public User getTeacher() {
+		
+		if ( EmptyUser.emptyFirstName == this.teacher.getFirstName() ) {
+			this.teacher.setLastName( "No hay docente asignado." );
+		}
+		
 		return this.teacher;
 	}
 	

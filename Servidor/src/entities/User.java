@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import utils.EmptyUser;
 import dataBase.StoreData;
 
 @XmlRootElement
@@ -42,6 +43,11 @@ public void setLastName(String lastName) {
     this.lastName = lastName;  
 }
 public static User getById(int id){
+	
+	if ( id < 0 ) {
+		return new EmptyUser();
+	}
+	
 	return (User)StoreData.getById(User.class, id);
 }
 

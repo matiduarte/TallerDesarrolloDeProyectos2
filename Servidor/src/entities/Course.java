@@ -19,6 +19,12 @@ public class Course {
 	
 	
 	public Integer getTeacherId() {
+		
+		if ( null == teacherId ) {
+			// devolvemos '-1" para avisar que no tiene ningun docente asignado todavia. 
+			return -1;
+		}
+		
 		return teacherId;
 	}
 	public void setTeacherId(Integer teacherId) {

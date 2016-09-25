@@ -61,7 +61,7 @@
   
     <div class="container">
     
-     <label class="btn btn-primary btn-file newCourseButton">
+     <label id="btn_nuevo_curso" class="btn btn-primary btn-file newCourseButton">
    	   Nuevo curso
      </label>
     <br>
@@ -88,10 +88,10 @@
 		  <td><%=item.getCourse().getName()%></td>
 		  <td><%=item.getCourse().getDescription()%></td>
 		  <td><%=String.join(", ", item.getCategoriesNames() )%></td>
-		  <td><%=item.getTeacher().getFirstName()%></td>
+		  <td><%=item.getTeacher().getLastName()%></td>
 		  <td>
-		  <button id="btn_borrar" name="btn_borrar" class="btn btnBorrar" onclick="editar(this)"></button>
-		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" data-toggle="modal" data-target="#myModal" onclick="setIdABorrar(this)"></button>
+		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" onclick="editar(this)"></button>
+		  <button id="btn_borrar" name="btn_borrar" class="btn btnBorrar" data-toggle="modal" data-target="#myModal" onclick="setIdABorrar(this)"></button>
 		  </td>
 		  </tr>
 		<% } %>
@@ -142,8 +142,12 @@
 		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
 		
 		$.post('../cursos/admin', { id : curso_id_a_borrar });
-		
+		location.reload();
 		});
+	
+	$("#btn_nuevo_curso").click( function() {
+		window.location.href = "/Servidor/newCourse";
+	});
 	
 	</script>
 

@@ -253,7 +253,7 @@ $("#inputTeacher").autocomplete({
 	    }
 		
 		function goBack(){
-			window.location.href = "principalAdmin.jsp";
+			window.location.href = "/Servidor/cursos/admin";
 		}
 	
 	</script>

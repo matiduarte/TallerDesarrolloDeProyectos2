@@ -60,11 +60,7 @@ public class PrincipalAdminController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
     	
-    	System.out.print( "id:" + request.getParameter("id") );
-    	
     	Integer id_curso = Integer.parseInt( request.getParameter("id") );
-    	
-    	System.out.print( id_curso );
     	
     	Course curso_a_eliminar = Course.getById( id_curso );
     	
