@@ -142,7 +142,9 @@
 		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
 		
 		$.post('../cursos/admin', { id : curso_id_a_borrar });
-		location.reload();
+		
+		window.location.href = "/Servidor/cursos/admin"
+		
 		});
 	
 	$("#btn_nuevo_curso").click( function() {

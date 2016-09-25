@@ -44,6 +44,7 @@ public class PrincipalAdminController extends HttpServlet {
     	ArrayList<TableCourse> cursos_de_tabla = new ArrayList<TableCourse>();
     	
     	for ( Course curso : Course.getAll() ) {
+    		
     		List<Category> categorias = curso.getCategories();
     		User docente = User.getById( curso.getTeacherId() );
     		
