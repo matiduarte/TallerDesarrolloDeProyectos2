@@ -60,44 +60,42 @@
 	</div>
   
     <div class="container">
-    
-     <label class="btn btn-primary btn-file newCourseButton">
-   	   Nuevo curso
-     </label>
-    <br>
-    <br>
-    <br>
-     <div class="table-responsive">
-	  <table class="table tabla">
-	   <thead>
-	     <tr>
-	     	<th class="hide-col">id</th>
-	     	<th>Nombre</th>
-	     	<th>Descripción</th>
-	     	<th>Categorías</th>
-	     	<th>Docente</th>
-	     	<th>Acciones</th>
-	     </tr>
-	   </thead>
-	   <tbody>
-		<%
-		ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
-		for ( TableCourse item : tabla_de_cursos ) {
-		%><tr class="clickable-row">
-		  <td class="hide-col"><%=Integer.toString(item.getCourse().getId())%></td>
-		  <td><%=item.getCourse().getName()%></td>
-		  <td><%=item.getCourse().getDescription()%></td>
-		  <td><%=String.join(", ", item.getCategoriesNames() )%></td>
-		  <td><%=item.getTeacher().getFirstName()%></td>
-		  <td>
-		  <button id="btn_borrar" name="btn_borrar" class="btn btnBorrar" onclick="editar(this)"></button>
-		  <button id="btn_editar" name="btn_editar" class="btn btnEditar" data-toggle="modal" data-target="#myModal" onclick="setIdABorrar(this)"></button>
-		  </td>
-		  </tr>
-		<% } %>
-	   </tbody>
-	   </table>
-	  </div>
+    	<button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="createCourse();">Nuevo Curso</button>
+    	<br>
+	<table class="tg" id="tableCourse">
+		<tr>
+		<th class="tg-zyzu">Nombre</th>
+		<th class="tg-zyzu">Descripción</th>
+		<th class="tg-zyzu">Categorías</th>
+		<th class="tg-zyzu">Docente</th>
+		<th class="tg-zyzu">Acciones</th>
+		</tr>
+		<%ArrayList<TableCourse> tabla_de_cursos = (java.util.ArrayList)request.getAttribute("table_courses");
+			for ( TableCourse item : tabla_de_cursos ) { %>
+				<tr id="tr_course_<%  out.print(item.getCourse().getId()); %>">
+					<td class="tg-yw4l">
+						<%  out.print(item.getCourse().getName()); %>
+					</td>
+					<td class="tg-yw4l">
+					  	<%  out.print(item.getCourse().getDescription()); %>
+					</td>
+					<td class="tg-yw4l">
+					  	<%  out.print(String.join(", ", item.getCategoriesNames() )); %>
+					</td>
+					<td class="tg-yw4l">
+					  	<%  out.print(item.getTeacher().getFirstName()); %>
+					</td>
+					<td class="tg-yw4l">
+						<button class="btn btnAction" type="submit" onclick="editar(<%out.print(item.getCourse().getId());%>)">
+							<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+						</button>
+						<button class="btn btnAction" type="submit" onclick="setIdABorrar(<%out.print(item.getCourse().getId());%>)">
+							<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+						</button>
+					</td>
+				</tr>
+			<%}%>
+	</table>
     </div> <!-- /container -->
     
 	<!-- Modal -->
@@ -123,28 +121,41 @@
 
 	<script>
 	
-	function editar(btn) {
-		var curso_id = btn.parentElement.parentElement.getElementsByTagName("td")[0].textContent;
-		window.location.href = "/Servidor/editCourse?id=" + curso_id;
+	function editar(courseId) {
+		window.location.href = "/Servidor/editCourse?id=" + courseId;
 	}
     
-	function setIdABorrar(btn) {
-		var curso_id = btn.parentElement.parentElement.getElementsByTagName("td")[0].textContent;
-		$('#id_a_borrar').text(curso_id);
-	}
-	
-	function borrarCurso() {
-		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
-		$('#id_a_borrar').text("FUCK");
+	function setIdABorrar(courseId) {
+		$('#id_a_borrar').text(courseId);
 	}
 	
 	$("#confirmar_borrar").click(function(btn) {
-		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
-		
-		$.post('../cursos/admin', { id : curso_id_a_borrar });
-		
+		var courseId = document.getElementById("id_a_borrar").textContent;
+				
+		$.ajax({
+		    data: {id : courseId},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviará la solicitud Ajax
+		    url: "../cursos/admin",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 deleteCourseRow(courseId);
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
 		});
-	
+
+	});
+    	
+    function deleteUnityRow(courseId){
+    	$("#tr_course_" + courseId).remove();
+    }
+
 	</script>
 
   </body>

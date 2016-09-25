@@ -74,7 +74,6 @@ public class PrincipalAdminController extends HttpServlet {
     		CourseCategory.deleteByCourseId( id_curso );
     	}
     	
-    	doGet(request, response);
     }
 
 }
