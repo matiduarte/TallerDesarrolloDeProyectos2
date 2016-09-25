@@ -1,20 +1,14 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import service.mailing.Mailer;
-import entities.Category;
-import entities.Course;
 import entities.CourseUnity;
-import entities.User;
+
 
 /**
  * Servlet implementation class NewUnityController
@@ -36,9 +30,15 @@ public class NewUnityController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
-		if(request.getParameter("id") != null){
-			request.setAttribute("id", request.getParameter("id"));
+		if(request.getParameter("courseId") != null){	
+			request.setAttribute("courseId", request.getParameter("courseId"));
+			if (request.getParameter("id") != ""){
+				request.setAttribute("id", request.getParameter("id"));
+				int id = Integer.valueOf(request.getParameter("id"));
+				CourseUnity courseUnity = CourseUnity.getById(id);
+				request.setAttribute("name", courseUnity.getName());
+				request.setAttribute("description", courseUnity.getDescription());
+			} 
 		}
 		getServletConfig().getServletContext().getRequestDispatcher("/newunity.jsp").forward(request,response);
 	}
@@ -50,30 +50,28 @@ public class NewUnityController extends HttpServlet {
 		
 		String name = request.getParameter("name");
     	String description = request.getParameter("description");
-    	boolean existe = true;
+    	CourseUnity courseUnity = null;
     	
-		if(request.getParameter("id") != null){
-       	 	int courseId = Integer.valueOf(request.getParameter("id")); 
-       	 	CourseUnity courseUnity = CourseUnity.getById(courseId);
-       	 	
-       	 		if (courseUnity == null){
-       	 			existe = false;
-       	 			courseUnity = new CourseUnity();
-       	 			courseUnity.setCourseId(courseId);
-       	 			courseUnity.setName(name);
-       	 			courseUnity.setDescription(description);
-       	 			courseUnity.save();
-       	 		}   
+		if(request.getParameter("courseId") != null){
+			int courseId = Integer.valueOf(request.getParameter("courseId"));  
+			if(request.getParameter("id") != null){
+				int id = Integer.valueOf(request.getParameter("id"));
+				courseUnity = CourseUnity.getById(id);
+				courseUnity.setId(id);
+			}else{
+	   			courseUnity = new CourseUnity();
+			}
+			courseUnity.setCourseId(courseId);
+   			courseUnity.setName(name);
+   			courseUnity.setDescription(description);
+			courseUnity.save();
 		}
 		
 		String create_btn = request.getParameter("create_btn");
 		
 		if (create_btn != null){
-			if (!existe){
-				
-				response.sendRedirect(request.getContextPath() + "/courseDetail?id=" + request.getParameter("id"));
-				
-			}
+			response.sendRedirect(request.getContextPath() + "/courseDetail?id=" + request.getParameter("courseId"));
+			
 		}
 	}
 
