@@ -1,3 +1,4 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html lang="en-us">
   <head>
@@ -32,17 +33,42 @@
 </div>
  
 <form id="identicalForm" class="register" method="post" action="newunity">
-<input type="hidden" name="id" value="${id}">
+<input type="hidden" name="courseId" value="${courseId}">
+<c:if test="${id != NULL}">
+  <input type="hidden" name="id" value="${id}">
+</c:if>
+
   <div class="form-group label-floating">
     <label class="control-label" for="name">Nombre</label>
-  <input class="form-control" id="name" name="name" type="text">
+    <c:choose>
+    	<c:when test="${name != NULL}">
+  <input class="form-control" id="name" name="name" type="text" value="${name}">
+  </c:when>
+          <c:otherwise>
+          <input class="form-control" id="name" name="name" type="text">
+          </c:otherwise>
+   </c:choose>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="lastName">Descripción</label>
-  <input class="form-control" id="description" name="description" type="text">
+    <c:choose>
+    	<c:when test="${description != NULL}">
+  <input class="form-control" id="description" name="description" type="text" value="${description}">
+  </c:when>
+          <c:otherwise>
+          <input class="form-control" id="description" name="description" type="text">
+          </c:otherwise>
+   </c:choose>
   </div>
- 
+ <c:choose>
+    	<c:when test="${id != NULL}">
+  		<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
+  </c:when>
+          <c:otherwise>
   <button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
+          </c:otherwise>
+   </c:choose>
+  
 	</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -52,8 +78,6 @@
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
-
-
 
   </body>
 </html>
