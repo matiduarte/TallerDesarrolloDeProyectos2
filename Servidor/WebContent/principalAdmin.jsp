@@ -63,10 +63,14 @@
 	</div>
   
     <div class="container">
+	<input type="text" id="searchName" class="searchInput" placeholder="Nombre">
+	<input type="text" id="searchCategory" class="searchInput" placeholder="Categorias">
+	<input type="text" id="searchDocente" class="searchInput" placeholder="Docente">
+    	<button class="btn btn-raised btn-primary searchButton btnNew" onclick="search();">
+		<img  src="../images/search_icon.png" class="searchButtonImage" alt="Buscar" 
+	</button>
     	<button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="createCourse();">Nuevo Curso</button>
     	<br>
-	<br>
-	<br>
 	<br>
 	<div class="tableCourseContainer">
 		<table class="tg" id="tableCourse">

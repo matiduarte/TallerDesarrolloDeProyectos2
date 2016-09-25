@@ -10,6 +10,11 @@ body {
     float: right;
 }
 
+.searchButton {
+    background-color: #C6C6C6 !important;
+    padding: 0px;
+}
+
 .logoutButton {
     color: inherit !important;
     border: 2px solid;
@@ -31,8 +36,13 @@ table, th, td {
 }
 
 .actionButtonImage{
-	height: 20px;
+    height: 20px;
     width: 20px;
+}
+
+.searchButtonImage{
+    height: 36px;
+    width: 36px;
 }
 
 .btnAction{
@@ -96,5 +106,10 @@ hr {
 
 .popupButtonsContainer{
 	float: right;
+}
+
+.searchInput {
+    height: 36px;
+    padding: 5px;
 }
 
