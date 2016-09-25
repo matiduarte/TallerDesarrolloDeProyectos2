@@ -87,10 +87,10 @@
 					</td>
 					<td class="tg-yw4l">
 						<button class="btn btnAction" type="submit" onclick="editar(<%out.print(item.getCourse().getId());%>)">
-							<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+							<img  src="../images/edit_icon.png" class="actionButtonImage" alt="Editar" >
 						</button>
 						<button class="btn btnAction" type="submit" onclick="setIdABorrar(<%out.print(item.getCourse().getId());%>)">
-							<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+							<img  src="../images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 						</button>
 					</td>
 				</tr>
