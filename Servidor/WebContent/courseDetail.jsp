@@ -334,13 +334,29 @@
     		            label: 'Aceptar',
     		        },
     		        cancel: {
-    		            label: 'Canceler',
+    		            label: 'Cancelar',
     		        }
     		    },
     		})
     	}
     	
-    	function deleteUnity(unityId){	
+    	function deleteUnity(unityId){
+    		bootbox.confirm({ 
+    		    size: 'small',
+    		    message: "Estas seguro que queres borrar la unidad?", 
+    		    callback: function(result){if(result){deleteUnityAfterConfirm(unityId);} },
+    		    buttons: {
+    		        confirm: {
+    		            label: 'Aceptar',
+    		        },
+    		        cancel: {
+    		            label: 'Cancelar',
+    		        }
+    		    },
+    		})
+    	}
+    	
+    	function deleteUnityAfterConfirm(unityId){	
 			$.ajax({
 			    data: {unityId: unityId},
 			    //Cambiar a type: POST si necesario
