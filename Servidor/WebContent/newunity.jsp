@@ -42,10 +42,10 @@
     <label class="control-label" for="name">Nombre</label>
     <c:choose>
     	<c:when test="${name != NULL}">
-  <input class="form-control" id="name" name="name" type="text" value="${name}">
+  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
   </c:when>
           <c:otherwise>
-          <input class="form-control" id="name" name="name" type="text">
+          <input class="form-control" id="name" name="name" type="text" required>
           </c:otherwise>
    </c:choose>
   </div>
@@ -53,10 +53,10 @@
     <label class="control-label" for="lastName">Descripción</label>
     <c:choose>
     	<c:when test="${description != NULL}">
-  <input class="form-control" id="description" name="description" type="text" value="${description}">
+  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
   </c:when>
           <c:otherwise>
-          <input class="form-control" id="description" name="description" type="text">
+          <input class="form-control" id="description" name="description" type="text" required>
           </c:otherwise>
    </c:choose>
   </div>
