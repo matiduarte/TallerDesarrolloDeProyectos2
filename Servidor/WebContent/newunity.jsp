@@ -68,7 +68,7 @@
   <button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
           </c:otherwise>
    </c:choose>
-  
+   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
 	</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -78,6 +78,12 @@
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
-
+	<script type="text/javascript">
+		
+	function cancelar(id){	
+		window.location.href = '/Servidor/courseDetail?id=' + id;
+	}	
+	
+	</script>
   </body>
 </html>
