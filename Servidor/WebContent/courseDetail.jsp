@@ -130,6 +130,12 @@
 			</div>
 			<div>
 				<div class="tableUnityContainer">
+
+					<div class="alert alert-success" id="unitySucces" style="display:none;">
+			   			<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
+				  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
+					</div
+
 				     <label class="detail-label">Unidades:</label>
 				     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
 				     
@@ -277,6 +283,8 @@
     	
     	function deleteSessionRow(sessionId){
     		$("#tr_session_" + sessionId).remove();
+		$("#sessionSuccesMessage")[0].innerHTML = "Sesion borrada satisfactoriamente!";
+    		$("#sessionSucces").show();
     	}
     	
     	function editSession(sessionId){
@@ -378,6 +386,9 @@
     	
     	function deleteUnityRow(unityId){
     		$("#tr_unity_" + unityId).remove();
+		$("#unitySuccesMessage")[0].innerHTML = "Unidad borrada satisfactoriamente!";
+    		$("#unitySucces").show();
+		
     	}
     	
     	function editUnity(unityId){
