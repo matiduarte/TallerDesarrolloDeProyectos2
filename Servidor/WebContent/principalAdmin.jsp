@@ -72,6 +72,10 @@
     	<button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="createCourse();">Nuevo Curso</button>
     	<br>
 	<br>
+	<div class="alert alert-success" id="deleteSucces" style="display:none;">
+		<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
+  		<span id="deleteSuccesMessage">Curso borrado satisfactoriamente!</span>
+	</div>
 	<div class="tableCourseContainer">
 		<table class="tg" id="tableCourse">
 			<tr>
@@ -138,6 +142,7 @@
     	
     	function hidePopup(){
     		$("#deleteCoursePopup").hide();
+		$("#deleteSucces").show();
     	}
 	
 	function deleteCourse(){
