@@ -99,6 +99,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         collapsingToolbar.setTitle(courseData.getString("name"));
                         TextView courseDesc = (TextView) findViewById(R.id.course_description);
                         courseDesc.setText(courseData.getString("description"));
+                        Log.d("description", courseData.getString("description"));
+                        Log.d("name", courseData.getString("name"));
+
+                        Log.d("courseData", courseData.toString());
+                        TextView teacherName = (TextView) findViewById(R.id.course_teacher_name);
+                        Log.d("teacherName", courseData.getString("teacherName"));
+                        teacherName.setText(courseData.getString("teacherName"));
                         ImageView header = (ImageView) findViewById(R.id.header);
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute("http://192.168.0.22:8080/Servidor/" + courseData.getString("pictureUrl"));
