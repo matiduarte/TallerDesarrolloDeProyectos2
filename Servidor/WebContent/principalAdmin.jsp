@@ -63,12 +63,12 @@
 	</div>
   
     <div class="container">
-	<input type="text" id="searchName" class="searchInput" placeholder="Nombre">
-	<input type="text" id="searchCategory" class="searchInput" placeholder="Categorias">
-	<input type="text" id="searchDocente" class="searchInput" placeholder="Docente">
-    	<button class="btn btn-raised btn-primary searchButton btnNew" onclick="search();">
-		<img  src="../images/search_icon.png" class="searchButtonImage" alt="Buscar" 
-	</button>
+	<input type="text" id="searchName" class="searchInput" placeholder="Nombre"/>
+	<input type="text" id="searchCategory" class="searchInput" placeholder="Categorías"/>
+	<input type="text" id="searchTeacher" class="searchInput" placeholder="Docente"/>
+    	<button class="btn btn-raised btn-primary searchButton btnNew" onclick="search();"> 
+    		<img  src="../images/search_icon.png" class="searchButtonImage" alt="Buscar" >
+		</button>
     	<button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="createCourse();">Nuevo Curso</button>
     	<br>
 	<br>
@@ -107,6 +107,7 @@
 					</tr>
 				<%}%>
 		</table>
+		<div class="noResultsMsg hide">No se obtuvieron resultados</div>
 	</div>
 
 	<div id="deleteCoursePopup">
@@ -165,7 +166,49 @@
 	function createCourse(){
             window.location.href = "../newCourse";
 	}
+	
+	function search(){
+		
+		// recupero todos los cursos. me qedo con todas las filas de la tabla excepto la 1era que es el encabezado.
+		var rows = $("#tableCourse").find("tr:not(:first)").hide();
+		
+		// recupero nombre, categorias y docente a filtrar
+		var nombre_filtro = $("#searchName").val().toLowerCase();
+		var categorias_filtro = $("#searchCategory").val().toLowerCase();
+		var docente_filtro = $("#searchTeacher").val().toLowerCase();
+    	var match_nombre = false;
+    	var match_categorias = false;
+    	var match_docente = false;
+		// aplico filtro a cada uno de los cursos (cada fila de la tabla)
+		rows.filter( function() {
+			// recupero nombre, categorias y docente del curso
+			var nombre_curso = $(this).find("td:nth-child(1)").text().toLowerCase();
+			var categorias_curso = $(this).find("td:nth-child(3)").text().toLowerCase();
+        	var docente_curso = $(this).find("td:nth-child(4)").text().toLowerCase();
+        	
+        	if ( nombre_curso.indexOf( nombre_filtro ) > -1 || nombre_filtro.length == 0 ) {
+        		match_nombre = true;
+        	}
 
+        	if ( categorias_curso.indexOf( categorias_filtro ) > -1 || categorias_filtro.length == 0 ) {
+        		match_categorias = true;
+        	}
+        	
+        	
+        	if ( docente_curso.indexOf( docente_filtro ) > -1 || docente_filtro.length == 0 ) {
+        		match_docente = true;
+        	}
+        	
+        	return ( match_nombre && match_categorias && match_docente );
+		}).show();
+		debugger
+		if(match_nombre == true && match_categorias == true && match_docente == true){
+			$(".noResultsMsg").addClass("hide");
+		} else {
+			$(".noResultsMsg").removeClass("hide");
+		}
+	}
+	
 	</script>
 
   </body>

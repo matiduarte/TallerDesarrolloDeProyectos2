@@ -3,7 +3,7 @@ body {
 }
 
 .container{
-	width: 80%;
+	width: 1042px;
 }
 
 .newCourseButton{
@@ -34,6 +34,7 @@ body {
 
 table, th, td {
    border: 1px solid #009688;
+   width: 1012px;
 }
 
 .actionButtonImage{
@@ -111,7 +112,15 @@ hr {
 
 .searchInput {
     height: 36px;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid #009688;
+    width: 212px;
 }
 
+.noResultsMsg{
+	padding: 10px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #009968;
+    border-top: none;
+}

@@ -47,7 +47,7 @@ public class PrincipalAdminController extends HttpServlet {
     		List<Category> categorias = curso.getCategories();
     		//@Todo: ver mejor solucion para cuando no tiene docente asignado
     		User docente = new User();
-    		docente.setFirstName("");
+    		docente.setFirstName(" - ");
     		docente.setLastName("");
     		if (curso.getTeacherId() != null){
         		docente = User.getById( curso.getTeacherId() );
@@ -64,13 +64,9 @@ public class PrincipalAdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-    	
-    	System.out.print( "id:" + request.getParameter("id") );
-    	
+    	  	
     	Integer id_curso = Integer.parseInt( request.getParameter("id") );
-    	
-    	System.out.print( id_curso );
-    	
+    	    	
     	Course curso_a_eliminar = Course.getById( id_curso );
     	
     	if ( false == curso_a_eliminar.hasStudents() && false == curso_a_eliminar.hasStarted() ) {
