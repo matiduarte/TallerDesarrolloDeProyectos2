@@ -102,6 +102,10 @@ public class Course {
 	
 	
 	public static List<Course> getAll(){
+		return (List<Course>)StoreData.getByField(Course.class, "1", "1");
+	}
+
+	public static List<Course> getAllActive(){
 		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "1", "1");
 		List<Course> coursesFixed = new ArrayList<Course>();
 		for (Course course : courses) {
