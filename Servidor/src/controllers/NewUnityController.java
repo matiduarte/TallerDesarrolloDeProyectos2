@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import entities.CourseUnity;
 
 
@@ -53,13 +55,16 @@ public class NewUnityController extends HttpServlet {
     	CourseUnity courseUnity = null;
     	
 		if(request.getParameter("courseId") != null){
-			int courseId = Integer.valueOf(request.getParameter("courseId"));  
+			int courseId = Integer.valueOf(request.getParameter("courseId"));
+			HttpSession session = request.getSession(true);
 			if(request.getParameter("id") != null){
 				int id = Integer.valueOf(request.getParameter("id"));
 				courseUnity = CourseUnity.getById(id);
 				courseUnity.setId(id);
+				session.setAttribute("alertType", "edit");
 			}else{
 	   			courseUnity = new CourseUnity();
+	   			session.setAttribute("alertType", "create");
 			}
 			courseUnity.setCourseId(courseId);
    			courseUnity.setName(name);
