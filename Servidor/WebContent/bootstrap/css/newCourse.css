@@ -44,4 +44,7 @@ body {
 
 .ui-helper-hidden-accessible { display:none; }
 
-
+.tt-open{
+	background:white;
+	border: 1px solid;
+}
