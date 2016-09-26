@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "734573157851",
+    "project_id": "fiuba-cursos"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734573157851:android:44a706cf44e801f7",
+        "android_client_info": {
+          "package_name": "fiuba.tallerdeproyectos2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734573157851-49a536vc8tgli0tr5erapd93msn6l5j2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fiuba.tallerdeproyectos2",
+            "certificate_hash": "7B18C9462EADB0709D95E80374245B68D9F31039"
+          }
+        },
+        {
+          "client_id": "734573157851-db7vdcrdv7e4c376hqnelien0g9g8rp7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWvTVoydYYU0CljZKZGioR1eHgyqdGri8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

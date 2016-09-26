@@ -41,7 +41,13 @@ public class Category {
 		List<Category> result = new ArrayList<Category>();
 		for (Category category : categories) {
 			List<Course> courses = Course.getByCategoryId(category.getId());
-			category.setCourses(courses);
+			List<Course> coursesFixed = new ArrayList<Course>();
+			for (Course course : courses) {
+				if(course.getTeacherId() != null && course.hasActiveSession()){
+					coursesFixed.add(course);
+				}
+			}
+			category.setCourses(coursesFixed);
 			result.add(category);
 		}
 		

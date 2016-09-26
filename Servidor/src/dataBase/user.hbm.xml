@@ -15,6 +15,8 @@
     <property name="password"></property>
     <property name="email"></property>
     <property name="isActive"></property>
+    <property name="isStudent"></property>
+    <property name="source"></property>
     <property name="speciality"></property>
     <property name="isAdmin"></property>
     </class>  

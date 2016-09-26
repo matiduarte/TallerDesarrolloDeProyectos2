@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -65,11 +66,15 @@ public class SearchActivity extends AppCompatActivity {
                             JSONArray coursesData = new JSONArray(courses.getCoursesData());
                             for (int i=0; i<coursesData.length(); i++) {
                                 JSONObject coursesArray = new JSONObject(coursesData.getString(i));
-                                Object name = coursesArray.get("name");
-                                coursesList.add(name.toString());
+                                coursesList.add(coursesArray.getString("name"));
                             }
                         } else {
-                            coursesList.add(getString(R.string.search_category_no_results) + query + getString(R.string.search_name_no_results) + query);
+                            Intent homeIntent = new Intent(getApplicationContext(),MainActivity.class);
+                            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(homeIntent);
+                            finish();
+                            Toast.makeText(getApplicationContext(), R.string.search_no_results, Toast.LENGTH_LONG).show();
                         }
                         ArrayAdapter<String> courses = new ArrayAdapter<>(getApplicationContext(),R.layout.list_item,coursesList);
                         lv.setAdapter(courses);

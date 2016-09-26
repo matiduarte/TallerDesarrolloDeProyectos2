@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Educando</string>
+    <string name="facebook_app_id">1768939200040744</string>
+    <string name="fb_login_protocol_scheme">fb1768939200040744</string>
+
+    <string name="app_name">FIUBA Cursos</string>
     <string name="title_activity_main">Cursos</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -18,5 +21,24 @@
     <string name="txt_example_email">matias.carreras@gmail.com</string>
     <string name="search_category_no_results">"No hay cursos pertenecientes a la categoría "</string>
     <string name="search_name_no_results">" ni cuyos nombres contengan la palabra "</string>
+    <string name="search_no_results">"No se obtuvieron resultados."</string>
     <string name="search_title">Resultados de la Búsqueda</string>
+    <string name="facebook_cancel_login">Inicio de sesión con Facebook cancelado</string>
+    <string name="txt_certificates">Certificados</string>
+    <string name="txt_exit">Salir</string>
+    <string name="exit_dialog_txt">¿Estas seguro que quieres terminar la sesión?</string>
+    <string name="yes">Si</string>
+    <string name="No">No</string>
+    <string name="double_click_to_exit">Toca de nuevo para salir</string>
+    <string name="facebook_success_login">Ha iniciado sesión con Facebook correctamente!</string>
+    <string name="google_success_login">Ha iniciado sesión con Google correctamente!</string>
+    <string name="txt_teacher"><u>Docente:</u></string>
+    <string name="txt_teacher_example"> - </string>
+    <string name="txt_helpers"><u>Ayudantes:</u></string>
+    <string name="txt_helpers_example"> - </string>
+    <string name="units_title">UNIDADES</string>
+    <string name="txt_inscription"><u>Inscripción:</u></string>
+    <string name="txt_inscription_example">19/09 - 28/09</string>
+    <string name="txt_start_date_example">26/09/16</string>
+    <string name="txt_start_date"><u>Fecha de Inicio:</u></string>
 </resources>
