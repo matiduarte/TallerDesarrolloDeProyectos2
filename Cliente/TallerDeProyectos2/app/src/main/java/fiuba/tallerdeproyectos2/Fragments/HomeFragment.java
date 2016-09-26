@@ -24,9 +24,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fiuba.tallerdeproyectos2.Activities.CourseDetailsActivity;
 import fiuba.tallerdeproyectos2.Activities.MainActivity;
@@ -55,8 +57,17 @@ public class HomeFragment extends Fragment{
     private int lastExpandedPosition = -1;
     public String courseName;
     public Integer courseId;
-
+    List<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
     public HomeFragment() {}
+
+    public class CourseInfo{
+        public String id, name;
+
+        public CourseInfo(String id, String name){
+            this.id = id;
+            this.name = name;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,13 +95,13 @@ public class HomeFragment extends Fragment{
                         for (int i=0; i<allCategoriesCoursesData.length(); i++) {
                             JSONObject allCategoriesCoursesArray = new JSONObject(allCategoriesCoursesData.getString(i));
                             String categoryName = allCategoriesCoursesArray.getString("name");
-                            String courseId = allCategoriesCoursesArray.getString("id");
                             parentHeaderInformation.add(categoryName);
                             List<String> categoryCoursesList = new ArrayList<String>();
                             JSONArray coursesInCategoryData = new JSONArray(allCategoriesCoursesArray.getString("courses"));
                             for (int j=0; j<coursesInCategoryData.length(); j++) {
                                 JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                 categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                             }
                             childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
                         }
@@ -190,7 +201,11 @@ public class HomeFragment extends Fragment{
 
                 TextView tv= (TextView) v.findViewById(R.id.child_layout);
                 courseName = tv.getText().toString();
-                courseId = childPosition;
+                for (int i=0; i < courseInfo.size();i++){
+                    if(courseInfo.get(i).name == courseName){
+                        courseId = Integer.valueOf(courseInfo.get(i).id);
+                    }
+                }
                 navigateToCourseDetailsActivity();
                 return true;
             }
