@@ -134,7 +134,7 @@
 					<div class="alert alert-success" id="unitySucces" style="display:none;">
 			   			<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
 				  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
-					</div
+					</div>
 
 				     <label class="detail-label">Unidades:</label>
 				     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
