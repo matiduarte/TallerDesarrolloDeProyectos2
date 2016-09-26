@@ -61,6 +61,12 @@
 		  	Curso modificado satisfactoriamente!
 		</div>
 
+		<div class="alert alert-danger" id="saveErrorTeacher" style="display:none;">
+	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  	No se puede cambiar/eliminar el docente de un curso con sesion activa!
+		</div>
+		
+
       <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<% out.print(course.getId()); %>">
         <% 
@@ -193,6 +199,16 @@ $(".tt-input").attr("oninvalid", "return validateCategories(this)");
 		}
 %>
 
+<%
+		if(request.getAttribute("saveErrorTeacher") != null){
+%>
+			$("#saveErrorTeacher").show();
+<%
+		}
+%>
+
+
+
 //Teachers
 var availableTeachers = [
 <%
@@ -208,7 +224,12 @@ $("#inputTeacher").autocomplete({
  	source: availableTeachers,
  	 select: function (event, ui) {
          $("#teacherSelectedId").val(ui.item.id);
-     }
+     	},
+	change: function (event, ui) {
+		if($("#inputTeacher").val() == ""){
+         		$("#teacherSelectedId").val(0);
+		}
+     	},
 });
 
 </script>
