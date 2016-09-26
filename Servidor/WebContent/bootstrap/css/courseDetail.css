@@ -135,3 +135,12 @@ hr {
     height: 20px;
     padding: 0;
 }
+
+#sessionError{
+	width: 350px;
+}
+
+#sessionSucces{
+	width: 350px;
+}
+

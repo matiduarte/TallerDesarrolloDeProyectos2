@@ -16,6 +16,7 @@ public class Course {
 	private String name;
 	private String pictureUrl;
 	private Integer teacherId;
+	private String teacherName;
 	
 	private ArrayList<CourseSession> courseSessions;
 	private ArrayList<CourseUnity> courseUnities;
@@ -70,6 +71,13 @@ public class Course {
 		if(c != null){
 			c.setCourseSessions((ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId()));
 			c.setCourseUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(c.getId()));
+			
+			if(c.getTeacherId() != null){
+				User teacher = User.getById(c.getTeacherId());
+				if(teacher != null){
+					c.setTeacherName(teacher.getFirstName() + " " + teacher.getLastName());
+				}
+			}
 		}
 		return c;
 	}
@@ -80,7 +88,7 @@ public class Course {
 		
 		for (CourseCategory courseCategory : listOfCouseCategory) {
 			Course course = Course.getById(courseCategory.getCourseId());
-			if(course != null){
+			if(course != null && course.getTeacherId() != null && course.hasActiveSession()){
 				listOfCourses.add(course);
 			}
 		}
@@ -94,7 +102,15 @@ public class Course {
 	
 	
 	public static List<Course> getAll(){
-		return (List<Course>)StoreData.getByField(Course.class, "1", "1");
+		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "1", "1");
+		List<Course> coursesFixed = new ArrayList<Course>();
+		for (Course course : courses) {
+			if(course.getTeacherId() != null && course.hasActiveSession()){
+				coursesFixed.add(course);
+			}
+		}
+		
+		return coursesFixed;
 	}
 	
 	public void save(){
@@ -102,13 +118,20 @@ public class Course {
 	}
 	public static List<Course> search(String search) {
 		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "name", search);
+		List<Course> coursesFixed = new ArrayList<Course>();
+		for (Course course : courses) {
+			if(course.getTeacherId() != null && course.hasActiveSession()){
+				coursesFixed.add(course);
+			}
+		}
+		
 		List<Category> cateogries = Category.search(search);
 		for (Category category : cateogries) {
 			List<Course> categoryCourses = Course.getByCategoryId(category.getId());
 			//TODO: Validar si ya esta el curso en la lista
-			courses.addAll(categoryCourses);
+			coursesFixed.addAll(categoryCourses);
 		}
-		return courses;
+		return coursesFixed;
 	}
 	
 	public List<Category> getCategories(){
@@ -123,6 +146,23 @@ public class Course {
 		}
 		
 		return categories;
+	}
+	public boolean hasActiveSession() {
+		List<CourseSession> courseSessions = CourseSession.getByCourseId(this.getId());
+		if(courseSessions != null && !courseSessions.isEmpty()){
+			for (CourseSession courseSession : courseSessions) {
+				if(courseSession.isActive()){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public String getTeacherName() {
+		return teacherName;
+	}
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
 	}
 
 
