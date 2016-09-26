@@ -51,19 +51,19 @@ public class CourseListController extends HttpServlet {
 			
 			if (list.size() == 1){
 				request.setAttribute("col", "");
-				request.setAttribute("max", "max-height:270px");
+				request.setAttribute("max", "width:360px;height:270px;");
 				request.setAttribute("btn_ver", "btn_ver_1");
 				request.setAttribute("course", "btn_course_1");
 			}
 			if (list.size() == 2){
 				request.setAttribute("col", "col-xs-6");
-				request.setAttribute("max", "max-height:270px");
+				request.setAttribute("max", "width:360px;height:270px;");
 				request.setAttribute("btn_ver", "btn_ver_2");
 				request.setAttribute("course", "btn_course_2");
 			}
 			if (list.size() > 2){
 				request.setAttribute("col", "col-md-4");
-				request.setAttribute("max", "max-height:220px");
+				request.setAttribute("max", "width:290px;height:220px;");
 				request.setAttribute("btn_ver", "btn_ver_more");
 				request.setAttribute("course", "btn_course_more");
 			}
