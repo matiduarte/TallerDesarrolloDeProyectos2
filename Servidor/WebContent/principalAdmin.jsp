@@ -184,6 +184,7 @@
     	var match_nombre = false;
     	var match_categorias = false;
     	var match_docente = false;
+    	var hay_resultados = false;
 		// aplico filtro a cada uno de los cursos (cada fila de la tabla)
 		rows.filter( function() {
 			// recupero nombre, categorias y docente del curso
@@ -193,21 +194,24 @@
         	
         	if ( nombre_curso.indexOf( nombre_filtro ) > -1 || nombre_filtro.length == 0 ) {
         		match_nombre = true;
-        	}
+        	} else match_nombre = false;
 
         	if ( categorias_curso.indexOf( categorias_filtro ) > -1 || categorias_filtro.length == 0 ) {
         		match_categorias = true;
-        	}
+        	} else match_categorias = false
         	
         	
         	if ( docente_curso.indexOf( docente_filtro ) > -1 || docente_filtro.length == 0 ) {
         		match_docente = true;
-        	}
+        	} else match_docente = false
         	
-        	return ( match_nombre && match_categorias && match_docente );
+        	if ( match_nombre && match_categorias && match_docente ) {
+        		hay_resultados = true;
+        		return true;
+        	} else return false;
 		}).show();
 		debugger
-		if(match_nombre == true && match_categorias == true && match_docente == true){
+		if( hay_resultados ){
 			$(".noResultsMsg").addClass("hide");
 		} else {
 			$(".noResultsMsg").removeClass("hide");
