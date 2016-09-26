@@ -41,3 +41,11 @@ body {
 	height: 40px;
 	padding: 0px 0px;
 }
+
+.btnBuscar {
+	background-image: url('../img/delete.png');
+	background-size: 100% 100%;
+	width: 20px;
+	height: 20px;
+	padding: 0px 0px;
+}

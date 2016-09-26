@@ -61,14 +61,31 @@
   
     <div class="container">
     
-     <label id="btn_nuevo_curso" class="btn btn-primary btn-file newCourseButton">
-   	   Nuevo curso
-     </label>
+    <div class="row">
+        <div class="form-group label-floating span4">	
+        	<label class="control-label" for="inputNombre">Nombre</label>
+        	<input type="text" id="inputNombre" name="inputNombre" class="form-control">
+		</div>
+        <div class="form-group label-floating span4">	
+        	<label class="control-label" for="inputCategorias">Categorias</label>
+        	<input type="text" id="inputCategorias" name="inputCategorias" class="form-control">
+		</div>
+        <div class="form-group label-floating span4">	
+        	<label class="control-label" for="inputDocente">Docente</label>
+        	<input type="text" id="inputDocente" name="inputDocente" class="form-control">
+		</div>
+		
+		<button id="btn_buscar" name="btn_buscar" class="btn btnBuscar span4"></button>
+		
+	    <label id="btn_nuevo_curso" class="btn btn-primary btn-file newCourseButton span4">
+	  	   Nuevo curso
+	    </label>					
+    </div>
     <br>
     <br>
     <br>
      <div class="table-responsive">
-	  <table class="table tabla">
+	  <table id="tablaCursos" class="table tabla">
 	   <thead>
 	     <tr>
 	     	<th class="hide-col">id</th>
@@ -133,17 +150,12 @@
 		$('#id_a_borrar').text(curso_id);
 	}
 	
-	function borrarCurso() {
-		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
-		$('#id_a_borrar').text("FUCK");
-	}
-	
 	$("#confirmar_borrar").click(function(btn) {
 		var curso_id_a_borrar = document.getElementById("id_a_borrar").textContent;
 		
 		$.post('../cursos/admin', { id : curso_id_a_borrar });
 		
-		window.location.href = "/Servidor/cursos/admin"
+		window.location.href = window.location.href;
 		
 		});
 	
@@ -151,6 +163,40 @@
 		window.location.href = "/Servidor/newCourse";
 	});
 	
+	$("#btn_buscar").click( function () {
+		// recupero todos los cursos. me qedo con todas las filas de la tabla excepto la 1era que es el encabezado.
+		var rows = $("#tablaCursos").find("tr:not(:first)").hide();
+		
+		// recupero nombre, categorias y docente a filtrar
+		var nombre_filtro = $("#inputNombre").val().toLowerCase();
+		var categorias_filtro = $("#inputCategorias").val().toLowerCase();
+		var docente_filtro = $("#inputDocente").val().toLowerCase();
+		
+		// aplico filtro a cada uno de los cursos (cada fila de la tabla)
+		rows.filter( function() {
+			// recupero nombre, categorias y docente del curso
+			var nombre_curso = $(this).find("td:nth-child(2)").text().toLowerCase();
+			var categorias_curso = $(this).find("td:nth-child(4)").text().toLowerCase();
+        	var docente_curso = $(this).find("td:nth-child(5)").text().toLowerCase();
+        	
+        	var match_nombre = false;
+        	if ( nombre_curso.indexOf( nombre_filtro ) > -1 || nombre_filtro.length == 0 ) {
+        		match_nombre = true;
+        	}
+
+        	var match_categorias = false;
+        	if ( categorias_curso.indexOf( categorias_filtro ) > -1 || categorias_filtro.length == 0 ) {
+        		match_categorias = true;
+        	}
+        	
+        	var match_docente = false;
+        	if ( docente_curso.indexOf( docente_filtro ) > -1 || docente_filtro.length == 0 ) {
+        		match_docente = true;
+        	}
+        	
+        	return ( match_nombre && match_categorias && match_docente );
+		}).show();
+	})
 	</script>
 
   </body>
