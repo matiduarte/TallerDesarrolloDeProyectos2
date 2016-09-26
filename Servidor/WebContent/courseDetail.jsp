@@ -156,7 +156,7 @@
 					</div>
 				
 		<%	}
- 			request.getSession(true).setAttribute("alertType", null);
+ 				request.getSession(true).setAttribute("alertType", null);
 		}
 %>
 

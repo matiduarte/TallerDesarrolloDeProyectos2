@@ -43,6 +43,23 @@
 
 <div class="courses_list container">
 
+<%
+
+		if(request.getAttribute("noCourse") != null){
+%>
+
+	<div class="alerta alert alert-info">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>No posee cursos asignados por el momento!</strong>
+	</div>
+ 
+ <%
+
+		}	
+
+%>
+
+
   <div class="row">
   <c:forEach items="${list}" var="courses">
     <div class="${col}">
