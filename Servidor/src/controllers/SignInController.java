@@ -82,7 +82,11 @@ public class SignInController extends HttpServlet {
 				
 				HttpSession session = request.getSession(true);
 				session.setAttribute("user", user);
-				response.sendRedirect(request.getContextPath() + "/courselist");
+				if(user.getIsAdmin() != null && user.getIsAdmin()){
+					response.sendRedirect(request.getContextPath() + "/cursos/admin");
+				}else{
+					response.sendRedirect(request.getContextPath() + "/courselist");
+				}
 			}else{
 				processRequest(request, response);
 			}
