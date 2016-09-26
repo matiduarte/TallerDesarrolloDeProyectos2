@@ -132,9 +132,34 @@
 				<div class="tableUnityContainer">
 
 					<div class="alert alert-success" id="unitySucces" style="display:none;">
-			   			<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
+			   			-<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
 				  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
 					</div>
+
+					  <%
+
+		if(request.getSession(false).getAttribute("alertType") != null){
+			if (request.getSession(false).getAttribute("alertType") == "create"){
+%>
+
+					<div class="alert alert-success" id="unitySucces">
+			   			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
+					</div>
+ 
+ <%
+			} else {  %>
+				
+				<div class="alert alert-success" id="unitySucces">
+			   			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				  		<span id="unitySuccesMessage">Unidad modificada satisfactoriamente!</span>
+					</div>
+				
+		<%	}
+ 			request.getSession(true).setAttribute("alertType", null);
+		}
+%>
+
 
 				     <label class="detail-label">Unidades:</label>
 				     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
