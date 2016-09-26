@@ -55,6 +55,16 @@ public static User getByUserName(String userName){
 	return user;
 }
 
+public static User getByLastName(String lastName){
+	
+	List<?> list = StoreData.getByField(User.class, "lastName", lastName);
+	User user = null;
+	if(list.size() > 0){
+		user = (User)list.get(0);
+	}
+	return user;
+}
+
 public static User getByUserEmail(String email){
 	
 	List<?> list = StoreData.getByField(User.class, "email", email);

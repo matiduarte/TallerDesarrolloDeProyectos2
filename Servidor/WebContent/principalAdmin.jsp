@@ -65,7 +65,7 @@
     <div class="container">
 	<input type="text" id="searchName" class="searchInput" placeholder="Nombre">
 	<input type="text" id="searchCategory" class="searchInput" placeholder="Categorias">
-	<input type="text" id="searchDocente" class="searchInput" placeholder="Docente">
+	<input type="text" id="searchTeacher" class="searchInput" placeholder="Docente">
     	<button class="btn btn-raised btn-primary searchButton btnNew" onclick="search();">
 		<img  src="../images/search_icon.png" class="searchButtonImage" alt="Buscar" 
 	</button>
@@ -164,6 +164,13 @@
 
 	function createCourse(){
             window.location.href = "../newCourse";
+	}
+	
+	function search() {
+	    var searchName = $("#searchName").val();
+	    var searchCategory = $("#searchCategory").val();
+	    var searchTeacher = $("#searchTeacher").val();
+	    window.location.href = "../cursos/admin?nombre=" + searchName + "&categoria=" + searchCategory + "&docente=" + searchTeacher;	
 	}
 
 	</script>
