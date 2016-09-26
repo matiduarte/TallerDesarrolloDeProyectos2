@@ -1,3 +1,4 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!doctype html>
 <html lang="en-us">
@@ -16,7 +17,7 @@
 
 	<!-- Custom styles for this template -->
     <link href="bootstrap/css/signup.css" rel="stylesheet">
- 	
+ 
  	
  </head>
   <body>
@@ -51,7 +52,14 @@
 
   <div class="form-group label-floating">
     <label class="control-label" for="email">Email *</label>
-  <input class="form-control" id="email" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+    <c:choose>
+    	<c:when test="${email != NULL}">
+  <input class="form-control" id="email" name="email" type="email" value="${email}"pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+  </c:when>
+          <c:otherwise>
+            <input class="form-control" id="email" name="email" type="email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+          </c:otherwise>
+   </c:choose>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="password">Contraseña *</label>
@@ -62,12 +70,26 @@
   <input class="form-control" id="passwordconf" name="passwordconf" oninput="checkSamePass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="name">Nombre *</label>
-  <input class="form-control" id="name" name="name" type="text" required>
+  <label class="control-label" for="name">Nombre *</label>
+  <c:choose>
+    	<c:when test="${name != NULL}">
+    <input class="form-control" id="name" name="name" type="text" value="${name}" required>
+    </c:when>
+          <c:otherwise>
+              <input class="form-control" id="name" name="name" type="text" required>
+          </c:otherwise>
+   </c:choose>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="lastName">Apellido *</label>
-  <input class="form-control" id="lastName" name="lastName" type="text" required>
+    <c:choose>
+    	<c:when test="${lastName != NULL}">
+  <input class="form-control" id="lastName" name="lastName" type="text" value="${lastName}" required>
+  </c:when>
+          <c:otherwise>
+            <input class="form-control" id="lastName" name="lastName" type="text" required>
+            </c:otherwise>
+   </c:choose>
   </div>
   <div class="form-group label-floating">
     <label class="control-label" for="lastName">Especialidad</label>
@@ -87,7 +109,7 @@
 	
 	<script type='text/javascript'>
 
-	function volver(){	
+	function volver(){
 			window.location.href = "/Servidor/signin";
 	}
 	
@@ -106,10 +128,7 @@
 	        input.setCustomValidity('');
 	   }
 	}
-	
-	
 	</script>
-
-
+	
   </body>
 </html>

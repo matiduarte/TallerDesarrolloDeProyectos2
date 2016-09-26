@@ -68,12 +68,12 @@
     <url-pattern>/activacion/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>EditCourse</servlet-name>
-    <servlet-class>controllers.EditCourseController</servlet-class>
+    <servlet-name>Principal admin</servlet-name>
+    <servlet-class>controllers.PrincipalAdminController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>EditCourse</servlet-name>
-    <url-pattern>/editCourse/*</url-pattern>
+    <servlet-name>Principal admin</servlet-name>
+    <url-pattern>/cursos/admin/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>CourseDetail</servlet-name>
@@ -88,8 +88,17 @@
     <servlet-class>controllers.CourseListController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Activar usuario</servlet-name>
+    <servlet-name>Lista de Cursos</servlet-name>
     <url-pattern>/courselist/*</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>EditCourse</servlet-name>
+    <servlet-class>controllers.EditCourseController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditCourse</servlet-name>
+    <url-pattern>/editCourse/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>New Unity</servlet-name>
@@ -103,29 +112,29 @@
   <servlet>
 	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
 	<servlet-class>actions.SaveCourseSessionActionServlet</servlet-class>
-</servlet>
-<servlet-mapping>
+  </servlet>
+  <servlet-mapping>
 	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
 	<url-pattern>/SaveCourseSessionActionServlet/*</url-pattern>
-</servlet-mapping>
+  </servlet-mapping>
 
-<servlet>
+  <servlet>
 	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
 	<servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
-</servlet>
-<servlet-mapping>
+  </servlet>
+  <servlet-mapping>
 	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
 	<url-pattern>/DeleteCourseSessionActionServlet/*</url-pattern>
-</servlet-mapping>
+  </servlet-mapping>
 
-<servlet>
+  <servlet>
 	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
 	<servlet-class>actions.DeleteCourseUnityActionServlet</servlet-class>
-</servlet>
-<servlet-mapping>
+  </servlet>
+  <servlet-mapping>
 	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
 	<url-pattern>/DeleteCourseUnityActionServlet/*</url-pattern>
-</servlet-mapping>
+  </servlet-mapping>
 
   
 </web-app>
