@@ -16,6 +16,7 @@
     <property name="email"></property>
     <property name="isActive"></property>
     <property name="speciality"></property>
+    <property name="isAdmin"></property>
     </class>  
             
  </hibernate-mapping>  

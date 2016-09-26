@@ -17,6 +17,8 @@ private String password;
 private String email;
 private Boolean isActive;
 private String speciality;
+private Boolean isAdmin;
+
   
 public String getSpeciality() {
 	return speciality;
@@ -98,5 +100,11 @@ public Boolean getIsActive() {
 }  
 public void setIsActive(Boolean isActive) {  
     this.isActive = isActive;  
+}
+public Boolean getIsAdmin() {
+	return isAdmin;
+}
+public void setIsAdmin(Boolean isAdmin) {
+	this.isAdmin = isAdmin;
 }
 }  
