@@ -73,7 +73,7 @@
     	<br>
 	<br>
 	<div class="alert alert-success" id="deleteSucces" style="display:none;">
-		<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
+		<button onclick="$('#deleteSucces').hide()" class="close" aria-label="close">&times;</button>
   		<span id="deleteSuccesMessage">Curso borrado satisfactoriamente!</span>
 	</div>
 	<div class="tableCourseContainer">
