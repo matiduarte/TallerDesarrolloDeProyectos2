@@ -109,12 +109,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
                             android:id="@+id/course_helpers"
+                            android:visibility="gone"
                             android:text="@string/txt_helpers"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"
+                            android:visibility="gone"
                             android:id="@+id/course_helpers_name"
                             android:text="@string/txt_helpers_example"/>
 
@@ -189,6 +191,8 @@
                         android:textSize="20sp"
                         android:textStyle="bold|italic"
                         android:textColor="#ffffff"
+                        android:id="@+id/units_header"
+                        android:visibility="gone"
                         android:background="@color/colorPrimary"
                         android:text="@string/units_title" />
 

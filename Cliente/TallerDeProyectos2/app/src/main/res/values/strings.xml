@@ -32,13 +32,13 @@
     <string name="double_click_to_exit">Toca de nuevo para salir</string>
     <string name="facebook_success_login">Ha iniciado sesión con Facebook correctamente!</string>
     <string name="google_success_login">Ha iniciado sesión con Google correctamente!</string>
-    <string name="txt_teacher"><u>Docente:</u></string>
+    <string name="txt_teacher">Docente:</string>
     <string name="txt_teacher_example"> - </string>
-    <string name="txt_helpers"><u>Ayudantes:</u></string>
+    <string name="txt_helpers">Ayudantes:</string>
     <string name="txt_helpers_example"> - </string>
     <string name="units_title">UNIDADES</string>
-    <string name="txt_inscription"><u>Inscripción:</u></string>
+    <string name="txt_inscription">Inscripción:</string>
     <string name="txt_inscription_example">19/09 - 28/09</string>
     <string name="txt_start_date_example">26/09/16</string>
-    <string name="txt_start_date"><u>Fecha de Inicio:</u></string>
+    <string name="txt_start_date">Fecha de Inicio:</string>
 </resources>

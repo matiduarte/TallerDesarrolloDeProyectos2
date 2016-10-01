@@ -99,16 +99,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         collapsingToolbar.setTitle(courseData.getString("name"));
                         TextView courseDesc = (TextView) findViewById(R.id.course_description);
                         courseDesc.setText(courseData.getString("description"));
-                        Log.d("description", courseData.getString("description"));
-                        Log.d("name", courseData.getString("name"));
-
-                        Log.d("courseData", courseData.toString());
                         TextView teacherName = (TextView) findViewById(R.id.course_teacher_name);
-                        Log.d("teacherName", courseData.getString("teacherName"));
                         teacherName.setText(courseData.getString("teacherName"));
                         ImageView header = (ImageView) findViewById(R.id.header);
                         if(courseData.has("pictureUrl")) {
-                            new DownloadImageTask(header).execute("http://192.168.0.22:8080/Servidor/" + courseData.getString("pictureUrl"));
+                            new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
 
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
@@ -139,15 +134,18 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
 
                         JSONArray courseUnitiesData = new JSONArray(courseData.getString("courseUnities"));
-                        Log.d("courseUnities", courseUnitiesData.toString());
-                        for (int i=0; i<courseUnitiesData.length(); i++) {
-                            JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
-                            String unitName = courseUnitiesArray.getString("name");
-                            unitsTitle.add(unitName);
-                            List<String> unitContentList = new ArrayList<String>();
-                            String unitDesc = courseUnitiesArray.getString("description");
-                            unitContentList.add(unitDesc + "... (Ver contenido)");
-                            unitsContent.put(unitsTitle.get(i), unitContentList);
+                        if(courseUnitiesData.length() > 0){
+                            TextView unitsHeader = (TextView) findViewById(R.id.units_header);
+                            unitsHeader.setVisibility(View.VISIBLE);
+                            for (int i=0; i<courseUnitiesData.length(); i++) {
+                                JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
+                                String unitName = courseUnitiesArray.getString("name");
+                                unitsTitle.add(unitName);
+                                List<String> unitContentList = new ArrayList<String>();
+                                String unitDesc = courseUnitiesArray.getString("description");
+                                unitContentList.add(unitDesc + "... (Ver contenido)");
+                                unitsContent.put(unitsTitle.get(i), unitContentList);
+                            }
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();

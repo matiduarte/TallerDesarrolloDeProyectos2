@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final float INITIAL_ITEMS_COUNT = 1.0F;
     private LinearLayout mCarouselContainer;
@@ -58,6 +59,8 @@ public class HomeFragment extends Fragment{
     public String courseName;
     public Integer courseId;
     List<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
+    SwipeRefreshLayout swipeRefreshLayout;
+    ExpandableListViewAdapter expandableListViewAdapter;
     public HomeFragment() {}
 
     public class CourseInfo{
@@ -77,9 +80,7 @@ public class HomeFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        mCarouselContainer = (LinearLayout) rootView.findViewById(R.id.carousel);
+    public void onRefresh() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getCourses();
         call.enqueue(new Callback<ServerResponse>() {
@@ -88,6 +89,8 @@ public class HomeFragment extends Fragment{
                 try {
                     Boolean success =response.body().getSuccess();
                     if(success.equals(true)){
+                        parentHeaderInformation.clear();
+                        childContent.clear();
                         String data = response.body().getData();
                         Gson gson = new Gson();
                         Courses courses = gson.fromJson(data, Courses.class);
@@ -95,15 +98,17 @@ public class HomeFragment extends Fragment{
                         for (int i=0; i<allCategoriesCoursesData.length(); i++) {
                             JSONObject allCategoriesCoursesArray = new JSONObject(allCategoriesCoursesData.getString(i));
                             String categoryName = allCategoriesCoursesArray.getString("name");
-                            parentHeaderInformation.add(categoryName);
-                            List<String> categoryCoursesList = new ArrayList<String>();
                             JSONArray coursesInCategoryData = new JSONArray(allCategoriesCoursesArray.getString("courses"));
-                            for (int j=0; j<coursesInCategoryData.length(); j++) {
-                                JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
-                                categoryCoursesList.add(coursesInCategoryArray.getString("name"));
-                                courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
+                            if(coursesInCategoryData.length() > 0){
+                                parentHeaderInformation.add(categoryName);
+                                List<String> categoryCoursesList = new ArrayList<String>();
+                                for (int j=0; j<coursesInCategoryData.length(); j++) {
+                                    JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
+                                    categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                    courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
+                                }
+                                childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
                             }
-                            childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
                         }
 
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
@@ -144,7 +149,118 @@ public class HomeFragment extends Fragment{
 
                             imageItem = new ImageView(getActivity().getApplicationContext());
                             if(soonCoursesArray.has("pictureUrl")){
-                                new DownloadImageTask(imageItem).execute("http://192.168.0.22:8080/Servidor/" + soonCoursesArray.getString("pictureUrl"));
+                                new DownloadImageTask(imageItem).execute(ApiClient.BASE_URL + soonCoursesArray.getString("pictureUrl"));
+                            } else {
+                                imageItem.setImageResource(R.drawable.default_image);
+                            }
+                            imageItem.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
+                            linearLayoutChild.addView(imageItem);
+
+                            linearLayoutTitle.addView(linearLayoutChild);
+                            linearLayoutParent.addView(linearLayoutTitle);
+                            linearLayoutParent.setId(Integer.parseInt(soonCoursesArray.getString("id")));
+
+                            linearLayoutParent.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    courseId = view.getId();
+                                    navigateToCourseDetailsActivity();
+                                }
+                            });
+
+                            mCarouselContainer.addView(linearLayoutParent);
+                        }
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, e.getLocalizedMessage());
+                }
+                expandableListViewAdapter.refresh(parentHeaderInformation, childContent);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse>call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        mCarouselContainer = (LinearLayout) rootView.findViewById(R.id.carousel);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ServerResponse> call = apiService.getCourses();
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
+                try {
+                    Boolean success =response.body().getSuccess();
+                    if(success.equals(true)){
+                        String data = response.body().getData();
+                        Gson gson = new Gson();
+                        Courses courses = gson.fromJson(data, Courses.class);
+                        JSONArray allCategoriesCoursesData = new JSONArray(courses.getAllCategories());
+                        for (int i=0; i<allCategoriesCoursesData.length(); i++) {
+                            JSONObject allCategoriesCoursesArray = new JSONObject(allCategoriesCoursesData.getString(i));
+                            String categoryName = allCategoriesCoursesArray.getString("name");
+                            JSONArray coursesInCategoryData = new JSONArray(allCategoriesCoursesArray.getString("courses"));
+                            if(coursesInCategoryData.length() > 0){
+                                parentHeaderInformation.add(categoryName);
+                                List<String> categoryCoursesList = new ArrayList<String>();
+                                for (int j=0; j<coursesInCategoryData.length(); j++) {
+                                    JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
+                                    categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                    courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
+                                }
+                                childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
+                            }
+                        }
+
+                        JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
+                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        final int width = (int) (displayMetrics.widthPixels / INITIAL_ITEMS_COUNT) - 25;
+                        ImageView imageItem;
+                        TextView titleTex,descTex;
+                        for (int i=0; i<soonCoursesData.length(); i++) {
+                            JSONObject soonCoursesArray = new JSONObject(soonCoursesData.getString(i));
+
+                            LinearLayout linearLayoutParent = new LinearLayout(getActivity().getApplicationContext());
+                            linearLayoutParent.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                            linearLayoutParent.setOrientation(LinearLayout.VERTICAL);
+                            linearLayoutParent.setBackgroundResource(R.drawable.shadow);
+
+                            LinearLayout linearLayoutTitle = new LinearLayout(getActivity().getApplicationContext());
+                            linearLayoutTitle.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
+                            linearLayoutTitle.setOrientation(LinearLayout.VERTICAL);
+
+                            LinearLayout linearLayoutChild = new LinearLayout(getActivity().getApplicationContext());
+                            linearLayoutChild.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+                            titleTex = new TextView(getActivity().getApplicationContext());
+                            titleTex.setText(soonCoursesArray.getString("name"));
+                            titleTex.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            titleTex.setPadding(30, 20, 30, 20);
+                            titleTex.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
+
+                            linearLayoutTitle.addView(titleTex);
+
+                            descTex = new TextView(getActivity().getApplicationContext());
+                            descTex.setText(soonCoursesArray.getString("description"));
+                            descTex.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                            descTex.setPadding(30, 30, 30, 30);
+                            descTex.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
+
+                            linearLayoutChild.addView(descTex);
+
+                            imageItem = new ImageView(getActivity().getApplicationContext());
+                            if(soonCoursesArray.has("pictureUrl")){
+                                new DownloadImageTask(imageItem).execute(ApiClient.BASE_URL + soonCoursesArray.getString("pictureUrl"));
                             } else {
                                 imageItem.setImageResource(R.drawable.default_image);
                             }
@@ -177,8 +293,13 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableList);
-        ExpandableListViewAdapter expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated (View view, Bundle savedInstanceState) {
+        expandableListView = (ExpandableListView) view.findViewById(R.id.expandableList);
+        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
         expandableListView.setAdapter(expandableListViewAdapter);
         expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
 
@@ -210,12 +331,6 @@ public class HomeFragment extends Fragment{
                 return true;
             }
         });
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
