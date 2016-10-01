@@ -95,15 +95,17 @@ public class HomeFragment extends Fragment{
                         for (int i=0; i<allCategoriesCoursesData.length(); i++) {
                             JSONObject allCategoriesCoursesArray = new JSONObject(allCategoriesCoursesData.getString(i));
                             String categoryName = allCategoriesCoursesArray.getString("name");
-                            parentHeaderInformation.add(categoryName);
-                            List<String> categoryCoursesList = new ArrayList<String>();
                             JSONArray coursesInCategoryData = new JSONArray(allCategoriesCoursesArray.getString("courses"));
-                            for (int j=0; j<coursesInCategoryData.length(); j++) {
-                                JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
-                                categoryCoursesList.add(coursesInCategoryArray.getString("name"));
-                                courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
+                            if(coursesInCategoryData.length() > 0){
+                                parentHeaderInformation.add(categoryName);
+                                List<String> categoryCoursesList = new ArrayList<String>();
+                                for (int j=0; j<coursesInCategoryData.length(); j++) {
+                                    JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
+                                    categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                    courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
+                                }
+                                childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
                             }
-                            childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
                         }
 
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
@@ -144,7 +146,7 @@ public class HomeFragment extends Fragment{
 
                             imageItem = new ImageView(getActivity().getApplicationContext());
                             if(soonCoursesArray.has("pictureUrl")){
-                                new DownloadImageTask(imageItem).execute("http://192.168.0.22:8080/Servidor/" + soonCoursesArray.getString("pictureUrl"));
+                                new DownloadImageTask(imageItem).execute(ApiClient.BASE_URL + soonCoursesArray.getString("pictureUrl"));
                             } else {
                                 imageItem.setImageResource(R.drawable.default_image);
                             }
@@ -177,7 +179,12 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableList);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated (View view, Bundle savedInstanceState) {
+        expandableListView = (ExpandableListView) view.findViewById(R.id.expandableList);
         ExpandableListViewAdapter expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
         expandableListView.setAdapter(expandableListViewAdapter);
         expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
@@ -210,12 +217,6 @@ public class HomeFragment extends Fragment{
                 return true;
             }
         });
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
