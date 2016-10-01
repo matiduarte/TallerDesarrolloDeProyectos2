@@ -99,4 +99,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    public void refresh(List<String> childParent, HashMap<String, List<String>> child) {
+        this.parentDataSource = childParent;
+        this.childDataSource = child;
+        notifyDataSetChanged();
+    }
+
 }
