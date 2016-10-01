@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -116,6 +118,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
+                            Date today = calendar.getTime();
+                            if(startDate.before(today)){
+                                Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
+                                inscriptionButton.setVisibility(View.VISIBLE);
+                            }
                             calendar.setTime(startDate);
                             calendar.add(Calendar.DAY_OF_YEAR, -7);
                             Date startInscriptionDate = calendar.getTime();
@@ -241,6 +248,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public void onInscriptionButtonClick(View view){
+        Toast.makeText(getApplicationContext(), "Click en inscribirse", Toast.LENGTH_LONG).show();
     }
 
 }
