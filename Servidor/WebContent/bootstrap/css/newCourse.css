@@ -48,3 +48,17 @@ body {
 	background:white;
 	border: 1px solid;
 }
+
+.ui-autocomplete {
+  background: #FFFFFF;
+  border: 1px solid;
+  border-color: #009688;
+  max-height: 100px;
+  width: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ui-state-hover {
+   background: #000000;
+}
