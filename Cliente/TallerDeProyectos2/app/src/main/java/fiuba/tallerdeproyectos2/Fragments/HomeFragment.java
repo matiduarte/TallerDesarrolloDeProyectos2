@@ -1,20 +1,16 @@
 package fiuba.tallerdeproyectos2.Fragments;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.DisplayMetrics;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -23,24 +19,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.InputStream;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import fiuba.tallerdeproyectos2.Activities.CourseDetailsActivity;
-import fiuba.tallerdeproyectos2.Activities.MainActivity;
-import fiuba.tallerdeproyectos2.Activities.SessionManagerActivity;
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
+import fiuba.tallerdeproyectos2.Adapters.RecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.Courses;
+import fiuba.tallerdeproyectos2.Models.CoursesCardViewData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
-import fiuba.tallerdeproyectos2.Utilities.Utilities;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,25 +39,24 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final float INITIAL_ITEMS_COUNT = 1.0F;
-    private LinearLayout mCarouselContainer;
     private ExpandableListView expandableListView;
     private List<String> parentHeaderInformation;
     HashMap<String, List<String>> childContent;
     private static final String TAG = HomeFragment.class.getSimpleName();
-    final DisplayMetrics displayMetrics = new DisplayMetrics();
     private int lastExpandedPosition = -1;
     public String courseName;
     public Integer courseId;
-    List<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
+    List<CourseInfo> courseInfo = new ArrayList<>();
     SwipeRefreshLayout swipeRefreshLayout;
     ExpandableListViewAdapter expandableListViewAdapter;
+    private RecyclerView.Adapter adapter;
+    ArrayList soonCourses = new ArrayList<>();
     public HomeFragment() {}
 
     public class CourseInfo{
         public String id, name;
 
-        public CourseInfo(String id, String name){
+        CourseInfo(String id, String name){
             this.id = id;
             this.name = name;
         }
@@ -75,8 +65,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parentHeaderInformation = new ArrayList<String>();
-        childContent = new HashMap<String, List<String>>();
+        parentHeaderInformation = new ArrayList<>();
+        childContent = new HashMap<>();
     }
 
     @Override
@@ -110,65 +100,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
                             }
                         }
-
+                        String pictureUrl;
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
-                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                        final int width = (int) (displayMetrics.widthPixels / INITIAL_ITEMS_COUNT) - 25;
-                        ImageView imageItem;
-                        TextView titleTex,descTex;
-                        for (int i=0; i<soonCoursesData.length(); i++) {
+                        for (int i=0; i< soonCoursesData.length(); i++) {
                             JSONObject soonCoursesArray = new JSONObject(soonCoursesData.getString(i));
-
-                            LinearLayout linearLayoutParent = new LinearLayout(getActivity().getApplicationContext());
-                            linearLayoutParent.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                            linearLayoutParent.setOrientation(LinearLayout.VERTICAL);
-                            linearLayoutParent.setBackgroundResource(R.drawable.shadow);
-
-                            LinearLayout linearLayoutTitle = new LinearLayout(getActivity().getApplicationContext());
-                            linearLayoutTitle.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
-                            linearLayoutTitle.setOrientation(LinearLayout.VERTICAL);
-
-                            LinearLayout linearLayoutChild = new LinearLayout(getActivity().getApplicationContext());
-                            linearLayoutChild.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                            titleTex = new TextView(getActivity().getApplicationContext());
-                            titleTex.setText(soonCoursesArray.getString("name"));
-                            titleTex.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                            titleTex.setPadding(30, 20, 30, 20);
-                            titleTex.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
-
-                            linearLayoutTitle.addView(titleTex);
-
-                            descTex = new TextView(getActivity().getApplicationContext());
-                            descTex.setText(soonCoursesArray.getString("description"));
-                            descTex.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                            descTex.setPadding(30, 30, 30, 30);
-                            descTex.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
-
-                            linearLayoutChild.addView(descTex);
-
-                            imageItem = new ImageView(getActivity().getApplicationContext());
+                            pictureUrl = "";
                             if(soonCoursesArray.has("pictureUrl")){
-                                new DownloadImageTask(imageItem).execute(ApiClient.BASE_URL + soonCoursesArray.getString("pictureUrl"));
-                            } else {
-                                imageItem.setImageResource(R.drawable.default_image);
+                                pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
-                            imageItem.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
-                            linearLayoutChild.addView(imageItem);
-
-                            linearLayoutTitle.addView(linearLayoutChild);
-                            linearLayoutParent.addView(linearLayoutTitle);
-                            linearLayoutParent.setId(Integer.parseInt(soonCoursesArray.getString("id")));
-
-                            linearLayoutParent.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    courseId = view.getId();
-                                    navigateToCourseDetailsActivity();
-                                }
-                            });
-
-                            mCarouselContainer.addView(linearLayoutParent);
+                            CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
+                            soonCourses.add(i, obj);
                         }
                     }
                 } catch (JSONException e) {
@@ -188,7 +129,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        mCarouselContainer = (LinearLayout) rootView.findViewById(R.id.carousel);
+
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -222,64 +167,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                         }
 
+                        String pictureUrl;
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
-                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                        final int width = (int) (displayMetrics.widthPixels / INITIAL_ITEMS_COUNT) - 25;
-                        ImageView imageItem;
-                        TextView titleTex,descTex;
-                        for (int i=0; i<soonCoursesData.length(); i++) {
+                        for (int i=0; i< soonCoursesData.length(); i++) {
                             JSONObject soonCoursesArray = new JSONObject(soonCoursesData.getString(i));
-
-                            LinearLayout linearLayoutParent = new LinearLayout(getActivity().getApplicationContext());
-                            linearLayoutParent.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                            linearLayoutParent.setOrientation(LinearLayout.VERTICAL);
-                            linearLayoutParent.setBackgroundResource(R.drawable.shadow);
-
-                            LinearLayout linearLayoutTitle = new LinearLayout(getActivity().getApplicationContext());
-                            linearLayoutTitle.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
-                            linearLayoutTitle.setOrientation(LinearLayout.VERTICAL);
-
-                            LinearLayout linearLayoutChild = new LinearLayout(getActivity().getApplicationContext());
-                            linearLayoutChild.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                            titleTex = new TextView(getActivity().getApplicationContext());
-                            titleTex.setText(soonCoursesArray.getString("name"));
-                            titleTex.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                            titleTex.setPadding(30, 20, 30, 20);
-                            titleTex.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
-
-                            linearLayoutTitle.addView(titleTex);
-
-                            descTex = new TextView(getActivity().getApplicationContext());
-                            descTex.setText(soonCoursesArray.getString("description"));
-                            descTex.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                            descTex.setPadding(30, 30, 30, 30);
-                            descTex.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
-
-                            linearLayoutChild.addView(descTex);
-
-                            imageItem = new ImageView(getActivity().getApplicationContext());
+                            pictureUrl = "";
                             if(soonCoursesArray.has("pictureUrl")){
-                                new DownloadImageTask(imageItem).execute(ApiClient.BASE_URL + soonCoursesArray.getString("pictureUrl"));
-                            } else {
-                                imageItem.setImageResource(R.drawable.default_image);
+                                pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
-                            imageItem.setLayoutParams(new LinearLayout.LayoutParams(width / 2, 300));
-                            linearLayoutChild.addView(imageItem);
-
-                            linearLayoutTitle.addView(linearLayoutChild);
-                            linearLayoutParent.addView(linearLayoutTitle);
-                            linearLayoutParent.setId(Integer.parseInt(soonCoursesArray.getString("id")));
-
-                            linearLayoutParent.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    courseId = view.getId();
-                                    navigateToCourseDetailsActivity();
-                                }
-                            });
-
-                            mCarouselContainer.addView(linearLayoutParent);
+                            CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
+                            soonCourses.add(i, obj);
                         }
                     }
                 } catch (JSONException e) {
@@ -292,6 +189,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Log.e(TAG, t.toString());
             }
         });
+
+        adapter = new RecyclerViewAdapter(soonCourses);
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }
@@ -347,28 +247,18 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         startActivity(intent);
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.i(" Clicked on Item ", String.valueOf(position));
+                TextView tv = (TextView) v.findViewById(R.id.course_id);
+                courseId = Integer.valueOf(tv.getText().toString());
+                navigateToCourseDetailsActivity();
             }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+        });
     }
+
 }

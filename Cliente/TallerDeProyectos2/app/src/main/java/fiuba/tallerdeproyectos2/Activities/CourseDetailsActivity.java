@@ -1,7 +1,6 @@
 package fiuba.tallerdeproyectos2.Activities;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -10,15 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,9 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
-import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
 import fiuba.tallerdeproyectos2.Models.CourseData;
-import fiuba.tallerdeproyectos2.Models.Search;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
@@ -51,12 +44,10 @@ import retrofit2.Response;
 
 public class CourseDetailsActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbar;
-    private Integer itemId;
     private ExpandableListView expandableListView;
-    private List<String> unitsTitle = new ArrayList<String>();
-    HashMap<String, List<String>> unitsContent = new HashMap<String, List<String>>();
+    private List<String> unitsTitle = new ArrayList<>();
+    HashMap<String, List<String>> unitsContent = new HashMap<>();
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
     private int lastExpandedPosition = -1;
 
@@ -66,9 +57,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         Intent intent = getIntent();
-        itemId = intent.getIntExtra("courseId", 0);
+        Integer itemId = intent.getIntExtra("courseId", 0);
 
-        toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -141,7 +132,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
                                 String unitName = courseUnitiesArray.getString("name");
                                 unitsTitle.add(unitName);
-                                List<String> unitContentList = new ArrayList<String>();
+                                List<String> unitContentList = new ArrayList<>();
                                 String unitDesc = courseUnitiesArray.getString("description");
                                 unitContentList.add(unitDesc + "... (Ver contenido)");
                                 unitsContent.put(unitsTitle.get(i), unitContentList);
@@ -198,10 +189,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
