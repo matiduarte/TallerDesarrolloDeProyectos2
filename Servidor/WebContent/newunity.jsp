@@ -16,7 +16,14 @@
 
 	<!-- Custom styles for this template -->
     <link href="bootstrap/css/newunity.css" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" href="bootstrap/js/trumbowyg/dist/ui/trumbowyg.min.css">
  	
+ 	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.0.min.js"><\/script>')</script>
+ 	<script src="bootstrap/js/trumbowyg/dist/trumbowyg.min.js"></script>
+ 	<script type="text/javascript" src="bootstrap/js/trumbowyg/dist/langs/es.min.js"></script>
  	
  </head>
   <body>
@@ -37,41 +44,44 @@
 <c:if test="${id != NULL}">
   <input type="hidden" name="id" value="${id}">
 </c:if>
-
-  <div class="form-group label-floating">
-    <label class="control-label" for="name">Nombre</label>
-    <c:choose>
-    	<c:when test="${name != NULL}">
-  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
-  </c:when>
-          <c:otherwise>
-          <input class="form-control" id="name" name="name" type="text" required>
-          </c:otherwise>
-   </c:choose>
-  </div>
-  <div class="form-group label-floating">
-    <label class="control-label" for="lastName">Descripción</label>
-    <c:choose>
-    	<c:when test="${description != NULL}">
-  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
-  </c:when>
-          <c:otherwise>
-          <input class="form-control" id="description" name="description" type="text" required>
-          </c:otherwise>
-   </c:choose>
+<div class="unityFirstBlock">
+	  <div class="form-group label-floating">
+	    <label class="control-label" for="name">Nombre</label>
+	    <c:choose>
+	    	<c:when test="${name != NULL}">
+	  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
+	  </c:when>
+	          <c:otherwise>
+	          <input class="form-control" id="name" name="name" type="text" required>
+	          </c:otherwise>
+	   </c:choose>
+	  </div>
+	  <div class="form-group label-floating">
+	    <label class="control-label" for="lastName">Descripción</label>
+	    <c:choose>
+	    	<c:when test="${description != NULL}">
+	  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
+	  </c:when>
+	          <c:otherwise>
+	          <input class="form-control" id="description" name="description" type="text" required>
+	          </c:otherwise>
+	   </c:choose>
+	  </div>
+	  
+	  <div id="htmlEditor" name="htmlEditor"></div>
   </div>
  <c:choose>
     	<c:when test="${id != NULL}">
-  		<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
-  </c:when>
-          <c:otherwise>
-  <button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
+  			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
+  		</c:when>
+		<c:otherwise>
+			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
           </c:otherwise>
    </c:choose>
    <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
 	</form>
 
-	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+	<!-- <script src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/js/ripples.min.js"></script>
 	<script src="bootstrap/js/material.min.js"></script>
@@ -83,6 +93,20 @@
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
 	}	
+	
+	$( document ).ready(function() {
+		$("#htmlEditor").trumbowyg(
+		{
+		    lang: 'es'
+		});
+		
+		<% 
+		if(request.getAttribute("html") != null ){%>
+			$("#htmlEditor").trumbowyg("html", '<% out.print(request.getAttribute("html")); %>');
+		<%} %>
+	});
+	
+	
 	
 	</script>
   </body>
