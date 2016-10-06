@@ -309,7 +309,7 @@
     		
     		$("#sessionSuccesMessage")[0].innerHTML = "Sesion modificada satisfactoriamente!";
     		$("#sessionSucces").show();
-    	}
+    	}   	
     	
     	function addNewSessionRow(session){
     		$('#tableSession tr:last').after("<tr id='tr_session_" + session.id + "'>"+
@@ -326,7 +326,23 @@
     	
     		$("#sessionSuccesMessage")[0].innerHTML = "Sesion creada satisfactoriamente!";
     		$("#sessionSucces").show();
+    		
+    		ordenarTabla();
     	}
+    	
+    	function ordenarTabla() {
+	    	var tbody = $('#tableSession');
+	    	tbody.find('tr:not(:first)').sort(function(a,b){ 
+	    	    var tda = $(a).find('td:eq(1)').text();
+	    	    var tdb = $(b).find('td:eq(1)').text();
+	    	            // if a < b return 1
+	    	    return tda > tdb ? 1 
+	    	           // else if a > b return -1
+	    	           : tda < tdb ? -1 
+	    	           // else they are equal - return 0    
+	    	           : 0;           
+	    	}).appendTo(tbody);
+    	}     	
     	
     	function deleteSessionRow(sessionId){
     		$("#tr_session_" + sessionId).remove();
