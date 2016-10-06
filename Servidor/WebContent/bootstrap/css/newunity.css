@@ -6,7 +6,7 @@ body {
 .register{
 	margin: 0 auto;
 	padding-top: 40px;
-	width: 60%;
+	width: 80%;
 }
 
 .btn-back{
@@ -14,5 +14,42 @@ body {
 }
 
 .unityFirstBlock{
-	width: 50%;
+	width: 45%;
+	float: left;
+}
+
+.unitySecondBlock{
+	width: 45%;
+	float: right;
+}
+
+.tg  {border-collapse:collapse;border-spacing:0; width: 100%; text-align: center;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
+.tg .tg-yw4l{vertical-align:top}
+
+table, th, td {
+   border: 1px solid #009688;
+}
+
+.actionButtonImage{
+	height: 20px;
+    width: 20px;
+}
+
+.btnAction{
+	width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+.detail-label{
+	color: #009688;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.addVideoButton{
+	float:right;
 }
