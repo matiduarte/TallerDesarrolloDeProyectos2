@@ -52,16 +52,8 @@
 	
 		
     <div class="container">
-    	<div class="staticInfoContainer">
-			<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
-		       <% 
-			String pictureUrl = "images/photo_upload.png";
-			if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
-				pictureUrl = course.getPictureUrl(); 
-			} %>
-			<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
-		
-		    <div>
+    	<div class="row">
+		    <div class="col-md-6">
 			   	<div>
 			    	<label class="detail-label">Nombre:</label>
 			    	<label class="detail-value"><% out.print(course.getName()); %></label>
@@ -78,8 +70,16 @@
 			    	<label class="detail-label">Categorias:</label>
 			    	<label class="detail-value"><% out.print(request.getAttribute("categories")); %></label>
 				</div>
-		     
-		     </div>   
+		     </div>
+	    	<div class="col-md-6">
+				<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
+			       <% 
+				String pictureUrl = "images/photo_upload.png";
+				if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+					pictureUrl = course.getPictureUrl(); 
+				} %>
+				<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
+			</div>		     
 	     </div>
 	     </br>
 	     </br>
