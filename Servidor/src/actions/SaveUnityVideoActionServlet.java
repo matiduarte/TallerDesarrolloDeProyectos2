@@ -90,9 +90,12 @@ public class SaveUnityVideoActionServlet extends HttpServlet {
             
             unity.setVideoUrl(urlPath + fileName);
             unity.save();
+            
+            File file = new File(path + fileName);
+            unity.setVideoSize((int) file.length());
         }
     	
-    	String json = new Gson().toJson(new  ServiceResponse(true, "Video agregado", ""));
+        String json = new Gson().toJson(unity);
     	response.setContentType("application/json");
     	response.setCharacterEncoding("UTF-8"); 
     	response.getWriter().write(json); 

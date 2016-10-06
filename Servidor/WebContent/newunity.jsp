@@ -84,7 +84,7 @@
 		    <th class="tg-zyzu">Acciones</th>
 		  </tr>
 
-		 	<tr id="tr_video_">
+		 	<!-- <tr id="tr_video_">
 			    <td class="tg-yw4l">
 			    	Algun nombre
 			    </td>
@@ -103,7 +103,7 @@
 						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 					</button>
 			    </td>
-		  </tr>
+		  </tr> -->
 	</table>
   
   </div>
@@ -118,6 +118,33 @@
    </c:choose>
    <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
 	</form>
+	
+	<div id="subtitlePopup">
+		<label class="labelPopup" id="popupSessionTitle">Agregar subtítulo</label>
+		<br/>
+		
+		<div class="form-group label-floating inputSessionDate">	
+			<label class="control-label" id="labelDate" for="sessionDate">Idioma:</label>
+			<select class="form-control" id="sel1">
+			    <option>Español</option>
+			    <option>Inglés</option>
+			    <option>Portugués</option>
+		  </select>
+		</div>
+		
+		<label class="btn btn-primary btn-raised btn-file">
+			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".srt">
+		</label>
+		
+		<br/>
+		<br/>
+		<hr>
+		
+		<div class="popupButtonsContainer">
+			<button class="btn btnPopup" type="submit" onclick="hideSubtitlePopup();">Cancelar</button>
+			<button class="btn btnPopup" type="submit" onclick="saveSubtitle()">Guardar</button>
+		</div>
+	</div>
 
 	<!-- <script src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
@@ -156,7 +183,7 @@
             processData: false
 		})
 		 .done(function( data, textStatus, jqXHR ) {
-			 //Cargar row
+			 loadVideoRow(data);
 		 })
 		 .fail(function( jqXHR, textStatus, errorThrown ) {
 		     if ( console && console.log ) {
@@ -166,6 +193,37 @@
 		
 		
 	}
+	
+	function loadVideoRow(data){
+		row = '<tr id="tr_video_"><td class="tg-yw4l">'
+    	+ data.videoUrl
+   	 	+'</td><td class="tg-yw4l">'
+    	+ ""
+    	+ '<button class="btn btnAction" type="button" onclick="showSubtitlePopup()"><img  src="images/delete_icon.png" class="actionButtonImage" alt="Agregar subtitulo" >'
+    	+ '</td><td class="tg-yw4l">'
+    	+ getFileSizeFromBytes(data.videoSize) + '</td><td class="tg-yw4l"><button class="btn btnAction" type="button" onclick="$(\'#video\').click()"><img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" ></button>'
+    	+ '<button class="btn btnAction" type="button" onclick=""><img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
+		+ '</button></td></tr>';
+		
+		if($('#tr_video_').length){
+			$('#tr_video_').empty();	
+		}
+		
+		$('#tableVideo tr:last').after(row);
+	}
+	
+	function getFileSizeFromBytes(size){
+		return Math.round((size*100) / (1024*1024)) / 100 + " mb";
+	}
+	
+	function showSubtitlePopup(){
+		$("#subtitlePopup").show();
+	}
+	
+	function hideSubtitlePopup(){
+		$("#subtitlePopup").show();
+	}
+	
 	
 	function fileValidated(input){
 		var ext = $('#video').val().split('.').pop().toLowerCase();

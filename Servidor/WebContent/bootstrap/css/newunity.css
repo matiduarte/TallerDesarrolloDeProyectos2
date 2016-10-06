@@ -53,3 +53,44 @@ table, th, td {
 .addVideoButton{
 	float:right;
 }
+
+#subtitlePopup{
+	box-shadow: 1px 3px 11px 2px #999;
+    z-index: 1000;
+    width: 300px;
+    height: 240px;
+    position: absolute;
+    background: white;
+    left: 540px;
+    top: 305px;
+    display: none;
+}
+
+#subtitlePopup .btnPopup{
+	font-size: smaller;
+    color: #009688;
+    font-weight: bold;
+    width: 80px;
+    padding: 0 5px 5px 5px;
+}
+
+.labelPopup{
+	color: #009688;
+	margin-top: 5px;
+    margin-left: 10px;
+}
+
+
+.inputSessionDate{
+	width: 60%;
+    float: left;
+    margin-left: 10px;
+}
+
+hr {
+    margin: 8px;
+}
+
+.popupButtonsContainer{
+	float: right;
+}
