@@ -67,7 +67,10 @@
 	          </c:otherwise>
 	   </c:choose>
 	  </div>
-	  
+	  <div class="form-group label-floating">
+	    <label class="control-label" for="questions">Cantidad de Preguntas</label>
+	    <input class="form-control" id="questions" name="questions" type="text" required>
+	    </div>
 	  <div id="htmlEditor" name="htmlEditor"></div>
   </div>
   <div class="unitySecondBlock">
@@ -105,7 +108,40 @@
 			    </td>
 		  </tr> -->
 	</table>
-  
+	<div class="blockQuestions">
+  <label class="detail-label">Preguntas:</label>
+     <label class="btn btn-raised btn-primary addVideoButton btnNew" >
+     	Agregar preguntas <input type="file" style="display: none;" id="question" name="question" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
+     </label>
+     
+     <table class="tg" id="tableQuestions">
+		  <tr>
+		    <th class="tg-zyzu">Pregunta</th>
+		    <th class="tg-zyzu">Acciones</th>
+		  </tr>
+
+		 	<!-- <tr id="tr_video_">
+			    <td class="tg-yw4l">
+			    	Algun nombre
+			    </td>
+			    <td class="tg-yw4l">
+			    	Sub
+			    </td>
+			    <td class="tg-yw4l">
+			    	10 mb
+			    </td>
+			    <td class="tg-yw4l">
+			    	<button class="btn btnAction" type="submit" onclick="">
+						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+					</button>
+					
+					<button class="btn btnAction" type="submit" onclick="">
+						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+					</button>
+			    </td>
+		  </tr> -->
+	</table>
+	</div>
   </div>
   
  <c:choose>
