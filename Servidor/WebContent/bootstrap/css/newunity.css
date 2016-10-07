@@ -63,7 +63,7 @@ table, th, td {
     background: white;
     left: 540px;
     top: 305px;
-    display: none;
+    /* display: none; */
 }
 
 #subtitlePopup .btnPopup{
@@ -72,6 +72,17 @@ table, th, td {
     font-weight: bold;
     width: 80px;
     padding: 0 5px 5px 5px;
+}
+
+.addSubtitleButtonImage{
+	height:25px;
+	width: 25px;
+}
+
+.btnAddSubtitle{
+	height:25px;
+	width: 25px;
+	padding: 0;
 }
 
 .labelPopup{

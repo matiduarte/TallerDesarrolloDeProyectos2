@@ -133,9 +133,10 @@
 		</div>
 		
 		<label class="btn btn-primary btn-raised btn-file">
-			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".srt">
+			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".srt" onchange="loadSubtitle();">
 		</label>
-		
+		<span id="subtitleNameContainer">
+		</span>
 		<br/>
 		<br/>
 		<hr>
@@ -167,7 +168,7 @@
 		
 		var formData = new FormData();
 		formData.append('unityId', unityId);
-		formData.append('video', $('input[type=file]')[0].files[0]);
+		formData.append('video', $("#video")[0].files[0]);
 		// Main magic with files here
 		
 		$.ajax({
@@ -191,7 +192,6 @@
 		     }
 		});
 		
-		
 	}
 	
 	function loadVideoRow(data){
@@ -199,7 +199,7 @@
     	+ data.videoUrl
    	 	+'</td><td class="tg-yw4l">'
     	+ ""
-    	+ '<button class="btn btnAction" type="button" onclick="showSubtitlePopup()"><img  src="images/delete_icon.png" class="actionButtonImage" alt="Agregar subtitulo" >'
+    	+ '<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">'
     	+ '</td><td class="tg-yw4l">'
     	+ getFileSizeFromBytes(data.videoSize) + '</td><td class="tg-yw4l"><button class="btn btnAction" type="button" onclick="$(\'#video\').click()"><img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" ></button>'
     	+ '<button class="btn btnAction" type="button" onclick=""><img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
@@ -221,9 +221,47 @@
 	}
 	
 	function hideSubtitlePopup(){
-		$("#subtitlePopup").show();
+		$("#subtitlePopup").hide();
 	}
 	
+	function loadSubtitle(){
+		$("#subtitleNameContainer").html($("#subtitle")[0].files[0].name);
+	}
+	
+	function saveSubtitle(){
+		var unityId = "0";
+		if($('#id') != undefined){
+			unityId = $('#id').val();
+		}
+		
+		var formData = new FormData();
+		formData.append('unityId', unityId);
+		formData.append('subtitle', $("#subtitle")[0].files[0]);
+		formData.append('language', $("#subtitle")[0].files[0]);
+		// Main magic with files here
+		
+		$.ajax({
+		    data: formData,
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviará la solicitud Ajax
+		    url: "SaveVideoSubtitleActionServlet",
+		    cache: false,
+            contentType: false,
+            processData: false
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 loadVideoRow(data);
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
+		
+	}
 	
 	function fileValidated(input){
 		var ext = $('#video').val().split('.').pop().toLowerCase();
