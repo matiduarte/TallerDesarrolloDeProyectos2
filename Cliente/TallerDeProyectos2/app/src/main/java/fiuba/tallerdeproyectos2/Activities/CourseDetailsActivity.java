@@ -157,6 +157,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         adapter = new UnitRecyclerViewAdapter(units);
                         recyclerView.setAdapter(adapter);
 
+                        ((UnitRecyclerViewAdapter) adapter).setOnItemClickListener(new UnitRecyclerViewAdapter.MyClickListener() {
+                            @Override
+                            public void onItemClick(int position, View v) {
+                                Log.i(" Clicked on Item ", String.valueOf(position));
+                                TextView tv = (TextView) v.findViewById(R.id.unit_id);
+                                navigateToUnitDetailsActivity();
+                            }
+                        });
+
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
                     }
