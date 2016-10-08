@@ -2,17 +2,16 @@ package fiuba.tallerdeproyectos2.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
+import android.os.Handler;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import fiuba.tallerdeproyectos2.Models.Search;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
@@ -37,11 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onError(FacebookException e) {
                 Log.e(TAG, "Facebook error:" + e.getMessage());
                 Utilities.appendToErrorLog(TAG, "Facebook error:" + e.getMessage());
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.facebook_login_error, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -186,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         } else {
             Log.d(TAG, "Google Failed");
             Utilities.appendToDebugLog(TAG, "Google Failed");
-            Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.google_login_failed, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -204,18 +199,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Utilities.appendToDebugLog(TAG, "Google connection failed:" + connectionResult);
     }
 
-    private void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Loading");
-            progressDialog.setIndeterminate(true);
-        }
-        progressDialog.show();
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
-    private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.hide();
-        }
-    }
 }
