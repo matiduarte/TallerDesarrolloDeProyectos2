@@ -130,11 +130,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -190,6 +185,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerViewAdapter(soonCourses);
         recyclerView.setAdapter(adapter);
 

@@ -69,7 +69,7 @@ public class CoursesFragment extends Fragment {
         ArrayList results = new ArrayList<CoursesCardViewData>();
         for (int index = 0; index < 20; index++) {
             CoursesCardViewData obj = new CoursesCardViewData("Algoritmos y Programacion I",
-                    ApiClient.BASE_URL + "Files/Course/11/img_oficina_de_proyectos_4.jpg", String.valueOf(index));
+                    "Files/Course/11/img_oficina_de_proyectos_4.jpg", String.valueOf(index));
             results.add(index, obj);
         }
         return results;
