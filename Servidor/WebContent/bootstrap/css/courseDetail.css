@@ -147,3 +147,7 @@ hr {
 	width: 350px;
 }
 
+.no-visible{
+	display: none;
+}
+

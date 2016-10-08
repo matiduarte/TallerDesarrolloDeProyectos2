@@ -84,8 +84,8 @@
 	     </br>
 	     </br>
 	     
-	     <div>
-	     	<div class="tableSessionContainer">
+	     <div class="row">
+	     	<div class="tableSessionContainer col-md-6">
 	     		<div class="alert alert-danger" id="sessionError" style="display:none;">
 			   		<button onclick="$('#sessionError').hide()" class="close" aria-label="close">&times;</button>
 				  	<span id="sessionErrorMessage">La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente</span>
@@ -101,7 +101,7 @@
 			     
 			     <table class="tg" id="tableSession">
 					  <tr>
-					    <th class="tg-zyzu">Id</th>
+					    <th class="tg-zyzu no-visible">Id</th>
 					    <th class="tg-zyzu">Fecha de inicio</th>
 					    <th class="tg-zyzu">Acciones</th>
 					  </tr>
@@ -109,7 +109,7 @@
 						 for (CourseSession courseSession: courseSessions)
 						 { %>
 						 	<tr id="tr_session_<%  out.print(courseSession.getId()); %>">
-							    <td class="tg-yw4l">
+							    <td class="tg-yw4l no-visible">
 							    	<%  out.print(courseSession.getId()); %>
 							    </td>
 							    <td class="tg-yw4l">
@@ -128,71 +128,69 @@
 						<%}%>
 				</table>
 			</div>
-			<div>
-				<div class="tableUnityContainer">
+			<div class="tableUnityContainer col-md-6">
 
-					<div class="alert alert-success" id="unitySucces" style="display:none;">
-			   			-<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
-				  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
-					</div>
-
-					  <%
-
-		if(request.getSession(false).getAttribute("alertType") != null){
-			if (request.getSession(false).getAttribute("alertType") == "create"){
-%>
-
-					<div class="alert alert-success" id="unitySucces">
-			   			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
-					</div>
- 
- <%
-			} else {  %>
-				
-				<div class="alert alert-success" id="unitySucces">
-			   			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				  		<span id="unitySuccesMessage">Unidad modificada satisfactoriamente!</span>
-					</div>
-				
-		<%	}
- 				request.getSession(true).setAttribute("alertType", null);
-		}
-%>
-
-
-				     <label class="detail-label">Unidades:</label>
-				     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
-				     
-				     <table class="tg">
-						  <tr>
-						    <th class="tg-zyzu">Id</th>
-						    <th class="tg-zyzu">Nombre</th>
-						    <th class="tg-zyzu">Acciones</th>
-						  </tr>
-						   <%ArrayList<CourseUnity> courseUnities = (java.util.ArrayList)request.getAttribute("courseUnities");
-							 for (CourseUnity courseUnity: courseUnities)
-							 { %>
-							 	<tr id="tr_unity_<%  out.print(courseUnity.getId()); %>">
-								    <td class="tg-yw4l">
-								    	<%  out.print(courseUnity.getId()); %>
-								    </td>
-								    <td class="tg-yw4l">
-								    	<%  out.print(courseUnity.getName()); %>
-								    </td>
-								    <td class="tg-yw4l">
-								    	<button class="btn btnAction" type="submit" onclick="editUnity(<%  out.print(courseUnity.getId()); %>)">
-											<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
-										</button>
-										
-										<button class="btn btnAction" type="submit" onclick="deleteUnity(<%  out.print(courseUnity.getId()); %>)">
-											<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
-										</button>
-								    </td>
-							  </tr>
-							<%}%>
-					</table>
+				<div class="alert alert-success" id="unitySucces" style="display:none;">
+		   			-<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
+			  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
 				</div>
+
+				  <%
+
+	if(request.getSession(false).getAttribute("alertType") != null){
+		if (request.getSession(false).getAttribute("alertType") == "create"){
+%>
+
+				<div class="alert alert-success" id="unitySucces">
+		   			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
+				</div>
+
+<%
+		} else {  %>
+			
+			<div class="alert alert-success" id="unitySucces">
+		   			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			  		<span id="unitySuccesMessage">Unidad modificada satisfactoriamente!</span>
+				</div>
+			
+	<%	}
+				request.getSession(true).setAttribute("alertType", null);
+	}
+%>
+
+
+			     <label class="detail-label">Unidades:</label>
+			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
+			     
+			     <table class="tg">
+					  <tr>
+					    <th class="tg-zyzu no-visible">Id</th>
+					    <th class="tg-zyzu">Nombre</th>
+					    <th class="tg-zyzu">Acciones</th>
+					  </tr>
+					   <%ArrayList<CourseUnity> courseUnities = (java.util.ArrayList)request.getAttribute("courseUnities");
+						 for (CourseUnity courseUnity: courseUnities)
+						 { %>
+						 	<tr id="tr_unity_<%  out.print(courseUnity.getId()); %>">
+							    <td class="tg-yw4l no-visible">
+							    	<%  out.print(courseUnity.getId()); %>
+							    </td>
+							    <td class="tg-yw4l">
+							    	<%  out.print(courseUnity.getName()); %>
+							    </td>
+							    <td class="tg-yw4l">
+							    	<button class="btn btnAction" type="submit" onclick="editUnity(<%  out.print(courseUnity.getId()); %>)">
+										<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+									</button>
+									
+									<button class="btn btnAction" type="submit" onclick="deleteUnity(<%  out.print(courseUnity.getId()); %>)">
+										<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+									</button>
+							    </td>
+						  </tr>
+						<%}%>
+				</table>
 			</div>
 		</div>
 	     
@@ -228,6 +226,8 @@
     </div> <!-- /container -->
     
     <script type="text/javascript">
+    
+	    $(document).ready( ordenarTabla() );
     
     	$.datepicker.regional.es = {
     		closeText: "Cerrar",
