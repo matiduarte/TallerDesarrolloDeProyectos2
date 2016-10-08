@@ -3,11 +3,8 @@ package fiuba.tallerdeproyectos2.Activities;
 import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,11 +28,9 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 
@@ -53,12 +48,7 @@ public class MainActivity extends AppCompatActivity
 
     Fragment fragment;
     FragmentManager fragmentManager;
-    private DrawerLayout drawer;
-    private Toolbar toolbar;
-    private NavigationView navigationView;
-    private ActionBarDrawerToggle toggle;
     boolean doubleBackToExitPressedOnce = false;
-    private GoogleApiClient googleApiClient;
     SessionManagerActivity session;
     HashMap<String, String> user;
 
@@ -66,17 +56,17 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
         };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         fragment = new HomeFragment();
@@ -117,7 +107,7 @@ public class MainActivity extends AppCompatActivity
             showExitDialog();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 
         item.setChecked(true);
         setTitle(item.getTitle());
@@ -184,10 +174,6 @@ public class MainActivity extends AppCompatActivity
         if (dialog.getTag().equals("exit")) {
             Log.i("User", "exit");
             Utilities.appendToInfoLog("User", "exit");
-            if (googleApiClient != null && googleApiClient.isConnected()) {
-                signOut();
-                googleApiClient.disconnect();
-            }
 
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             if(accessToken != null){
@@ -205,14 +191,6 @@ public class MainActivity extends AppCompatActivity
     public void showExitDialog() {
         DialogFragment dialog = new ExitFragment();
         dialog.show(getFragmentManager(), "exit");
-    }
-
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback( new ResultCallback<Status>() {
-            @Override
-            public void onResult(Status status) {
-            }
-        });
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

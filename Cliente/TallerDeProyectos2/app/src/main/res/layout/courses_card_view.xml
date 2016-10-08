@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="10dp"
+        card_view:cardUseCompatPadding="true" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:id="@+id/course_image"
+            android:layout_height="match_parent"
+            android:src="@drawable/default_image"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/image_of_the_course"/>
+
+        <TextView
+            android:id="@+id/course_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="bottom"
+            android:background="#CC009688"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:id="@+id/course_icon_inscripted"
+            android:layout_height="45dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/ic_bookmark_white"
+            android:visibility="gone"
+            android:contentDescription="@string/identification_for_inscripted_courses"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_id"
+            android:visibility="gone"/>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

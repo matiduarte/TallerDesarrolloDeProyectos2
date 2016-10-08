@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:background="#ffffff">
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="300dp"
         android:layout_height="fill_parent"
         android:text="New Text"
         android:textSize="16sp"
@@ -14,5 +15,13 @@
         android:padding="10dip"
         android:textColor="@color/colorPrimaryDark"
         android:id="@+id/child_layout" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_gravity="right"
+        android:visibility="gone"
+        android:background="@drawable/ic_bookmark"/>
 
 </LinearLayout>
