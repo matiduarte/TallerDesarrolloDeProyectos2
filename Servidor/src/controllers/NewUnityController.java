@@ -40,6 +40,7 @@ public class NewUnityController extends HttpServlet {
 				CourseUnity courseUnity = CourseUnity.getById(id);
 				request.setAttribute("name", courseUnity.getName());
 				request.setAttribute("description", courseUnity.getDescription());
+				request.setAttribute("html", courseUnity.getHtml());
 			} 
 		}
 		getServletConfig().getServletContext().getRequestDispatcher("/newunity.jsp").forward(request,response);
@@ -52,6 +53,7 @@ public class NewUnityController extends HttpServlet {
 		
 		String name = request.getParameter("name");
     	String description = request.getParameter("description");
+    	String html = request.getParameter("htmlEditor");
     	CourseUnity courseUnity = null;
     	
 		if(request.getParameter("courseId") != null){
@@ -69,6 +71,7 @@ public class NewUnityController extends HttpServlet {
 			courseUnity.setCourseId(courseId);
    			courseUnity.setName(name);
    			courseUnity.setDescription(description);
+   			courseUnity.setHtml(html);
 			courseUnity.save();
 		}
 		
