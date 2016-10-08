@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="bootstrap/img/icono.ico">
-    <title>Detalles del curso</title>
+    <title>Editar curso</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-material-design.min.css" rel="stylesheet">
@@ -42,7 +42,7 @@
 	    <div class="navbar-header">
 	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
 	      </button>
-	      <a class="navbar-brand" href="javascript:void(0)">Detalles del curso</a>
+	      <a class="navbar-brand" href="javascript:void(0)">Editar curso</a>
 	    </div>
 	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
 	    </div>
