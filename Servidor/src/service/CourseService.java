@@ -53,9 +53,10 @@ public class CourseService {
 	public ServiceResponse getCourse(@PathParam("id") int id){
 		Course course = Course.getById(id);	 
 		if (course != null){
-			ArrayList<CourseSession> courseSessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(course.getId());
+			//ArrayList<CourseSession> courseSessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(course.getId());
 			ArrayList<CourseUnity> courseUnities= ((ArrayList<CourseUnity>) CourseUnity.getByCourseId(course.getId()));
 			
+			course.setCourseUnities(courseUnities);
 	    	JSONObject jo = new JSONObject();
 			try {
 				Gson g = new Gson();
