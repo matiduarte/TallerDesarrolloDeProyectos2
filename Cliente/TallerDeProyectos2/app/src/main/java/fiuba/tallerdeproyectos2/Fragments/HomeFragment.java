@@ -194,6 +194,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
+        expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableList);
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getCourses();
         call.enqueue(new Callback<ServerResponse>() {
@@ -222,6 +224,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                         }
 
+                        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
+                        expandableListView.setAdapter(expandableListViewAdapter);
+                        expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
+
+                        String pictureUrl;
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
                         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                         final int width = (int) (displayMetrics.widthPixels / INITIAL_ITEMS_COUNT) - 25;
@@ -281,6 +288,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                             mCarouselContainer.addView(linearLayoutParent);
                         }
+
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, e.getLocalizedMessage());
@@ -292,16 +300,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Log.e(TAG, t.toString());
             }
         });
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
-        expandableListView = (ExpandableListView) view.findViewById(R.id.expandableList);
-        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
-        expandableListView.setAdapter(expandableListViewAdapter);
-        expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -331,6 +329,12 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 return true;
             }
         });
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated (View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
