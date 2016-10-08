@@ -81,3 +81,8 @@ body {
 	background-color: #009688;
 	white-space:normal;
 }
+
+.nopadding {
+   padding: 0;
+   margin: 0;
+}

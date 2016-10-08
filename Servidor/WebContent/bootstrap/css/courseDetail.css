@@ -15,7 +15,7 @@
 	float: right;
     width: 400px;
     height: 250px;
-    margin-top: -16px;
+    margin-top: 10px;
 }
 
 
@@ -48,14 +48,17 @@ table, th, td {
 
 .tableSessionContainer{
 	float: left;
+	margin: 10px;
 }
 
 .tableUnityContainer{
 	float: right;
+	margin: 10px;
 }
 
 .staticInfoContainer{
-	height: 210px;
+	height: auto;
+	width: auto;
 }
 
 .btnNew{

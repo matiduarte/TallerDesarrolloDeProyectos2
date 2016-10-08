@@ -52,16 +52,8 @@
 	
 		
     <div class="container">
-    	<div class="staticInfoContainer">
-			<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
-		       <% 
-			String pictureUrl = "images/photo_upload.png";
-			if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
-				pictureUrl = course.getPictureUrl(); 
-			} %>
-			<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
-		
-		    <div>
+    	<div class="row">
+		    <div class="col-md-6">
 			   	<div>
 			    	<label class="detail-label">Nombre:</label>
 			    	<label class="detail-value"><% out.print(course.getName()); %></label>
@@ -78,8 +70,16 @@
 			    	<label class="detail-label">Categorias:</label>
 			    	<label class="detail-value"><% out.print(request.getAttribute("categories")); %></label>
 				</div>
-		     
-		     </div>   
+		     </div>
+	    	<div class="col-md-6">
+				<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
+			       <% 
+				String pictureUrl = "images/photo_upload.png";
+				if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
+					pictureUrl = course.getPictureUrl(); 
+				} %>
+				<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
+			</div>		     
 	     </div>
 	     </br>
 	     </br>
@@ -309,7 +309,7 @@
     		
     		$("#sessionSuccesMessage")[0].innerHTML = "Sesion modificada satisfactoriamente!";
     		$("#sessionSucces").show();
-    	}
+    	}   	
     	
     	function addNewSessionRow(session){
     		$('#tableSession tr:last').after("<tr id='tr_session_" + session.id + "'>"+
@@ -326,7 +326,23 @@
     	
     		$("#sessionSuccesMessage")[0].innerHTML = "Sesion creada satisfactoriamente!";
     		$("#sessionSucces").show();
+    		
+    		ordenarTabla();
     	}
+    	
+    	function ordenarTabla() {
+	    	var tbody = $('#tableSession');
+	    	tbody.find('tr:not(:first)').sort(function(a,b){ 
+	    	    var tda = $(a).find('td:eq(1)').text();
+	    	    var tdb = $(b).find('td:eq(1)').text();
+	    	            // if a < b return 1
+	    	    return tda > tdb ? 1 
+	    	           // else if a > b return -1
+	    	           : tda < tdb ? -1 
+	    	           // else they are equal - return 0    
+	    	           : 0;           
+	    	}).appendTo(tbody);
+    	}     	
     	
     	function deleteSessionRow(sessionId){
     		$("#tr_session_" + sessionId).remove();

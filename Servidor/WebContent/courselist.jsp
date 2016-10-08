@@ -60,10 +60,10 @@
 %>
 
 
-  <div class="row">
+  <div class="row nopadding">
   <c:forEach items="${list}" var="courses">
-    <div class="${col}">
-    	<div id="img_container">
+    <div class="${col} nopadding">
+    	<div id="img_container" class="nopadding">
     	<span class="my_badge ${course} badge">${courses.getName()}</span>
     	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
