@@ -66,7 +66,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         int itemId = intent.getIntExtra("courseId", 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
-        toolbar.setTitleTextColor(Color.BLACK);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -138,6 +137,10 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if(courseUnitiesData.length() > 0){
                             TextView unitsHeader = (TextView) findViewById(R.id.units_header);
                             unitsHeader.setVisibility(View.VISIBLE);
+                            View topLine = findViewById(R.id.top_line);
+                            topLine.setVisibility(View.VISIBLE);
+                            View bottomLine = findViewById(R.id.bottom_line);
+                            bottomLine.setVisibility(View.VISIBLE);
                             for (int i=0; i<courseUnitiesData.length(); i++) {
                                 JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
 
