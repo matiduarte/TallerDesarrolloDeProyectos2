@@ -313,7 +313,7 @@
     	
     	function addNewSessionRow(session){
     		$('#tableSession tr:last').after("<tr id='tr_session_" + session.id + "'>"+
-    				"<td class='tg-yw4l'>" +
+    				"<td class='tg-yw4l no-visible'>" +
 	    				session.id +
 	    			"</td><td class='tg-yw4l'>" +
 	    				session.date +
@@ -333,12 +333,16 @@
     	function ordenarTabla() {
 	    	var tbody = $('#tableSession');
 	    	tbody.find('tr:not(:first)').sort(function(a,b){ 
-	    	    var tda = $(a).find('td:eq(1)').text();
-	    	    var tdb = $(b).find('td:eq(1)').text();
+	    	    var fecha1_con_espacios = $(a).find('td:eq(1)').text();
+	    	    var fecha2_con_espacios = $(b).find('td:eq(1)').text();
+	    	    
+	    	    var fecha1 = $.trim(fecha1_con_espacios);
+	    	    var fecha2 = $.trim(fecha2_con_espacios);
+				
 	    	            // if a < b return 1
-	    	    return tda > tdb ? 1 
+	    	    return fecha1 > fecha2 ? 1 
 	    	           // else if a > b return -1
-	    	           : tda < tdb ? -1 
+	    	           : fecha1 < fecha2 ? -1 
 	    	           // else they are equal - return 0    
 	    	           : 0;           
 	    	}).appendTo(tbody);
