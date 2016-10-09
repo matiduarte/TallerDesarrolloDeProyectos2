@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import javax.servlet.http.Part;
 
@@ -53,5 +54,22 @@ public class FileUtil{
             }
         }
         return null;
+    }
+    
+    public static ArrayList<String> getFileNamesInDirectory(String path){
+    	ArrayList<String> result = new ArrayList<String>();
+    	
+    	File folder = new File(path);
+    	File[] listOfFiles = folder.listFiles();
+		
+    	for (int i = 0; i < listOfFiles.length; i++) {
+		     if (listOfFiles[i].isFile()) {
+		       result.add(listOfFiles[i].getName());
+		     } else if (listOfFiles[i].isDirectory()) {
+		       //Do nothing
+		     }
+		}
+    	
+    	return result;
     }
 }

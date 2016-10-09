@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
+<%@ page import="java.util.ArrayList" %>
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
@@ -61,7 +62,7 @@
 	   </c:choose>
 	  </div>
 	  <div class="form-group label-floating">
-	    <label class="control-label" for="lastName">Descripción</label>
+	    <label class="control-label" for="lastName">Descripci&oacute;n</label>
 	    <c:choose>
 	    	<c:when test="${description != NULL}">
 	  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
@@ -86,20 +87,25 @@
      <table class="tg" id="tableVideo">
 		  <tr>
 		    <th class="tg-zyzu">Video</th>
-		    <th class="tg-zyzu">Subtítulos</th>
-		    <th class="tg-zyzu">Tamaño</th>
+		    <th class="tg-zyzu">Subt&iacute;�tulos</th>
+		    <th class="tg-zyzu">Tama&ntilde;o</th>
 		    <th class="tg-zyzu">Acciones</th>
 		  </tr>
-
-		 	<!-- <tr id="tr_video_">
+			<%if(request.getAttribute("videUrl") != null) {%>
+		 	<tr id="tr_video_">
 			    <td class="tg-yw4l">
-			    	Algun nombre
+			    	<%  out.print(request.getAttribute("videUrl")); %>
 			    </td>
 			    <td class="tg-yw4l">
-			    	Sub
+			    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
+					 for (String subtitle: subtitles)
+					 { 
+						 out.print("<a class='subtitleLabel' onclick='showSubtitlePopup()'>" + subtitle + "</a><br/>");
+					 }%>
+			    	<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">
 			    </td>
 			    <td class="tg-yw4l">
-			    	10 mb
+			    	<%  out.print(request.getAttribute("videoSize")); %>
 			    </td>
 			    <td class="tg-yw4l">
 			    	<button class="btn btnAction" type="submit" onclick="">
@@ -110,7 +116,8 @@
 						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 					</button>
 			    </td>
-		  </tr> -->
+		  </tr>
+		  <%} %>
 	</table>
 	<div class="blockQuestions">
   <label class="detail-label">Preguntas:</label>
@@ -157,26 +164,24 @@
    <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" style="display: none;" type="button">Cancelar</button>
 	</form>
 	
-	<!-- div id="subtitlePopup">
-		<label class="labelPopup" id="popupSessionTitle">Agregar subtítulo</label>
+	<div id="subtitlePopup">
+		<label class="labelPopup" id="popupSessionTitle">Agregar subt&iacute;tulo</label>
 		<br/>
 		
 		<div class="form-group label-floating inputSessionDate">	
-			<label class="control-label" id="labelDate" for="sessionDate">Idioma:</label>
-			<select class="form-control" id="sel1">
-			    <option>Español</option>
-			    <option>Inglés</option>
-			    <option>Portugués</option>
+			<label class="control-label" id="labelLanguage" for="language">Idioma:</label>
+			<select class="form-control" id="language">
+			    <option>Espa&ntilde;ol</option>
+			    <option>Ingl�s</option>
+			    <option>Portugu�s</option>
 		  </select>
 		</div>
 		
 		<label class="btn btn-primary btn-raised btn-file">
 			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".srt" onchange="loadSubtitle();">
 		</label>
-		<span id="subtitleNameContainer">
-		</span>
-		<br/>
-		<br/>
+		<div id="subtitleNameContainer">
+		</div>
 		<hr>
 		
 		<div class="popupButtonsContainer">
@@ -184,7 +189,7 @@
 			<button class="btn btnPopup" type="submit" onclick="saveSubtitle()">Guardar</button>
 		</div>
 		
-	</div-->
+	</div>
 	
 	<div id="addQuestionPopup" class="modal">
   <div class="modal-dialog">
@@ -394,7 +399,7 @@
 		var formData = new FormData();
 		formData.append('unityId', unityId);
 		formData.append('subtitle', $("#subtitle")[0].files[0]);
-		formData.append('language', $("#subtitle")[0].files[0]);
+		formData.append('language', encodeURIComponent($("#language").val()));
 		// Main magic with files here
 		
 		$.ajax({
@@ -410,7 +415,7 @@
             processData: false
 		})
 		 .done(function( data, textStatus, jqXHR ) {
-			 loadVideoRow(data);
+			 //loadVideoRow(data);
 		 })
 		 .fail(function( jqXHR, textStatus, errorThrown ) {
 		     if ( console && console.log ) {

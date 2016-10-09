@@ -67,7 +67,7 @@ table, th, td {
     background: white;
     left: 540px;
     top: 305px;
-    /* display: none; */
+    display: none;
 }
 
 
@@ -132,4 +132,14 @@ hr {
 
 .popupButtonsContainer{
 	float: right;
+}
+
+#subtitleNameContainer{
+	height: 20px;
+    width: 100%;
+}
+
+.subtitleLabel{
+	text-decoration: underline;
+	cursor: pointer;
 }

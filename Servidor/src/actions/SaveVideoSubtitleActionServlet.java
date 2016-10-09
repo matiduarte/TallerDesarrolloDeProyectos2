@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +21,7 @@ import entities.CourseSession;
 import entities.CourseUnity;
 import entities.User;
 import service.ServiceResponse;
+import utils.FileUtil;
 
 /**
  * Servlet implementation class SignInController
@@ -46,72 +48,25 @@ public class SaveVideoSubtitleActionServlet extends HttpServlet {
     throws ServletException, IOException {   
     	int unityId = Integer.valueOf(request.getParameter("unityId"));
     	final Part filePart = request.getPart("subtitle");
-    	String language = request.getParameter("language");
+    	String language = URLDecoder.decode(request.getParameter("language"), "UTF-8");
     	
-    	CourseUnity unity = CourseUnity.getById(unityId);
+    	//CourseUnity unity = CourseUnity.getById(unityId);
     	if(!(unityId > 0)){
     		//TODO: ver que hacer
     	}
     	
-    	final String path = "WebContent/Files/CourseUnity/" + unityId + "/";
-        final String urlPath = "Files/CourseUnity/" + unityId + "/";
-        final String fileName = getFileName(filePart);
+    	final String path = "WebContent/Files/CourseUnity/" + unityId + "/Subtitles/";
+        final String urlPath = "Files/CourseUnity/" + unityId + "/Subtitles/";
+        final String fileName = language;
         if(!(fileName.compareTo("") == 0)){
-
-            OutputStream out = null;
-            InputStream filecontent = null;
-            
-            final File parent = new File(path);
-            parent.mkdirs();
-
-            try {
-                out = new FileOutputStream(new File(path, fileName));
-                filecontent = filePart.getInputStream();
-
-                int read = 0;
-                final byte[] bytes = new byte[1024];
-
-                while ((read = filecontent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                //writer.println("New file " + fileName + " created at " + path);
-            } catch (FileNotFoundException fne) {
-//                writer.println("You either did not specify a file to upload or are "
-//                        + "trying to upload a file to a protected or nonexistent "
-//                        + "location.");
-//                writer.println("<br/> ERROR: " + fne.getMessage());
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
-                if (filecontent != null) {
-                    filecontent.close();
-                }
-            }
-            
-            unity.setVideoUrl(urlPath + fileName);
-            unity.save();
-            
-            File file = new File(path + fileName);
-            unity.setVideoSize((int) file.length());
+        	FileUtil.saveFile(path, filePart, fileName);
         }
     	
-        String json = new Gson().toJson(unity);
+        String json = new Gson().toJson("ok");
     	response.setContentType("application/json");
     	response.setCharacterEncoding("UTF-8"); 
     	response.getWriter().write(json); 
     	
-    }
-    
-    private String getFileName(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(
-                        content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
     }
 
 }
