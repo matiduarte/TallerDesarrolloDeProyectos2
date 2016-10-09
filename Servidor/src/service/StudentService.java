@@ -47,8 +47,7 @@ public class StudentService {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json")
-    public ServiceResponse subscribeStudent(@FormParam("studentId")int studentId, @FormParam("curseId")int curseId) {
-		int sessionId = 0;
+    public ServiceResponse subscribeStudent(@FormParam("studentId")int studentId, @FormParam("sessionId")int sessionId) {
 		StudentSession studentSession = StudentSession.getByStudentIdAndSessionId(studentId, sessionId);
 		if(studentSession == null){
 			studentSession = new StudentSession();
@@ -63,8 +62,7 @@ public class StudentService {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json")
-    public ServiceResponse unsubscribeStudent(@FormParam("studentId")int studentId, @FormParam("curseId")int curseId) {
-		int sessionId = 0;
+    public ServiceResponse unsubscribeStudent(@FormParam("studentId")int studentId, @FormParam("sessionId")int sessionId) {
 		StudentSession studentSession = StudentSession.getByStudentIdAndSessionId(studentId, sessionId);
 		if(studentSession != null){
 			studentSession.delete();

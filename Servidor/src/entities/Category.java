@@ -36,7 +36,7 @@ public class Category {
 		return (List<Category>)StoreData.getByField(Category.class, "1", "1");
 	}
 	
-	public static List<Category> getAllWithCourses(){
+	public static List<Category> getAllWithCourses(int studentId){
 		List<Category> categories = (List<Category>)StoreData.getByField(Category.class, "1", "1");
 		List<Category> result = new ArrayList<Category>();
 		for (Category category : categories) {
@@ -44,6 +44,7 @@ public class Category {
 			List<Course> coursesFixed = new ArrayList<Course>();
 			for (Course course : courses) {
 				if(course.getTeacherId() != null && course.hasActiveSession()){
+					course.checkIfStudentIsSuscribed(studentId);
 					coursesFixed.add(course);
 				}
 			}

@@ -24,13 +24,13 @@ import entities.Course;
 @Path("/categories")
 public class CategoriesService {
 	
-	@Path("")
+	@Path("student/{id}")
 	@GET
 	@Produces("application/json")
-	public ServiceResponse getCategories(){
+	public ServiceResponse getCategories(@PathParam("id") int studentId){
 		
-		List<Category> listOfCategories = Category.getAllWithCourses();	 
-		List<Course> soonCourses = Course.getAllActive();	 
+		List<Category> listOfCategories = Category.getAllWithCourses(studentId);	 
+		List<Course> soonCourses = Course.getAllActive(studentId);	 
 		if (!listOfCategories.isEmpty()){
 	    	JSONObject jo = new JSONObject();
 			try {
