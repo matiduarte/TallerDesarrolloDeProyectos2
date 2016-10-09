@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="bootstrap/img/icono.ico">
     
+    <!-- Material Design fonts -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+    
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -57,7 +61,7 @@
 	   </c:choose>
 	  </div>
 	  <div class="form-group label-floating">
-	    <label class="control-label" for="lastName">DescripciÛn</label>
+	    <label class="control-label" for="lastName">Descripci√≥n</label>
 	    <c:choose>
 	    	<c:when test="${description != NULL}">
 	  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
@@ -82,8 +86,8 @@
      <table class="tg" id="tableVideo">
 		  <tr>
 		    <th class="tg-zyzu">Video</th>
-		    <th class="tg-zyzu">SubtÌtulos</th>
-		    <th class="tg-zyzu">TamaÒo</th>
+		    <th class="tg-zyzu">Subt√≠tulos</th>
+		    <th class="tg-zyzu">Tama√±o</th>
 		    <th class="tg-zyzu">Acciones</th>
 		  </tr>
 
@@ -110,14 +114,12 @@
 	</table>
 	<div class="blockQuestions">
   <label class="detail-label">Preguntas:</label>
-     <label class="btn btn-raised btn-primary addVideoButton btnNew" >
-     	Agregar preguntas <input type="file" style="display: none;" id="question" name="question" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
-     </label>
+    <button class="btn btn-raised btn-primary pull-right" onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar Pregunta</button>
      
      <table class="tg" id="tableQuestions">
 		  <tr>
-		    <th class="tg-zyzu">Pregunta</th>
-		    <th class="tg-zyzu">Acciones</th>
+		    <th class="tg-zyzu col-md-8">Pregunta</th>
+		    <th class="tg-zyzu col-md-8">Acciones</th>
 		  </tr>
 
 		 	<!-- <tr id="tr_video_">
@@ -149,22 +151,22 @@
   			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
   		</c:when>
 		<c:otherwise>
-			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
+			<button class="btn btn-raised btn-primary pull-right" name="create_btn" style="display: none;" type="submit">Crear</button>
           </c:otherwise>
    </c:choose>
-   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
+   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" style="display: none;" type="button">Cancelar</button>
 	</form>
 	
-	<div id="subtitlePopup">
-		<label class="labelPopup" id="popupSessionTitle">Agregar subtÌtulo</label>
+	<!-- div id="subtitlePopup">
+		<label class="labelPopup" id="popupSessionTitle">Agregar subt√≠tulo</label>
 		<br/>
 		
 		<div class="form-group label-floating inputSessionDate">	
 			<label class="control-label" id="labelDate" for="sessionDate">Idioma:</label>
 			<select class="form-control" id="sel1">
-			    <option>EspaÒol</option>
-			    <option>InglÈs</option>
-			    <option>PortuguÈs</option>
+			    <option>Espa√±ol</option>
+			    <option>Ingl√©s</option>
+			    <option>Portugu√©s</option>
 		  </select>
 		</div>
 		
@@ -181,7 +183,59 @@
 			<button class="btn btnPopup" type="submit" onclick="hideSubtitlePopup();">Cancelar</button>
 			<button class="btn btnPopup" type="submit" onclick="saveSubtitle()">Guardar</button>
 		</div>
-	</div>
+		
+	</div-->
+	
+	<div id="addQuestionPopup" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" onclick="hideQuestionsPopup()" class="close" data-dismiss="modal" aria-label="close">&times;</button>
+        <h4 class="modal-title">Nueva Pregunta</h4>
+      </div>
+      
+      <div class="modal-body">
+      
+        <div class="form-group label-floating">
+    <label class="control-label" for="addQuestion">Ingrese una pregunta</label>
+  	<input class="form-control" id="addQuestion" name="addQuestion" type="text" required>
+  </div>
+	<div id="dynamicInput">
+		<div id ="ansChild" class="form-group label-floating">
+		  <label class="control-label">Ingrese una respuesta</label>
+		  <div class="input-group">
+		    <input type="text" name='myInputs[]' class="form-control" required>
+		    <span  class="input-group-addon">
+		    <label>
+		    	<input type="checkbox" name="chk[]">
+		    </label>
+		    </span>
+		    <span class="input-group-btn">
+		      <button type="button" class="btn btn-fab-mini btn-primary btn-fab">
+		        <i class="material-icons">delete</i>
+		      </button>
+		    </span>
+		  </div>
+		</div>
+		</div>
+		<span class="input-group-btn">
+		<button type="button" class="btn btn-fab-mini btn-primary btn-fab" onClick="addInput('dynamicInput');">
+		   <i class="material-icons">add</i>
+		</button>
+		</span>
+  </div>
+      <div class="modal-footer">
+        <button type="button" onclick="saveQuestion();" class="btn btn-primary">Agregar</button>
+      </div>
+  
+      
+     
+    </div>
+     
+  </div>
+</div>
+
+	
 
 	<!-- <script src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
@@ -195,6 +249,73 @@
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
 	}	
+	
+	
+	function addInput(divName){
+		var newdiv = document.createElement('div');
+			newdiv.innerHTML ="<div class='form-group label-floating'>"
+	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
+	    	+  "<div class='input-group'>"
+	        +  "<input class='form-control' type='text' name='myInputs[]' required>"
+	        +  	"<span class='input-group-addon'>"
+	        +  		"<label>"
+	        +           "<input type='checkbox' name='chk[]'>"
+	        +         "</label>"
+	        +     "</span>"
+	        +  	"<span class='input-group-btn'>"
+	        +  		"<button type='button' class='btn btn-fab-mini btn-primary btn-fab'>"
+	        +           "<i class='material-icons'>delete</i>"
+	        +         "</button>"
+	        +     "</span>"
+	        +    "</div>"
+	    	+ "</div>";
+	    	document.getElementById(divName).appendChild(newdiv);
+	}
+	
+
+	function saveQuestion(){
+		
+		var question = document.getElementById("addQuestion").value;
+		var answersOb = $('input[name="myInputs[]"]');
+		
+		var checkBoxes = document.getElementsByName('chk[]');
+            var selectedRows = [];
+            for (var i = 0, l = checkBoxes.length; i < l; i++) {
+                if (checkBoxes[i].checked) {
+                    selectedRows.push(1);
+                } else {
+                	selectedRows.push(0);
+                }
+            }
+        
+		var answersArray = [];
+		for (i = 0; i < answersOb.length; i++){
+			if (answersOb[i].value != "")
+				answersArray[i] = answersOb[i].value;
+		}	
+		
+		if(($("#addQuestion").val() != "") && (answersArray.length > 0)){
+			$.ajax({
+			    data: {question: question, answersArray: answersArray, selectedRows: selectedRows},
+			    //Cambiar a type: POST si necesario
+			    type: "POST",
+			    // Formato de datos que se espera en la respuesta
+			    dataType: "json",
+			    // URL a la que se enviar√° la solicitud Ajax
+			    url: "SaveQAActionServlet",
+			})
+			 .done(function( data, textStatus, jqXHR ) {
+				 hideQuestionsPopup();
+			 })
+			 .fail(function( jqXHR, textStatus, errorThrown ) {
+			     if ( console && console.log ) {
+			         console.log( "La solicitud a fallado: " +  textStatus);
+			     }
+			});
+		}else{
+			
+		}
+	}
 	
 	function saveVideo(){
 		var unityId = "0";
@@ -213,7 +334,7 @@
 		    type: "POST",
 		    // Formato de datos que se espera en la respuesta
 		    dataType: "json",
-		    // URL a la que se enviar· la solicitud Ajax
+		    // URL a la que se enviar√° la solicitud Ajax
 		    url: "SaveUnityVideoActionServlet",
 		    cache: false,
             contentType: false,
@@ -282,7 +403,7 @@
 		    type: "POST",
 		    // Formato de datos que se espera en la respuesta
 		    dataType: "json",
-		    // URL a la que se enviar· la solicitud Ajax
+		    // URL a la que se enviar√° la solicitud Ajax
 		    url: "SaveVideoSubtitleActionServlet",
 		    cache: false,
             contentType: false,
@@ -315,6 +436,15 @@
 		return true;
 	}
 	
+	function showQuestionsPopUp() {
+		$("#addQuestionPopup").show();
+	}
+	
+	function hideQuestionsPopup(){
+		
+		$("#addQuestionPopup").hide();
+	}
+
 	function readURL(input) {
 		if (input.files && input.files[0]) {
 		    var reader = new FileReader();
@@ -331,7 +461,11 @@
         }
     }
 	
+	
+	
+	
 	$( document ).ready(function() {
+		
 		$("#htmlEditor").trumbowyg(
 		{
 		    lang: 'es'
@@ -343,7 +477,7 @@
 		<%} %>
 	});
 	
-	
+
 	
 	</script>
   </body>
