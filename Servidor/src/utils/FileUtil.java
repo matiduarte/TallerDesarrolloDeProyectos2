@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.Part;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+
 public class FileUtil{
 
 	public static void saveFile(final String path, final Part filePart, final String fileName) throws IOException {
@@ -62,14 +64,25 @@ public class FileUtil{
     	File folder = new File(path);
     	File[] listOfFiles = folder.listFiles();
 		
-    	for (int i = 0; i < listOfFiles.length; i++) {
-		     if (listOfFiles[i].isFile()) {
-		       result.add(listOfFiles[i].getName());
-		     } else if (listOfFiles[i].isDirectory()) {
-		       //Do nothing
-		     }
-		}
+    	if(listOfFiles != null){
+	    	for (int i = 0; i < listOfFiles.length; i++) {
+			     if (listOfFiles[i].isFile()) {
+			       result.add(listOfFiles[i].getName());
+			     } else if (listOfFiles[i].isDirectory()) {
+			       //Do nothing
+			     }
+			}
+    	}
     	
     	return result;
+    }
+    
+    public static void cleanDirectory(String path){
+    	try {
+			FileUtils.cleanDirectory(new File(path));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
     }
 }

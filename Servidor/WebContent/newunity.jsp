@@ -45,10 +45,12 @@
 </div>
  
 <form id="identicalForm" class="register" method="post" action="newunity" enctype="multipart/form-data">
-<input type="hidden" name="courseId" value="${courseId}">
-<c:if test="${id != NULL}">
+<input type="hidden" name="courseId" id="courseId" value="${courseId}">
+<%if(request.getAttribute("id") != null) {%>
   <input type="hidden" name="id" id="id" value="${id}">
-</c:if>
+<%} else{%>
+	<input type="hidden" name="id" id="id" value="">
+<%} %>
 <div class="unityFirstBlock">
 	  <div class="form-group label-floating">
 	    <label class="control-label" for="name">Nombre</label>
@@ -97,22 +99,25 @@
 			    	<%  out.print(request.getAttribute("videUrl")); %>
 			    </td>
 			    <td class="tg-yw4l">
-			    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
-					 for (String subtitle: subtitles)
-					 { 
-						 out.print("<a class='subtitleLabel' onclick='showSubtitlePopup()'>" + subtitle + "</a><br/>");
-					 }%>
+			    	<div id="subtitleLabelsContainers">
+				    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
+						 for (String subtitle: subtitles)
+						 { %>
+						 <a class="subtitleLabel" onclick="showSubtitlePopup('<% out.print(subtitle); %>')">
+							<% out.print(subtitle + "</a><br/>");
+						 }%>
+					 </div>
 			    	<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">
 			    </td>
 			    <td class="tg-yw4l">
-			    	<%  out.print(request.getAttribute("videoSize")); %>
+			    	<%  out.print(request.getAttribute("videoSize")); %> mb
 			    </td>
 			    <td class="tg-yw4l">
-			    	<button class="btn btnAction" type="submit" onclick="">
+			    	<button class="btn btnAction" type="button" onclick="$('#video').click()">
 						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
 					</button>
 					
-					<button class="btn btnAction" type="submit" onclick="">
+					<button class="btn btnAction" type="button" onclick="deleteVideo();">
 						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 					</button>
 			    </td>
@@ -158,10 +163,10 @@
   			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
   		</c:when>
 		<c:otherwise>
-			<button class="btn btn-raised btn-primary pull-right" name="create_btn" style="display: none;" type="submit">Crear</button>
+			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
           </c:otherwise>
    </c:choose>
-   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" style="display: none;" type="button">Cancelar</button>
+   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
 	</form>
 	
 	<div id="subtitlePopup">
@@ -324,12 +329,13 @@
 	
 	function saveVideo(){
 		var unityId = "0";
-		if($('#id') != undefined){
+		if($('#id').val() != ""){
 			unityId = $('#id').val();
 		}
 		
 		var formData = new FormData();
 		formData.append('unityId', unityId);
+		formData.append('courseId', $('#courseId').val());
 		formData.append('video', $("#video")[0].files[0]);
 		// Main magic with files here
 		
@@ -347,6 +353,10 @@
 		})
 		 .done(function( data, textStatus, jqXHR ) {
 			 loadVideoRow(data);
+			 if($('#id').val() == ""){
+				$('#id').val(data.id);
+				window.location= "newunity?courseId=" + $('#courseId').val() + "&id=" + data.id;
+			}
 		 })
 		 .fail(function( jqXHR, textStatus, errorThrown ) {
 		     if ( console && console.log ) {
@@ -356,15 +366,44 @@
 		
 	}
 	
+	function deleteVideo(){
+		var unityId = "0";
+		if($('#id') != undefined){
+			unityId = $('#id').val();
+		}
+		
+		var formData = new FormData();
+		formData.append('unityId', unityId);
+		// Main magic with files here
+		
+		$.ajax({
+		    data: {unityId:unityId},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviará la solicitud Ajax
+		    url: "DeleteUnityVideoActionServlet",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 $("#tr_video_").remove();
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
+	}
+	
 	function loadVideoRow(data){
 		row = '<tr id="tr_video_"><td class="tg-yw4l">'
     	+ data.videoUrl
    	 	+'</td><td class="tg-yw4l">'
-    	+ ""
+    	+ "<div id='subtitleLabelsContainers'></div>"
     	+ '<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">'
     	+ '</td><td class="tg-yw4l">'
     	+ getFileSizeFromBytes(data.videoSize) + '</td><td class="tg-yw4l"><button class="btn btnAction" type="button" onclick="$(\'#video\').click()"><img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" ></button>'
-    	+ '<button class="btn btnAction" type="button" onclick=""><img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
+    	+ '<button class="btn btnAction" type="button" onclick="deleteVideo();"><img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
 		+ '</button></td></tr>';
 		
 		if($('#tr_video_').length){
@@ -378,7 +417,10 @@
 		return Math.round((size*100) / (1024*1024)) / 100 + " mb";
 	}
 	
-	function showSubtitlePopup(){
+	function showSubtitlePopup(value){
+		if(value != undefined){
+			$("#language").val(value);
+		}
 		$("#subtitlePopup").show();
 	}
 	
@@ -391,38 +433,55 @@
 	}
 	
 	function saveSubtitle(){
-		var unityId = "0";
-		if($('#id') != undefined){
-			unityId = $('#id').val();
+		if($("#subtitle")[0].files[0] != undefined){
+			var unityId = "0";
+			if($('#id') != undefined){
+				unityId = $('#id').val();
+			}
+			
+			var formData = new FormData();
+			formData.append('unityId', unityId);
+			formData.append('subtitle', $("#subtitle")[0].files[0]);
+			formData.append('language', encodeURIComponent($("#language").val()));
+			// Main magic with files here
+			
+			$.ajax({
+			    data: formData,
+			    //Cambiar a type: POST si necesario
+			    type: "POST",
+			    // Formato de datos que se espera en la respuesta
+			    dataType: "json",
+			    // URL a la que se enviará la solicitud Ajax
+			    url: "SaveVideoSubtitleActionServlet",
+			    cache: false,
+	            contentType: false,
+	            processData: false
+			})
+			 .done(function( data, textStatus, jqXHR ) {
+				 $("#subtitle").val("");
+				 $("#subtitleNameContainer").html("");
+				 loadSubtitleLabel($("#language").val());
+			 })
+			 .fail(function( jqXHR, textStatus, errorThrown ) {
+			     if ( console && console.log ) {
+			         console.log( "La solicitud a fallado: " +  textStatus);
+			     }
+			});	
+		}else{
+			$("#subtitleNameContainer").html("Seleccione un archivo");
 		}
 		
-		var formData = new FormData();
-		formData.append('unityId', unityId);
-		formData.append('subtitle', $("#subtitle")[0].files[0]);
-		formData.append('language', encodeURIComponent($("#language").val()));
-		// Main magic with files here
 		
-		$.ajax({
-		    data: formData,
-		    //Cambiar a type: POST si necesario
-		    type: "POST",
-		    // Formato de datos que se espera en la respuesta
-		    dataType: "json",
-		    // URL a la que se enviará la solicitud Ajax
-		    url: "SaveVideoSubtitleActionServlet",
-		    cache: false,
-            contentType: false,
-            processData: false
-		})
-		 .done(function( data, textStatus, jqXHR ) {
-			 //loadVideoRow(data);
-		 })
-		 .fail(function( jqXHR, textStatus, errorThrown ) {
-		     if ( console && console.log ) {
-		         console.log( "La solicitud a fallado: " +  textStatus);
-		     }
-		});
+	}
+	
+	function loadSubtitleLabel(value){
+		if($("#subtitleLabelsContainers").text().indexOf(value) < 0){
+			var label = '<a class="subtitleLabel" onclick="showSubtitlePopup(\''+ value +'\')">' + value + '</a><br/>';
+			$("#subtitleLabelsContainers").append(label);	
+		}
 		
+		$("#subtitleNameContainer").html("");
+		hideSubtitlePopup();
 	}
 	
 	function fileValidated(input){
@@ -446,7 +505,6 @@
 	}
 	
 	function hideQuestionsPopup(){
-		
 		$("#addQuestionPopup").hide();
 	}
 

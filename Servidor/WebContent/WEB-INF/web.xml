@@ -161,6 +161,15 @@
 	<url-pattern>/SaveVideoSubtitleActionServlet/*</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+	<servlet-name>DeleteUnityVideoActionServlet</servlet-name>
+	<servlet-class>actions.DeleteUnityVideoActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>DeleteUnityVideoActionServlet</servlet-name>
+	<url-pattern>/DeleteUnityVideoActionServlet/*</url-pattern>
+  </servlet-mapping>
+  
   
 </web-app>
 

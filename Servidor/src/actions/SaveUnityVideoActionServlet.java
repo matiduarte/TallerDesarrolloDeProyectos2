@@ -50,7 +50,11 @@ public class SaveUnityVideoActionServlet extends HttpServlet {
     	
     	CourseUnity unity = CourseUnity.getById(unityId);
     	if(!(unityId > 0)){
-    		//TODO: ver que hacer
+    		unity = new CourseUnity();
+    		int courseId = Integer.valueOf(request.getParameter("courseId"));
+    		unity.setCourseId(courseId);
+    		unity.save();
+    		unityId = unity.getId();
     	}
     	
     	final String path = "WebContent/Files/CourseUnity/" + unityId + "/";

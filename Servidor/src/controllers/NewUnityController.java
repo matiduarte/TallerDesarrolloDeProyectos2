@@ -46,7 +46,7 @@ public class NewUnityController extends HttpServlet {
 				request.setAttribute("name", courseUnity.getName());
 				request.setAttribute("description", courseUnity.getDescription());
 				request.setAttribute("html", courseUnity.getHtml());
-				if(!(courseUnity.getVideoUrl().compareTo("") == 0)){
+				if(courseUnity.getVideoUrl() != null && !(courseUnity.getVideoUrl().compareTo("") == 0)){
 					request.setAttribute("videUrl", courseUnity.getVideoUrl());
 					
 					 File file = new File("WebContent/" + courseUnity.getVideoUrl());
@@ -79,7 +79,7 @@ public class NewUnityController extends HttpServlet {
 		if(request.getParameter("courseId") != null){
 			int courseId = Integer.valueOf(request.getParameter("courseId"));
 			HttpSession session = request.getSession(true);
-			if(request.getParameter("id") != null){
+			if(request.getParameter("id") != null && !request.getParameter("id").equals("")){
 				int id = Integer.valueOf(request.getParameter("id"));
 				courseUnity = CourseUnity.getById(id);
 				courseUnity.setId(id);
