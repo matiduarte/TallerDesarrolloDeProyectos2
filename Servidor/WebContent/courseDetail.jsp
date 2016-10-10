@@ -97,9 +97,9 @@
 				</div>
 	     	
 			     <label class="detail-label">Sesiones activas:</label>
-			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="showPopup();">Crear nueva<br/>sesion</button>
+			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="showPopup();">Crear nueva sesión</button>
 			     
-			     <table class="tg" id="tableSession">
+			     <table class="tg ocupar-espacio" id="tableSession">
 					  <tr>
 					    <th class="tg-zyzu no-visible">Id</th>
 					    <th class="tg-zyzu">Fecha de inicio</th>
@@ -163,7 +163,7 @@
 			     <label class="detail-label">Unidades:</label>
 			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
 			     
-			     <table class="tg">
+			     <table class="tg ocupar-espacio">
 					  <tr>
 					    <th class="tg-zyzu no-visible">Id</th>
 					    <th class="tg-zyzu">Nombre</th>

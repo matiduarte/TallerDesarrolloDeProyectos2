@@ -47,13 +47,13 @@ table, th, td {
 }
 
 .tableSessionContainer{
-	float: left;
-	margin: 10px;
+	/*float: left;
+	margin: 10px;*/
 }
 
 .tableUnityContainer{
-	float: right;
-	margin: 10px;
+	/*float: right;
+	margin: 10px;*/
 }
 
 .staticInfoContainer{
@@ -62,12 +62,9 @@ table, th, td {
 }
 
 .btnNew{
-	width: 116px;
-	height: 48px;
-    margin-top: -4px;
-    margin-left: 50px;
+/* 	width: 116px;
+	height: 48px; */
     font-size: smaller;
-    padding-left: 17px;
 }
 
 .btnBack{
@@ -149,5 +146,9 @@ hr {
 
 .no-visible{
 	display: none;
+}
+
+.ocupar-espacio{
+	width: 100%;
 }
 
