@@ -86,6 +86,7 @@
 	     
 	     <div class="row">
 	     	<div class="tableSessionContainer col-md-6">
+	     	<input id="hay_sesiones_activas" class="hide"></input>
 	     		<div class="alert alert-danger" id="sessionError" style="display:none;">
 			   		<button onclick="$('#sessionError').hide()" class="close" aria-label="close">&times;</button>
 				  	<span id="sessionErrorMessage">La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente</span>
@@ -131,9 +132,14 @@
 			<div class="tableUnityContainer col-md-6">
 
 				<div class="alert alert-success" id="unitySucces" style="display:none;">
-		   			-<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
+		   			<button onclick="$('#unitySucces').hide()" class="close" aria-label="close">&times;</button>
 			  		<span id="unitySuccesMessage">Unidad creada satisfactoriamente!</span>
 				</div>
+				
+	     		<div class="alert alert-danger" id="unityError" style="display:none;">
+			   		<button onclick="$('#unityError').hide()" class="close" aria-label="close">&times;</button>
+				  	<span id="unityErrorMessage"></span>
+				</div>				
 
 				  <%
 
@@ -163,7 +169,7 @@
 			     <label class="detail-label">Unidades:</label>
 			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
 			     
-			     <table class="tg ocupar-espacio">
+			     <table class="tg ocupar-espacio" id="tableUnity">
 					  <tr>
 					    <th class="tg-zyzu no-visible">Id</th>
 					    <th class="tg-zyzu">Nombre</th>
@@ -416,6 +422,34 @@
     	}
     	
     	function deleteUnity(unityId){
+    		
+    		if ( hayUnaSolaUnidad() ) {
+    			
+    			var course_id = <% out.print(course.getId()); %>;
+    			
+        		$.ajax({
+    			    data: {course_id: course_id},
+    			    type: "GET",
+    			    dataType: "json",
+    			    url: "HasActiveSessionsActionServlet"
+    			})
+        		.done( function( response ) {
+        			
+        			var data = $.parseJSON( response.data );
+        			
+        			if ( data.hay_sesiones_activas ) {
+        				showUnityMessageError();
+        			}
+        			else {
+        				showPopUpToDeleteUnity( unityId );
+        			}
+    			});
+    		} else {
+    			showPopUpToDeleteUnity( unityId );
+    		}
+    	}
+    	
+    	function showPopUpToDeleteUnity( unityId ) {
     		bootbox.confirm({ 
     		    size: 'small',
     		    message: "Estas seguro que queres borrar la unidad?", 
@@ -429,6 +463,14 @@
     		        }
     		    },
     		})
+    	}
+    	
+    	function showUnityMessageError() {
+			$("#unityErrorMessage")[0].innerHTML = "No se pueden borrar todas las unidades si hay sesiones activas.";
+			$("#unityError").fadeIn('fast');
+			setTimeout(function() {
+			    $('#unityError').fadeOut('slow');
+			}, 3000);
     	}
     	
     	function deleteUnityAfterConfirm(unityId){	
@@ -453,7 +495,7 @@
     	
     	function deleteUnityRow(unityId){
     		$("#tr_unity_" + unityId).remove();
-		$("#unitySuccesMessage")[0].innerHTML = "Unidad borrada satisfactoriamente!";
+    		$("#unitySuccesMessage")[0].innerHTML = "Unidad borrada satisfactoriamente!";
     		$("#unitySucces").show();
 		
     	}
@@ -466,6 +508,13 @@
     		
     		window.location.href = "newunity?courseId=" + courseId + "&id=" + unityId;
     	}
+    	
+    	function hayUnaSolaUnidad() {
+    		var cantidad_unidades = $('#tableUnity tr').length - 1;
+    		
+    		if ( cantidad_unidades == 1 ) return true;
+    		else return false;
+    	}    	
     	
     	function goBack(){
 			window.location.href = "courselist";
