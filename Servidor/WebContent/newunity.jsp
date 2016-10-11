@@ -1,6 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="entities.Question" %>
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
@@ -133,18 +135,16 @@
 		    <th class="tg-zyzu col-md-8">Pregunta</th>
 		    <th class="tg-zyzu col-md-8">Acciones</th>
 		  </tr>
-
-		 	<!-- <tr id="tr_video_">
-			    <td class="tg-yw4l">
-			    	Algun nombre
+			<%if(request.getAttribute("questionsList") != null) {%>
+			<tr id="tr_question_">
+			    <td>
+			    	<%ArrayList<Question> questionList = (java.util.ArrayList)request.getAttribute("questionsList");
+						 for (Question q: questionList)
+						 { 
+							 	out.print(q.getQuestion());
+							 	%>
 			    </td>
-			    <td class="tg-yw4l">
-			    	Sub
-			    </td>
-			    <td class="tg-yw4l">
-			    	10 mb
-			    </td>
-			    <td class="tg-yw4l">
+			<td class="tg-yw4l">
 			    	<button class="btn btnAction" type="submit" onclick="">
 						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
 					</button>
@@ -153,7 +153,9 @@
 						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 					</button>
 			    </td>
-		  </tr> -->
+			    </tr>
+			    <% } %>
+			    <%} %>
 	</table>
 	</div>
   </div>
@@ -211,25 +213,9 @@
   	<input class="form-control" id="addQuestion" name="addQuestion" type="text" required>
   </div>
 	<div id="dynamicInput">
-		<div id ="ansChild" class="form-group label-floating">
-		  <label class="control-label">Ingrese una respuesta</label>
-		  <div class="input-group">
-		    <input type="text" name='myInputs[]' class="form-control" required>
-		    <span  class="input-group-addon">
-		    <label>
-		    	<input type="checkbox" name="chk[]">
-		    </label>
-		    </span>
-		    <span class="input-group-btn">
-		      <button type="button" class="btn btn-fab-mini btn-primary btn-fab">
-		        <i class="material-icons">delete</i>
-		      </button>
-		    </span>
-		  </div>
-		</div>
 		</div>
 		<span class="input-group-btn">
-		<button type="button" class="btn btn-fab-mini btn-primary btn-fab" onClick="addInput('dynamicInput');">
+		<button type="button" class="btn btn-fab-mini btn-primary btn-fab addAnswer">
 		   <i class="material-icons">add</i>
 		</button>
 		</span>
@@ -258,32 +244,16 @@
 		
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
-	}	
-	
-	
-	function addInput(divName){
-		var newdiv = document.createElement('div');
-			newdiv.innerHTML ="<div class='form-group label-floating'>"
-	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
-	    	+  "<div class='input-group'>"
-	        +  "<input class='form-control' type='text' name='myInputs[]' required>"
-	        +  	"<span class='input-group-addon'>"
-	        +  		"<label>"
-	        +           "<input type='checkbox' name='chk[]'>"
-	        +         "</label>"
-	        +     "</span>"
-	        +  	"<span class='input-group-btn'>"
-	        +  		"<button type='button' class='btn btn-fab-mini btn-primary btn-fab'>"
-	        +           "<i class='material-icons'>delete</i>"
-	        +         "</button>"
-	        +     "</span>"
-	        +    "</div>"
-	    	+ "</div>";
-	    	document.getElementById(divName).appendChild(newdiv);
-	}
+	}		
 	
 
 	function saveQuestion(){
+		
+		var unityId = "0";
+		if($('#id').val() != ""){
+			unityId = $('#id').val();
+		}
+		var courseId = $('#courseId').val();
 		
 		var question = document.getElementById("addQuestion").value;
 		var answersOb = $('input[name="myInputs[]"]');
@@ -305,8 +275,9 @@
 		}	
 		
 		if(($("#addQuestion").val() != "") && (answersArray.length > 0)){
+			
 			$.ajax({
-			    data: {question: question, answersArray: answersArray, selectedRows: selectedRows},
+			    data: {courseId: courseId, unityId: unityId, question: question, answersArray: answersArray, selectedRows: selectedRows},
 			    //Cambiar a type: POST si necesario
 			    type: "POST",
 			    // Formato de datos que se espera en la respuesta
@@ -316,6 +287,12 @@
 			})
 			 .done(function( data, textStatus, jqXHR ) {
 				 hideQuestionsPopup();
+				 loadQuestionRow(data);
+				 alert(data);
+				 if($('#id').val() == ""){
+						$('#id').val(data.unityId);
+						window.location= "newunity?courseId=" + $('#courseId').val() + "&id=" + data.unityId;
+				 }
 			 })
 			 .fail(function( jqXHR, textStatus, errorThrown ) {
 			     if ( console && console.log ) {
@@ -395,6 +372,28 @@
 		});
 	}
 	
+	function loadQuestionRow(data){
+		row = '<tr id="tr_question_">'
+	    + '<td>'
+    	+ data.question
+    	+ '</td>'
+		+ '<td class="tg-yw4l">'
+    	+ '<button class="btn btnAction" type="submit" onclick="">'
+		+	'<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >'
+		+ '</button>'
+		+ '<button class="btn btnAction" type="submit" onclick="">'
+		+	'<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
+		+ '</button>'
+    	+  '</td>'
+    	+ '</tr>';
+    	
+			if($('#tr_question_').length){
+				$('#tr_question_').empty();	
+			}
+			
+			$('#tableQuestions tr:last').after(row);
+	}
+	
 	function loadVideoRow(data){
 		row = '<tr id="tr_video_"><td class="tg-yw4l">'
     	+ data.videoUrl
@@ -406,11 +405,13 @@
     	+ '<button class="btn btnAction" type="button" onclick="deleteVideo();"><img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
 		+ '</button></td></tr>';
 		
+		
 		if($('#tr_video_').length){
 			$('#tr_video_').empty();	
 		}
-		
+
 		$('#tableVideo tr:last').after(row);
+
 	}
 	
 	function getFileSizeFromBytes(size){
@@ -538,6 +539,34 @@
 		if(request.getAttribute("html") != null ){%>
 			$("#htmlEditor").trumbowyg("html", '<% out.print(request.getAttribute("html")); %>');
 		<%} %>
+		
+		
+		$('.addAnswer').click(function(e){
+			var newdiv = document.createElement('div');
+			newdiv.innerHTML ="<div id='ans' class='form-group label-floating'>"
+	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
+	    	+  "<div class='input-group'>"
+	        +  "<input class='form-control' type='text' name='myInputs[]' required>"
+	        +  	"<span class='input-group-addon'>"
+	        +  		"<label>"
+	        +           "<input type='checkbox' name='chk[]'>"
+	        +         "</label>"
+	        +     "</span>"
+	        +  	"<span class='input-group-btn'>"
+	        +  		"<button type='button' class='removeAnswer btn btn-fab-mini btn-primary btn-fab'>"
+	        +           "<i class='material-icons'>delete</i>"
+	        +         "</button>"
+	        +     "</span>"
+	        +    "</div>"
+	    	+ "</div>";
+	    	document.getElementById('dynamicInput').appendChild(newdiv);
+	    	
+	    	$('.removeAnswer').click(function(){
+	    		document.getElementById(this.parentNode.parentNode.parentNode.id).remove();
+	    	});
+		});
+		
+		
 	});
 	
 

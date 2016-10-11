@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entities.CourseUnity;
+import entities.Question;
 import utils.FileUtil;
 
 
@@ -60,6 +61,12 @@ public class NewUnityController extends HttpServlet {
 					 
 					 ArrayList<String> subtitles = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + id + "/Subtitles");
 					 request.setAttribute("subtitles", subtitles);
+				}
+				ArrayList<Question> questionList = (ArrayList<Question>) Question.getByUnityId(id);
+				if (questionList.size() > 0){
+					request.setAttribute("questionsList", questionList);
+					for (Question q : questionList)
+						System.out.println(q.getQuestion());
 				}
 			} 
 		}

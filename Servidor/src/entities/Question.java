@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 import dataBase.StoreData;
 
 public class Question {
@@ -29,5 +31,8 @@ public class Question {
 		StoreData.save(this);
 	}
 	
+	public static List<Question> getByUnityId(int unityId){
+		return (List<Question>)StoreData.getByField(Question.class, "unityId", String.valueOf(unityId));
+	}
 	
 }

@@ -6,32 +6,49 @@ public class Answer {
 	private int id;
 	private int questionId;
 	private String answer;
-	private boolean isCorrect;
+	private Boolean isCorrect;
 	
-	public int getQuestionId() {
-		return questionId;
-	}
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
-	}
+	
 	public int getId() {
 		return id;
 	}
+
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+
+
 	public String getAnswer() {
 		return answer;
 	}
+
+
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	public boolean isCorrect() {
+
+
+	public Boolean getIsCorrect() {
 		return isCorrect;
 	}
-	public void setCorrect(boolean isCorrect) {
+
+
+	public void setIsCorrect(Boolean isCorrect) {
 		this.isCorrect = isCorrect;
 	}
+
+
 	public void save(){
 		StoreData.save(this);
 	}
