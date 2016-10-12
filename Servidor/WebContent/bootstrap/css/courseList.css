@@ -82,6 +82,10 @@ body {
 	white-space:normal;
 }
 
+.label-as-badge{
+	border-radius: 0em 0em 1em 1em;
+}
+
 .nopadding {
    padding: 0;
    margin: 0;

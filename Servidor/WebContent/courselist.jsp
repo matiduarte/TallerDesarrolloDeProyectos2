@@ -65,6 +65,14 @@
     <div class="${col} nopadding">
     	<div id="img_container" class="nopadding">
     	<span class="my_badge ${course} badge">${courses.getName()}</span>
+    	
+	   	<c:if test="${courses.hasActiveSession()}">
+	   		<span class="${course} label label-success label-as-badge">Activo</span>
+	   	</c:if>
+	   	<c:if test="${!courses.hasActiveSession()}">
+	   		<span class="${course} label label-danger label-as-badge">No activo</span>
+	   	</c:if>      	
+    	
     	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
           <img src="${courses.getPictureUrl()}" class="img-rounded" style="${max}">
