@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 import dataBase.StoreData;
 
 public class Answer {
@@ -51,6 +53,14 @@ public class Answer {
 
 	public void save(){
 		StoreData.save(this);
+	}
+	
+	public static List<Answer> getByQuestionId(int questionId){
+		return (List<Answer>)StoreData.getByField(Answer.class, "questionId", String.valueOf(questionId));
+	}
+	
+	public void delete(){
+		StoreData.delete(this);
 	}
 	
 }

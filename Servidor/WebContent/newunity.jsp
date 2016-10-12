@@ -91,7 +91,7 @@
      <table class="tg" id="tableVideo">
 		  <tr>
 		    <th class="tg-zyzu">Video</th>
-		    <th class="tg-zyzu">Subt&iacute;­tulos</th>
+		    <th class="tg-zyzu">Subt&iacute;ï¿½tulos</th>
 		    <th class="tg-zyzu">Tama&ntilde;o</th>
 		    <th class="tg-zyzu">Acciones</th>
 		  </tr>
@@ -135,14 +135,11 @@
 		    <th class="tg-zyzu col-md-8">Pregunta</th>
 		    <th class="tg-zyzu col-md-8">Acciones</th>
 		  </tr>
-			<%if(request.getAttribute("questionsList") != null) {%>
+			<c:if test="${questionsList != NULL}">
+			<c:forEach items="${questionsList}" var="questions">
 			<tr id="tr_question_">
 			    <td>
-			    	<%ArrayList<Question> questionList = (java.util.ArrayList)request.getAttribute("questionsList");
-						 for (Question q: questionList)
-						 { 
-							 	out.print(q.getQuestion());
-							 	%>
+			    	${questions.getQuestion()}
 			    </td>
 			<td class="tg-yw4l">
 			    	<button class="btn btnAction" type="submit" onclick="">
@@ -154,8 +151,8 @@
 					</button>
 			    </td>
 			    </tr>
-			    <% } %>
-			    <%} %>
+			    </c:forEach>
+			    </c:if>
 	</table>
 	</div>
   </div>
@@ -179,8 +176,8 @@
 			<label class="control-label" id="labelLanguage" for="language">Idioma:</label>
 			<select class="form-control" id="language">
 			    <option>Espa&ntilde;ol</option>
-			    <option>Inglés</option>
-			    <option>Portugués</option>
+			    <option>Inglï¿½s</option>
+			    <option>Portuguï¿½s</option>
 		  </select>
 		</div>
 		
@@ -206,7 +203,7 @@
         <h4 class="modal-title">Nueva Pregunta</h4>
       </div>
       
-      <div class="modal-body">
+      <div class="qmb modal-body">
       
         <div class="form-group label-floating">
     <label class="control-label" for="addQuestion">Ingrese una pregunta</label>
@@ -258,6 +255,7 @@
 		var question = document.getElementById("addQuestion").value;
 		var answersOb = $('input[name="myInputs[]"]');
 		
+		
 		var checkBoxes = document.getElementsByName('chk[]');
             var selectedRows = [];
             for (var i = 0, l = checkBoxes.length; i < l; i++) {
@@ -288,7 +286,6 @@
 			 .done(function( data, textStatus, jqXHR ) {
 				 hideQuestionsPopup();
 				 loadQuestionRow(data);
-				 alert(data);
 				 if($('#id').val() == ""){
 						$('#id').val(data.unityId);
 						window.location= "newunity?courseId=" + $('#courseId').val() + "&id=" + data.unityId;
@@ -387,11 +384,7 @@
     	+  '</td>'
     	+ '</tr>';
     	
-			if($('#tr_question_').length){
-				$('#tr_question_').empty();	
-			}
-			
-			$('#tableQuestions tr:last').after(row);
+		$('#tableQuestions tr:last').after(row);
 	}
 	
 	function loadVideoRow(data){
@@ -501,12 +494,17 @@
 		return true;
 	}
 	
+	
 	function showQuestionsPopUp() {
 		$("#addQuestionPopup").show();
 	}
 	
 	function hideQuestionsPopup(){
+		$('input[name="chk[]"]').prop('checked', false);
 		$("#addQuestionPopup").hide();
+		$('.qmb').find('input').val('').end();
+		
+		
 	}
 
 	function readURL(input) {
@@ -539,6 +537,7 @@
 		if(request.getAttribute("html") != null ){%>
 			$("#htmlEditor").trumbowyg("html", '<% out.print(request.getAttribute("html")); %>');
 		<%} %>
+		
 		
 		
 		$('.addAnswer').click(function(e){

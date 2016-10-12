@@ -151,25 +151,28 @@
     <servlet-name>SaveUnityVideoActionServlet</servlet-name>
     <url-pattern>/SaveUnityVideoActionServlet/*</url-pattern>
   </servlet-mapping>
-  
- <servlet>
-	<servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
-	<servlet-class>actions.SaveVideoSubtitleActionServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-	<servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
-	<url-pattern>/SaveVideoSubtitleActionServlet/*</url-pattern>
-  </servlet-mapping>
-  
   <servlet>
-	<servlet-name>DeleteUnityVideoActionServlet</servlet-name>
-	<servlet-class>actions.DeleteUnityVideoActionServlet</servlet-class>
+    <servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
+    <servlet-class>actions.SaveVideoSubtitleActionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-	<servlet-name>DeleteUnityVideoActionServlet</servlet-name>
-	<url-pattern>/DeleteUnityVideoActionServlet/*</url-pattern>
+    <servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
+    <url-pattern>/SaveVideoSubtitleActionServlet/*</url-pattern>
   </servlet-mapping>
-  
-  
+  <servlet>
+    <servlet-name>DeleteUnityVideoActionServlet</servlet-name>
+    <servlet-class>actions.DeleteUnityVideoActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteUnityVideoActionServlet</servlet-name>
+    <url-pattern>/DeleteUnityVideoActionServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteQAActionServlet</servlet-name>
+    <servlet-class>actions.DeleteQAActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteQAActionServlet</servlet-name>
+    <url-pattern>/DeleteQAActionServlet/*</url-pattern>
+  </servlet-mapping>
 </web-app>
-
