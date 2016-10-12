@@ -75,6 +75,7 @@ public class SaveQAActionServlet extends HttpServlet {
 		
 		DataTransfer dt = new DataTransfer();
 		dt.setQuestion(question.getQuestion());
+		dt.setQuestionId(question.getId());
 		dt.setUnityId(unityId);
 		
 		

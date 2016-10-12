@@ -65,8 +65,6 @@ public class NewUnityController extends HttpServlet {
 				ArrayList<Question> questionList = (ArrayList<Question>) Question.getByUnityId(id);
 				if (questionList.size() > 0){
 					request.setAttribute("questionsList", questionList);
-					for (Question q : questionList)
-						System.out.println(q.getQuestion());
 				}
 			} 
 		}

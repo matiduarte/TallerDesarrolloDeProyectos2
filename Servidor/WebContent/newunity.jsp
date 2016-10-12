@@ -137,16 +137,16 @@
 		  </tr>
 			<c:if test="${questionsList != NULL}">
 			<c:forEach items="${questionsList}" var="questions">
-			<tr id="tr_question_">
+			<tr id="tr_question_${questions.getId()}">
 			    <td>
 			    	${questions.getQuestion()}
 			    </td>
 			<td class="tg-yw4l">
-			    	<button class="btn btnAction" type="submit" onclick="">
+			    	<button class="btn btnAction" type="button" onclick="editQuestion(${questions.getId()});">
 						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
 					</button>
 					
-					<button class="btn btnAction" type="submit" onclick="">
+					<button class="btn btnAction" type="button" onclick="deleteQuestion(${questions.getId()});">
 						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
 					</button>
 			    </td>
@@ -301,6 +301,36 @@
 		}
 	}
 	
+	function editQuestion(questionId){
+		alert(questionId);
+	}
+	
+	
+	function deleteQuestion(id){
+		var unityId = "0";
+		if($('#id') != undefined){
+			unityId = $('#id').val();
+		}
+		
+		$.ajax({
+		    data: {unityId:unityId, questionId: id},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviará la solicitud Ajax
+		    url: "DeleteQAActionServlet",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 $("#tr_question_" + data.questionId).remove();
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
+	}
+	
 	function saveVideo(){
 		var unityId = "0";
 		if($('#id').val() != ""){
@@ -370,15 +400,15 @@
 	}
 	
 	function loadQuestionRow(data){
-		row = '<tr id="tr_question_">'
+		row = '<tr id="tr_question_'+data.questionId+'">'
 	    + '<td>'
     	+ data.question
     	+ '</td>'
 		+ '<td class="tg-yw4l">'
-    	+ '<button class="btn btnAction" type="submit" onclick="">'
+    	+ '<button class="btn btnAction" type="button" onclick="editQuestion('+data.questionId+');">'
 		+	'<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >'
 		+ '</button>'
-		+ '<button class="btn btnAction" type="submit" onclick="">'
+		+ '<button class="btn btnAction" type="button" onclick="deleteQuestion('+data.questionId+');">'
 		+	'<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
 		+ '</button>'
     	+  '</td>'
