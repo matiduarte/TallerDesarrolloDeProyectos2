@@ -78,7 +78,14 @@
 	  </div>
 	  <div class="form-group label-floating">
 	    <label class="control-label" for="questions">Cantidad de Preguntas</label>
-	    <input class="form-control" id="questions" name="questions" type="text" required>
+	    <c:choose>
+	    	<c:when test="${questionSize != NULL}">
+	    <input class="form-control" id="questions" name="questions" type="text" value="${questionSize}" required>
+	    </c:when>
+	          <c:otherwise>
+	          <input class="form-control" id="questions" name="questions" type="text" required>
+	          </c:otherwise>
+	   </c:choose>
 	    </div>
 	  <div id="htmlEditor" name="htmlEditor"></div>
   </div>
@@ -212,7 +219,7 @@
 	<div id="dynamicInput">
 		</div>
 		<span class="input-group-btn">
-		<button type="button" class="btn btn-fab-mini btn-primary btn-fab addAnswer">
+		<button id="addBtn" type="button" class="btn btn-fab-mini btn-primary btn-fab addAnswer">
 		   <i class="material-icons">add</i>
 		</button>
 		</span>
@@ -239,6 +246,8 @@
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script type="text/javascript">
 		
+	var count = 0;
+	
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
 	}		
@@ -302,7 +311,34 @@
 	}
 	
 	function editQuestion(questionId){
-		alert(questionId);
+		
+		$.ajax({
+		    data: {questionId: questionId},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviará la solicitud Ajax
+		    url: "EditQAActionServlet",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 
+			 var addbtn = document.getElementById("addBtn");
+			 $(".qmb #addQuestion").val(data.question).trigger('change');;
+			 for (var i = 0; i < data.answerList.length; i++){
+				 addbtn.click();
+				 $(".qmb #inp"+i).val(data.answerList[i]["answer"]);
+				 if (data.answerList[i]["isCorrect"] == true){
+					 $(".qmb #chk"+i).prop("checked", true);
+				 }
+			 }
+			 $("#addQuestionPopup").show();
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
 	}
 	
 	
@@ -530,10 +566,14 @@
 	}
 	
 	function hideQuestionsPopup(){
-		$('input[name="chk[]"]').prop('checked', false);
-		$("#addQuestionPopup").hide();
 		$('.qmb').find('input').val('').end();
+		var rmvBtn = document.getElementById("rmvBtn");
+		//Como esta este hack papuuu
+		if (rmvBtn != null)
+			rmvBtn.click();
 		
+		$("#addQuestionPopup").hide();
+		count = 0;
 		
 	}
 
@@ -571,24 +611,27 @@
 		
 		
 		$('.addAnswer').click(function(e){
+			
 			var newdiv = document.createElement('div');
 			newdiv.innerHTML ="<div id='ans' class='form-group label-floating'>"
 	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
 	    	+  "<div class='input-group'>"
-	        +  "<input class='form-control' type='text' name='myInputs[]' required>"
+	        +  "<input id=inp"+count+ " class='form-control' type='text' name='myInputs[]' required>"
 	        +  	"<span class='input-group-addon'>"
 	        +  		"<label>"
-	        +           "<input type='checkbox' name='chk[]'>"
+	        +           "<input id=chk"+count+ " type='checkbox' name='chk[]'>"
 	        +         "</label>"
 	        +     "</span>"
 	        +  	"<span class='input-group-btn'>"
-	        +  		"<button type='button' class='removeAnswer btn btn-fab-mini btn-primary btn-fab'>"
+	        +  		"<button id='rmvBtn' type='button' class='removeAnswer btn btn-fab-mini btn-primary btn-fab'>"
 	        +           "<i class='material-icons'>delete</i>"
 	        +         "</button>"
 	        +     "</span>"
 	        +    "</div>"
 	    	+ "</div>";
 	    	document.getElementById('dynamicInput').appendChild(newdiv);
+	    	count++;
+	    	
 	    	
 	    	$('.removeAnswer').click(function(){
 	    		document.getElementById(this.parentNode.parentNode.parentNode.id).remove();

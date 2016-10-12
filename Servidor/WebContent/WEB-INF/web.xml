@@ -175,4 +175,12 @@
     <servlet-name>DeleteQAActionServlet</servlet-name>
     <url-pattern>/DeleteQAActionServlet/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>EditQAActionServlet</servlet-name>
+    <servlet-class>actions.EditQAActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditQAActionServlet</servlet-name>
+    <url-pattern>/EditQAActionServlet/*</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -35,6 +35,10 @@ public class Question {
 		return (List<Question>)StoreData.getByField(Question.class, "unityId", String.valueOf(unityId));
 	}
 	
+	public static Question getById(int id){
+		return (Question)StoreData.getById(Question.class, id);
+	}
+	
 	public void delete(){
 		StoreData.delete(this);
 	}
