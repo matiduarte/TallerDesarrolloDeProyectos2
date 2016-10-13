@@ -48,6 +48,7 @@ public class EditQAActionServlet extends HttpServlet {
 		ArrayList<Answer> answerList = (ArrayList<Answer>) Answer.getByQuestionId(question.getId());
 
 		DataTransfer dt = new DataTransfer();
+		dt.setQuestionId(Integer.valueOf(questionId));
 		dt.setQuestion(question.getQuestion());
 		dt.setAnswerList(answerList);
     	

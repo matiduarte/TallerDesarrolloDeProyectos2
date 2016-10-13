@@ -227,15 +227,11 @@
       <div class="modal-footer">
         <button type="button" onclick="saveQuestion();" class="btn btn-primary">Agregar</button>
       </div>
-  
-      
-     
     </div>
      
   </div>
 </div>
 
-	
 
 	<!-- <script src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
@@ -247,6 +243,7 @@
 	<script type="text/javascript">
 		
 	var count = 0;
+	
 	
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
@@ -324,7 +321,7 @@
 		 .done(function( data, textStatus, jqXHR ) {
 			 
 			 var addbtn = document.getElementById("addBtn");
-			 $(".qmb #addQuestion").val(data.question).trigger('change');;
+			 $(".qmb #addQuestion").val(data.question).trigger('change');
 			 for (var i = 0; i < data.answerList.length; i++){
 				 addbtn.click();
 				 $(".qmb #inp"+i).val(data.answerList[i]["answer"]);
@@ -566,11 +563,12 @@
 	}
 	
 	function hideQuestionsPopup(){
+		
 		$('.qmb').find('input').val('').end();
-		var rmvBtn = document.getElementById("rmvBtn");
-		//Como esta este hack papuuu
-		if (rmvBtn != null)
-			rmvBtn.click();
+		
+		for (var i = 0; i < count; i++){
+				$(".qmb #ans"+i).remove();
+		}
 		
 		$("#addQuestionPopup").hide();
 		count = 0;
@@ -613,7 +611,7 @@
 		$('.addAnswer').click(function(e){
 			
 			var newdiv = document.createElement('div');
-			newdiv.innerHTML ="<div id='ans' class='form-group label-floating'>"
+			newdiv.innerHTML ="<div id=ans"+count+" class=form-group label-floating>"
 	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
 	    	+  "<div class='input-group'>"
 	        +  "<input id=inp"+count+ " class='form-control' type='text' name='myInputs[]' required>"
