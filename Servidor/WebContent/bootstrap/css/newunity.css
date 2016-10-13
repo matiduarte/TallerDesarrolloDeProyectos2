@@ -23,6 +23,10 @@ body {
 	float: right;
 }
 
+.blockQuestions{
+	padding-top: 80px;
+}
+
 .tg  {border-collapse:collapse;border-spacing:0; width: 100%; text-align: center;}
 .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
@@ -63,8 +67,9 @@ table, th, td {
     background: white;
     left: 540px;
     top: 305px;
-    /* display: none; */
+    display: none;
 }
+
 
 #subtitlePopup .btnPopup{
 	font-size: smaller;
@@ -91,6 +96,29 @@ table, th, td {
     margin-left: 10px;
 }
 
+#addQuestionPopup{
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal .modal-body {
+    max-height: 420px;
+    overflow-y: auto;
+}
 
 .inputSessionDate{
 	width: 60%;
@@ -104,4 +132,14 @@ hr {
 
 .popupButtonsContainer{
 	float: right;
+}
+
+#subtitleNameContainer{
+	height: 20px;
+    width: 100%;
+}
+
+.subtitleLabel{
+	text-decoration: underline;
+	cursor: pointer;
 }

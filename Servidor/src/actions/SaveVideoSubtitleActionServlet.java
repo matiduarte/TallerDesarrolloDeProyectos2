@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,13 +26,13 @@ import utils.FileUtil;
 /**
  * Servlet implementation class SignInController
  */
-public class SaveUnityVideoActionServlet extends HttpServlet {
+public class SaveVideoSubtitleActionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SaveUnityVideoActionServlet() {
+    public SaveVideoSubtitleActionServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,32 +47,22 @@ public class SaveUnityVideoActionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {   
     	int unityId = Integer.valueOf(request.getParameter("unityId"));
-    	final Part filePart = request.getPart("video");
+    	final Part filePart = request.getPart("subtitle");
+    	String language = URLDecoder.decode(request.getParameter("language"), "UTF-8");
     	
-    	CourseUnity unity = CourseUnity.getById(unityId);
+    	//CourseUnity unity = CourseUnity.getById(unityId);
     	if(!(unityId > 0)){
-    		unity = new CourseUnity();
-    		int courseId = Integer.valueOf(request.getParameter("courseId"));
-    		unity.setCourseId(courseId);
-    		unity.save();
-    		unityId = unity.getId();
+    		//TODO: ver que hacer
     	}
     	
-    	final String path = "WebContent/Files/CourseUnity/" + unityId + "/";
-        final String urlPath = "Files/CourseUnity/" + unityId + "/";
-        final String fileName = FileUtil.getFileName(filePart);
+    	final String path = "WebContent/Files/CourseUnity/" + unityId + "/Subtitles/";
+        final String urlPath = "Files/CourseUnity/" + unityId + "/Subtitles/";
+        final String fileName = language;
         if(!(fileName.compareTo("") == 0)){
-
         	FileUtil.saveFile(path, filePart, fileName);
-            
-            unity.setVideoUrl(urlPath + fileName);
-            unity.save();
-            
-            File file = new File(path + fileName);
-            unity.setVideoSize((int) file.length());
         }
     	
-        String json = new Gson().toJson(unity);
+        String json = new Gson().toJson("ok");
     	response.setContentType("application/json");
     	response.setCharacterEncoding("UTF-8"); 
     	response.getWriter().write(json); 
