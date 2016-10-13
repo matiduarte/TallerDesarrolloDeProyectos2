@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Activities.CourseDetailsActivity;
+import fiuba.tallerdeproyectos2.Activities.SessionManagerActivity;
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
 import fiuba.tallerdeproyectos2.Adapters.RecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.Courses;
@@ -51,6 +53,12 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ExpandableListViewAdapter expandableListViewAdapter;
     private RecyclerView.Adapter adapter;
     ArrayList soonCourses = new ArrayList<>();
+    SessionManagerActivity session;
+    HashMap<String, String> user;
+    Integer studentId;
+    ImageView subscribeMark, courseIconInscripted;
+    RecyclerView recyclerView;
+
     public HomeFragment() {}
 
     public class CourseInfo{
@@ -72,7 +80,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getCourses();
+        Call<ServerResponse> call = apiService.getCourses(studentId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -95,6 +103,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 for (int j=0; j<coursesInCategoryData.length(); j++) {
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                    if(coursesInCategoryArray.getBoolean("isSubscribed")){
+                                        subscribeMark.setVisibility(View.VISIBLE);
+                                    }
                                     courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                                 }
                                 childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
@@ -108,6 +119,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             if(soonCoursesArray.has("pictureUrl")){
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
+                            if(soonCoursesArray.getBoolean("isSubscribed")){
+                                courseIconInscripted.setVisibility(View.VISIBLE);
+                            }
                             CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
                             soonCourses.add(i, obj);
                         }
@@ -116,6 +130,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     Log.e(TAG, e.getLocalizedMessage());
                 }
                 expandableListViewAdapter.refresh(parentHeaderInformation, childContent);
+                adapter = new RecyclerViewAdapter(soonCourses);
+                recyclerView.setAdapter(adapter);
                 swipeRefreshLayout.setRefreshing(false);
             }
 
@@ -130,12 +146,15 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        subscribeMark = (ImageView) rootView.findViewById(R.id.subscribed_mark);
+        courseIconInscripted = (ImageView) rootView.findViewById(R.id.course_icon_inscripted);
+
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getCourses();
+        Call<ServerResponse> call = apiService.getCourses(studentId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -156,6 +175,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 for (int j=0; j<coursesInCategoryData.length(); j++) {
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                    if(coursesInCategoryArray.getBoolean("isSubscribed")){
+                                        subscribeMark.setVisibility(View.VISIBLE);
+                                    }
                                     courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                                 }
                                 childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
@@ -169,6 +191,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             pictureUrl = "";
                             if(soonCoursesArray.has("pictureUrl")){
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
+                            }
+                            if(soonCoursesArray.getBoolean("isSubscribed")){
+                                courseIconInscripted.setVisibility(View.VISIBLE);
                             }
                             CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
                             soonCourses.add(i, obj);
@@ -185,12 +210,17 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerViewAdapter(soonCourses);
         recyclerView.setAdapter(adapter);
+
+        session = new SessionManagerActivity(getContext());
+        session.checkLogin();
+        user = session.getUserDetails();
+        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
 
         return rootView;
     }
@@ -252,7 +282,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                Log.i(" Clicked on Item ", String.valueOf(position));
                 TextView tv = (TextView) v.findViewById(R.id.course_id);
                 courseId = Integer.valueOf(tv.getText().toString());
                 navigateToCourseDetailsActivity();

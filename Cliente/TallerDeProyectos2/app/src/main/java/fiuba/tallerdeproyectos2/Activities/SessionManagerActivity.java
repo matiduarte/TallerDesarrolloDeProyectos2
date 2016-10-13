@@ -19,8 +19,9 @@ public class SessionManagerActivity {
     static final String KEY_SURNAME = "surname";
     static final String KEY_EMAIL = "email";
     static final String KEY_IMAGE = "image";
+    public static final String KEY_ID = "id";
 
-    SessionManagerActivity(Context context) {
+    public SessionManagerActivity(Context context) {
         this.context = context;
         int PRIVATE_MODE = 0;
         pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -30,24 +31,26 @@ public class SessionManagerActivity {
     /**
      * Create login session
      * */
-    void createLoginSession(String email, String name, String surname, String image){
+    void createLoginSession(String email, String name, String surname, String image, String id){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_SURNAME, surname);
         editor.putString(KEY_IMAGE, image);
+        editor.putString(KEY_ID, id);
         editor.commit();
     }
 
     /**
      * Get stored session data
      * */
-    HashMap<String, String> getUserDetails(){
+    public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<>();
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
         user.put(KEY_SURNAME, pref.getString(KEY_SURNAME, null));
         user.put(KEY_IMAGE, pref.getString(KEY_IMAGE, null));
+        user.put(KEY_ID, pref.getString(KEY_ID, null));
         return user;
     }
 
@@ -56,7 +59,7 @@ public class SessionManagerActivity {
      * If false it will redirect user to login page
      * Else won't do anything
      * */
-    void checkLogin(){
+    public void checkLogin(){
         if(!this.isLoggedIn()){
             Intent i = new Intent(context, LoginActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

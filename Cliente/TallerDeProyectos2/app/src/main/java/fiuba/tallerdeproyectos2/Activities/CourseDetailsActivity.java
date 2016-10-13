@@ -35,7 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
+import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
 import fiuba.tallerdeproyectos2.Models.CourseData;
+import fiuba.tallerdeproyectos2.Models.Courses;
+import fiuba.tallerdeproyectos2.Models.CoursesCardViewData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
@@ -52,6 +55,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
     HashMap<String, List<String>> unitsContent = new HashMap<>();
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
     private int lastExpandedPosition = -1;
+    Integer sessionId, studentId;
+    SessionManagerActivity session;
+    HashMap<String, String> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,22 +104,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
-
+                        Boolean isSubscribed = courseData.getBoolean("isSubscribed");
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
                         TextView courseStartDate = (TextView) findViewById(R.id.start_date);
                         TextView courseInscriptionDates = (TextView) findViewById(R.id.inscription_dates);
                         if(courseSessionsData.length() > 0){
                             JSONObject courseSessionsArray = new JSONObject(courseSessionsData.getString(0));
                             String startDateString = courseSessionsArray.getString("date");
+                            sessionId = Integer.valueOf(courseSessionsArray.getString("id"));
                             courseStartDate.setText(startDateString);
                             SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
                             Date today = calendar.getTime();
-                            if(startDate.before(today)){
-                                Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
-                                inscriptionButton.setVisibility(View.VISIBLE);
-                            }
                             calendar.setTime(startDate);
                             calendar.add(Calendar.DAY_OF_YEAR, -7);
                             Date startInscriptionDate = calendar.getTime();
@@ -122,6 +125,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Date finishInscriptionDate = calendar.getTime();
                             String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
                             courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
+                            if(startDate.before(today) && !today.after(finishInscriptionDate) && !isSubscribed){
+                                Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
+                                inscriptionButton.setVisibility(View.VISIBLE);
+                            } else if (isSubscribed){
+                                Button unsubscriptionButton = (Button)findViewById(R.id.unsubscription_btn);
+                                unsubscriptionButton.setVisibility(View.VISIBLE);
+                            }
                         } else {
                             TextView courseStartDateTxt = (TextView) findViewById(R.id.start_date_txt);
                             TextView courseInscriptionDatesTxt = (TextView) findViewById(R.id.inscription_label);
@@ -185,6 +195,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        session = new SessionManagerActivity(getApplicationContext());
+        session.checkLogin();
+        user = session.getUserDetails();
+        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
     }
 
     @Override
@@ -239,7 +254,50 @@ public class CourseDetailsActivity extends AppCompatActivity {
     }
 
     public void onInscriptionButtonClick(View view){
-        Toast.makeText(getApplicationContext(), "Click en inscribirse", Toast.LENGTH_LONG).show();
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ServerResponse> call = apiService.postStudentSubscribe(studentId, sessionId);
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
+                Boolean success =response.body().getSuccess();
+                if(success.equals(true)){
+                    navigateToMainActivity();
+                    Toast.makeText(getApplicationContext(), "Se ha inscripto en el curso satisfactoriamente!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse>call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    public void onUnsubsriptionButtonClick(View view){
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ServerResponse> call = apiService.postStudentUnsubscribe(studentId, sessionId);
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
+                Boolean success =response.body().getSuccess();
+                if(success.equals(true)){
+                    navigateToMainActivity();
+                    Toast.makeText(getApplicationContext(), "Se ha dado de baja del curso satisfactoriamente!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse>call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    private void navigateToMainActivity(){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }
