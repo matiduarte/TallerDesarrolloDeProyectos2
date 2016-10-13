@@ -1,10 +1,12 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import dataBase.StoreData;
+import utils.FileUtil;
 
 @XmlRootElement
 public class CourseUnity {  
@@ -83,6 +85,16 @@ public class CourseUnity {
 	}
 	public void setQuestionSize(Integer questionSize) {
 		this.questionSize = questionSize;
+	}
+	public ArrayList<String> getSubtitlesUrl() {
+		ArrayList<String> subs = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + this.getId() + "/Subtitles");
+		ArrayList<String> result = new ArrayList<String>();
+		
+		for (String sub : subs) {
+			result.add("WebContent/Files/CourseUnity/" + this.getId() + "/Subtitles/" + sub);
+		}
+		
+		return result;
 	}
 	
 }
