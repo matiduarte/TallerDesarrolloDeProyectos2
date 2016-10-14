@@ -6,12 +6,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONException;
@@ -50,8 +52,9 @@ public class CourseService {
 	@Path("{id}")
 	@GET
 	@Produces("application/json")
-	public ServiceResponse getCourse(@PathParam("id") int id){
-		Course course = Course.getById(id);	 
+	public ServiceResponse getCourse(@PathParam("id") int id, @DefaultValue("0") @QueryParam("studentId") int studentId){
+		Course course = Course.getById(id);	
+		course.checkIfStudentIsSuscribed(studentId);
 		if (course != null){
 			ArrayList<CourseSession> courseSessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(course.getId());
 			ArrayList<CourseUnity> courseUnities= ((ArrayList<CourseUnity>) CourseUnity.getByCourseId(course.getId()));
