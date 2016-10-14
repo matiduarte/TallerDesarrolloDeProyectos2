@@ -62,28 +62,27 @@
 
   <div class="row nopadding">
   <c:forEach items="${list}" var="courses">
-    <div class="${col} nopadding">
-    	<div id="img_container" class="nopadding">
-    	<span class="my_badge ${course} badge">${courses.getName()}</span>
-    	
+    <div class="${col} padding-chico">
+    	<div id="img_container" class="img_container nopadding">
+		<span class="my_badge ${course} badge">${courses.getName()}</span>
+           
 	   	<c:if test="${courses.hasActiveSession()}">
-	   		<span class="${course} label label-success label-as-badge">Activo</span>
+	   		<span class="label label-success actividad">Activo</span>
 	   	</c:if>
 	   	<c:if test="${!courses.hasActiveSession()}">
-	   		<span class="${course} label label-danger label-as-badge">No activo</span>
-	   	</c:if>      	
-    	
+	   		<span class="label label-danger actividad">No activo</span>
+	   	</c:if>            
+              	
     	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
-          <img src="${courses.getPictureUrl()}" class="img-rounded" style="${max}">
+          <img src="${courses.getPictureUrl()}" class="img-rounded img-responsive altura-ajustable" style="${max}">
           </c:when>
           <c:otherwise>
-            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded" style="${max}">
+            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded img-responsive altura-ajustable" style="${max}">
           </c:otherwise>
           </c:choose>
-         <button class="btn btn-sm ${btn_ver} btn-raised btn-primary" onclick="getCourseId(${courses.getId()});">Ver más</button>
-      
-          
+
+          <button class="btn btn-sm ${btn_ver} btn-raised btn-primary" onclick="getCourseId(${courses.getId()});">Ver más</button>
    		</div>
     </div>
       </c:forEach>

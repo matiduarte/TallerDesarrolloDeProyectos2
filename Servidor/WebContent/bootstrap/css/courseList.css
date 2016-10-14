@@ -1,8 +1,6 @@
 body {
-  
   background-color: #fff;
 }
-
 
 .courses_list{
 	text-align: center;
@@ -14,7 +12,7 @@ body {
 
 .img_container {
 	display:inline-block;
-	position:relative;
+	position:relative;	
 }
 
 .btn_ver_1 {
@@ -60,15 +58,14 @@ body {
 .btn_ver_more {
 	position:relative;
 	margin-left: auto;
-    margin-right: auto;
     bottom: 38px;
-    right:	-99px;
+    right:	0px;
 	display: block;
 }
 
 .btn_course_more {
 	position:relative;
-	top: 25px;
+	top: 30px;
 	display: block;
     margin-left: auto;
     margin-right: auto;
@@ -79,14 +76,34 @@ body {
 
 .my_badge{
 	background-color: #009688;
-	white-space:normal;
+	white-space: normal;
+	position: absolute;
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;    
 }
 
-.label-as-badge{
-	border-radius: 0em 0em 1em 1em;
+.actividad{
+	position: relative;
+	border-radius: 1em 1em 1em 1em;
+	margin-left: auto;
+	margin-right: auto;	
+	font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    float: left;	
+}
+
+.padding-chico {
+	padding: 5px;
 }
 
 .nopadding {
-   padding: 0;
-   margin: 0;
+	padding: 0;
+   	margin: 0;
+}
+
+.altura-ajustable{
+	min-width: 40%;
+	min-height: 40%;
 }
