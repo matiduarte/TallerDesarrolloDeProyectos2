@@ -37,7 +37,7 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
       </button>
-      <a class="navbar-brand" href="javascript:void(0)">Crear Unidad</a>
+      <a id="barra_superior" class="navbar-brand" href="javascript:void(0)">Crear Unidad</a>
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse"> 
     </div>
@@ -255,7 +255,22 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script type="text/javascript">
-		
+	
+	$.urlParam = function(name){
+	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	    if (results==null){
+	       return null;
+	    }
+	    else{
+	       return results[1] || 0;
+	    }
+	}	
+	
+	if ( $.urlParam('id') ) {
+		var barra_titulo = $( "#barra_superior" );
+		barra_titulo.text( "Editar unidad" );
+	}
+	
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
 	}	

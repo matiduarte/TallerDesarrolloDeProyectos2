@@ -30,7 +30,7 @@ public class CategoriesService {
 	public ServiceResponse getCategories(){
 		
 		List<Category> listOfCategories = Category.getAllWithCourses();	 
-		List<Course> soonCourses = Course.getAllActive();	 
+		List<Course> soonCourses = Course.getSoon();	 
 		if (!listOfCategories.isEmpty()){
 	    	JSONObject jo = new JSONObject();
 			try {
