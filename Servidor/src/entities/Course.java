@@ -1,5 +1,6 @@
 package entities;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,8 +74,16 @@ public class Course {
 	public static Course getById(int id){
 		Course c = (Course)StoreData.getById(Course.class, id);
 		if(c != null){
-			c.setCourseSessions((ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId()));
-			c.setCourseUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(c.getId()));
+			ArrayList<CourseSession> sessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId());
+			c.setCourseSessions(sessions);
+			CourseSession activeSession = Course.getActiveSession(sessions);
+			
+			ArrayList<CourseUnity> unities = (ArrayList<CourseUnity>) CourseUnity.getByCourseId(c.getId());
+			if(activeSession != null){
+				unities = Course.getActiveUnities(unities, activeSession);
+			}
+			
+			c.setCourseUnities(unities);
 			
 			if(c.getTeacherId() != null){
 				User teacher = User.getById(c.getTeacherId());
@@ -86,6 +95,45 @@ public class Course {
 		return c;
 	}
 	
+	private static ArrayList<CourseUnity> getActiveUnities(ArrayList<CourseUnity> unities, CourseSession activeSession) {
+		String dateString = activeSession.getDate();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Date currentDate = new Date();
+		
+		try {
+			Date date = format.parse(dateString);
+			long startTimestamp = date.getTime()/1000;
+			long currentTimestamp = currentDate.getTime()/1000;
+			long difference = currentTimestamp - startTimestamp;
+			float result = difference/(3600*24);//cantidad de dias de diferencia
+			result = result/7; //semanas de distancia
+			int activeUnity = (int) result; 
+			
+			ArrayList<CourseUnity> fixed = new ArrayList<CourseUnity>();
+			for (int i = 0; i < unities.size(); i++) {
+				CourseUnity current = unities.get(i);
+				if(i == activeUnity){
+					current.setActive(true);
+				}
+				fixed.add(current);
+			}
+			
+			return fixed;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return unities;
+	}
+	private static CourseSession getActiveSession(ArrayList<CourseSession> sessions) {
+		for (CourseSession courseSession : sessions) {
+			if(courseSession.isActive()){
+				return courseSession;
+			}
+		}
+		return null;
+	}
 	public static List<Course> getByCategoryId(int categoryId){
 		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCategoryId(categoryId);	 
 		List<Course> listOfCourses = new ArrayList<Course>();

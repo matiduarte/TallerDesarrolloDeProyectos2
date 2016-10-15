@@ -13,6 +13,7 @@ public class CourseUnity {
 	private int courseId;
 	private String name;
 	private String description;
+	private boolean isActive;
 	
 	
 	public int getId() {
@@ -55,5 +56,11 @@ public class CourseUnity {
 	
 	public void delete(){
 		StoreData.delete(this);
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }
