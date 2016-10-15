@@ -12,6 +12,9 @@
    	<property name="courseId" type="int"></property>
    	<property name="name" ></property>
    	<property name="description" ></property>  
+   	<property name="html" ></property>  
+   	<property name="videoUrl" ></property>
+	<property name="questionSize" type="int"></property>  
    </class>  
             
  </hibernate-mapping>  

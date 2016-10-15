@@ -3,10 +3,13 @@ package fiuba.tallerdeproyectos2.Activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
@@ -15,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
+import fiuba.tallerdeproyectos2.Adapters.UnitRecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.CourseData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
+import fiuba.tallerdeproyectos2.Models.UnitsCardViewData;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
@@ -48,12 +52,10 @@ import retrofit2.Response;
 public class CourseDetailsActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbar;
-    private ExpandableListView expandableListView;
-    private List<String> unitsTitle = new ArrayList<>();
-    HashMap<String, List<String>> unitsContent = new HashMap<>();
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
-    private int lastExpandedPosition = -1;
-    Integer sessionId, studentId;
+    private RecyclerView.Adapter adapter;
+    ArrayList units = new ArrayList<>();
+    Integer sessionId, studentId, unitId;
     SessionManagerActivity session;
     HashMap<String, String> user;
 
@@ -63,7 +65,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         Intent intent = getIntent();
-        Integer itemId = intent.getIntExtra("courseId", 0);
+        int courseId = intent.getIntExtra("courseId", 0);
 
         session = new SessionManagerActivity(getApplicationContext());
         session.checkLogin();
@@ -86,7 +88,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getCourseDataById(itemId, studentId);
+        Call<ServerResponse> call = apiService.getCourseDataById(courseId, studentId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -116,8 +118,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             String startDateString = courseSessionsArray.getString("date");
                             sessionId = Integer.valueOf(courseSessionsArray.getString("id"));
                             courseStartDate.setText(startDateString);
-
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/DD/yyyy");
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
                             Date today = calendar.getTime();
@@ -158,19 +159,45 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
 
                         JSONArray courseUnitiesData = new JSONArray(courseData.getString("courseUnities"));
+                        Log.d("courseUnities", courseUnitiesData.toString());
+                        Log.d("courseUnitiesLenght", String.valueOf(courseUnitiesData.length()));
+
                         if(courseUnitiesData.length() > 0){
                             TextView unitsHeader = (TextView) findViewById(R.id.units_header);
                             unitsHeader.setVisibility(View.VISIBLE);
+                            View topLine = findViewById(R.id.top_line);
+                            topLine.setVisibility(View.VISIBLE);
+                            View bottomLine = findViewById(R.id.bottom_line);
+                            bottomLine.setVisibility(View.VISIBLE);
                             for (int i=0; i<courseUnitiesData.length(); i++) {
                                 JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
-                                String unitName = courseUnitiesArray.getString("name");
-                                unitsTitle.add(unitName);
-                                List<String> unitContentList = new ArrayList<>();
-                                String unitDesc = courseUnitiesArray.getString("description");
-                                unitContentList.add(unitDesc + "... (Ver contenido)");
-                                unitsContent.put(unitsTitle.get(i), unitContentList);
+
+                                Log.d("unitName", courseUnitiesArray.getString("name"));
+                                Log.d("unitDesc", courseUnitiesArray.getString("description"));
+
+                                UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
+                                units.add(i, obj);
                             }
                         }
+
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+                        recyclerView.setHasFixedSize(true);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(layoutManager);
+
+                        adapter = new UnitRecyclerViewAdapter(units);
+                        recyclerView.setAdapter(adapter);
+
+                        ((UnitRecyclerViewAdapter) adapter).setOnItemClickListener(new UnitRecyclerViewAdapter.MyClickListener() {
+                            @Override
+                            public void onItemClick(int position, View v) {
+                                Log.i(" Clicked on Item ", String.valueOf(position));
+                                TextView tv = (TextView) v.findViewById(R.id.unit_id);
+                                unitId = Integer.valueOf(tv.getText().toString());
+                                navigateToUnitDetailsActivity();
+                            }
+                        });
+
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
                     }
@@ -186,32 +213,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Log.e(TAG, t.toString());
             }
         });
-
-        expandableListView = (ExpandableListView) findViewById(R.id.units_list);
-        ExpandableListViewAdapter expandableListViewAdapter = new ExpandableListViewAdapter(getApplicationContext(), unitsTitle, unitsContent);
-        expandableListView.setAdapter(expandableListViewAdapter);
-        expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    expandableListView.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                TextView tv = (TextView) v.findViewById(R.id.child_layout);
-                navigateToUnitDetailsActivity();
-                return true;
-            }
-        });
-
     }
 
     @Override
@@ -254,6 +255,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("unitId", unitId);
         startActivity(intent);
     }
 

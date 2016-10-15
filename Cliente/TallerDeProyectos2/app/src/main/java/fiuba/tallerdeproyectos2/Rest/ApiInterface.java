@@ -35,5 +35,7 @@ public interface ApiInterface {
     @GET("proyectos2/student/subscriptions/{studentId}")
     Call<ServerResponse> getSubscriptions(@Path("studentId") Integer studentId);
 
+    @GET("proyectos2/unity/{id}")
+    Call<ServerResponse> getUnitDataById(@Path("id") Integer id);
 }
 

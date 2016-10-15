@@ -1,10 +1,12 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import dataBase.StoreData;
+import utils.FileUtil;
 
 @XmlRootElement
 public class CourseUnity {  
@@ -14,6 +16,10 @@ public class CourseUnity {
 	private String name;
 	private String description;
 	private boolean isActive;
+	private String html;
+	private String videoUrl;
+	private int videoSize;
+	private Integer questionSize;
 	
 	
 	public int getId() {
@@ -62,5 +68,39 @@ public class CourseUnity {
 	}
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+	public String getHtml() {
+		return html;
+	}
+	public void setHtml(String html) {
+		this.html = html;
+	}
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+	public int getVideoSize() {
+		return videoSize;
+	}
+	public void setVideoSize(int videoSize) {
+		this.videoSize = videoSize;
+	}
+	public Integer getQuestionSize() {
+		return questionSize;
+	}
+	public void setQuestionSize(Integer questionSize) {
+		this.questionSize = questionSize;
+	}
+	public ArrayList<String> getSubtitlesUrl() {
+		ArrayList<String> subs = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + this.getId() + "/Subtitles");
+		ArrayList<String> result = new ArrayList<String>();
+		
+		for (String sub : subs) {
+			result.add("WebContent/Files/CourseUnity/" + this.getId() + "/Subtitles/" + sub);
+		}
+		
+		return result;
 	}
 }

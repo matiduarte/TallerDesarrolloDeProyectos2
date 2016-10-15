@@ -6,9 +6,140 @@ body {
 .register{
 	margin: 0 auto;
 	padding-top: 40px;
-	width: 60%;
+	width: 80%;
 }
 
 .btn-back{
 	border: 2px solid;
+}
+
+.unityFirstBlock{
+	width: 45%;
+	float: left;
+}
+
+.unitySecondBlock{
+	width: 45%;
+	float: right;
+}
+
+.blockQuestions{
+	padding-top: 80px;
+}
+
+.tg  {border-collapse:collapse;border-spacing:0; width: 100%; text-align: center;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
+.tg .tg-yw4l{vertical-align:top}
+
+table, th, td {
+   border: 1px solid #009688;
+}
+
+.actionButtonImage{
+	height: 20px;
+    width: 20px;
+}
+
+.btnAction{
+	width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+.detail-label{
+	color: #009688;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.addVideoButton{
+	float:right;
+}
+
+#subtitlePopup{
+	box-shadow: 1px 3px 11px 2px #999;
+    z-index: 1000;
+    width: 300px;
+    height: 240px;
+    position: absolute;
+    background: white;
+    left: 540px;
+    top: 305px;
+    display: none;
+}
+
+
+#subtitlePopup .btnPopup{
+	font-size: smaller;
+    color: #009688;
+    font-weight: bold;
+    width: 80px;
+    padding: 0 5px 5px 5px;
+}
+
+.addSubtitleButtonImage{
+	height:25px;
+	width: 25px;
+}
+
+.btnAddSubtitle{
+	height:25px;
+	width: 25px;
+	padding: 0;
+}
+
+.labelPopup{
+	color: #009688;
+	margin-top: 5px;
+    margin-left: 10px;
+}
+
+#addQuestionPopup{
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal .modal-body {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.inputSessionDate{
+	width: 60%;
+    float: left;
+    margin-left: 10px;
+}
+
+hr {
+    margin: 8px;
+}
+
+.popupButtonsContainer{
+	float: right;
+}
+
+#subtitleNameContainer{
+	height: 20px;
+    width: 100%;
+}
+
+.subtitleLabel{
+	text-decoration: underline;
+	cursor: pointer;
 }

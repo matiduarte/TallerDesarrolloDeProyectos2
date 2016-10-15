@@ -56,9 +56,6 @@ public class CourseService {
 		Course course = Course.getById(id);	
 		course.checkIfStudentIsSuscribed(studentId);
 		if (course != null){
-			ArrayList<CourseSession> courseSessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(course.getId());
-			ArrayList<CourseUnity> courseUnities= ((ArrayList<CourseUnity>) CourseUnity.getByCourseId(course.getId()));
-			
 	    	JSONObject jo = new JSONObject();
 			try {
 				Gson g = new Gson();

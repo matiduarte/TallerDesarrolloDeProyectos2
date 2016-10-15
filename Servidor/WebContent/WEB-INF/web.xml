@@ -9,7 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
   <servlet>
     <servlet-name>Jersey Web Application</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -90,8 +89,7 @@
   <servlet-mapping>
     <servlet-name>Lista de Cursos</servlet-name>
     <url-pattern>/courselist/*</url-pattern>
-  </servlet-mapping>  
-  
+  </servlet-mapping>
   <servlet>
     <servlet-name>EditCourse</servlet-name>
     <servlet-class>controllers.EditCourseController</servlet-class>
@@ -108,33 +106,70 @@
     <servlet-name>New Unity</servlet-name>
     <url-pattern>/newunity/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>SaveCourseSessionActionServlet</servlet-name>
+    <servlet-class>actions.SaveCourseSessionActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SaveCourseSessionActionServlet</servlet-name>
+    <url-pattern>/SaveCourseSessionActionServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteCourseSessionActionServlet</servlet-name>
+    <servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteCourseSessionActionServlet</servlet-name>
+    <url-pattern>/DeleteCourseSessionActionServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>SaveQAActionServlet</servlet-name>
+    <servlet-class>actions.SaveQAActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SaveQAActionServlet</servlet-name>
+    <url-pattern>/SaveQAActionServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteCourseUnityActionServlet</servlet-name>
+    <servlet-class>actions.DeleteCourseUnityActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteCourseUnityActionServlet</servlet-name>
+    <url-pattern>/DeleteCourseUnityActionServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>SaveUnityVideoActionServlet</servlet-name>
+    <servlet-class>actions.SaveUnityVideoActionServlet</servlet-class>
+    <multipart-config>
+      <max-file-size>52428800</max-file-size>
+      <max-request-size>52428800</max-request-size>
+      <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SaveUnityVideoActionServlet</servlet-name>
+    <url-pattern>/SaveUnityVideoActionServlet/*</url-pattern>
+  </servlet-mapping>
+    
+ <servlet>
+	<servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
+	<servlet-class>actions.SaveVideoSubtitleActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
+	<url-pattern>/SaveVideoSubtitleActionServlet/*</url-pattern>
+  </servlet-mapping>
   
   <servlet>
-	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
-	<servlet-class>actions.SaveCourseSessionActionServlet</servlet-class>
+	<servlet-name>DeleteUnityVideoActionServlet</servlet-name>
+	<servlet-class>actions.DeleteUnityVideoActionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-	<servlet-name>SaveCourseSessionActionServlet</servlet-name>
-	<url-pattern>/SaveCourseSessionActionServlet/*</url-pattern>
+	<servlet-name>DeleteUnityVideoActionServlet</servlet-name>
+	<url-pattern>/DeleteUnityVideoActionServlet/*</url-pattern>
   </servlet-mapping>
-
-  <servlet>
-	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
-	<servlet-class>actions.DeleteCourseSessionActionServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-	<servlet-name>DeleteCourseSessionActionServlet</servlet-name>
-	<url-pattern>/DeleteCourseSessionActionServlet/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
-	<servlet-class>actions.DeleteCourseUnityActionServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-	<servlet-name>DeleteCourseUnityActionServlet</servlet-name>
-	<url-pattern>/DeleteCourseUnityActionServlet/*</url-pattern>
-  </servlet-mapping>
+ 
 
   <servlet>
 	<servlet-name>HasActiveSessionsActionServlet</servlet-name>
@@ -145,3 +180,4 @@
 	<url-pattern>/HasActiveSessionsActionServlet/*</url-pattern>
   </servlet-mapping>  
 </web-app>
+

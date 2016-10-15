@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="6dp"
+        card_view:cardUseCompatPadding="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/unit_reference"
+                    android:textSize="15sp"
+                    android:textStyle="bold|italic"
+                    android:layout_height="match_parent"
+                    android:text="1."/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/unit_title"
+                    android:textSize="15sp"
+                    android:textStyle="bold|italic"
+                    android:layout_height="match_parent"
+                    android:text="Introduccion"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/unit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:gravity="center_vertical"
+                android:text="Esta es la descripcion"
+                android:paddingBottom="5dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="12sp"
+                android:text="VER CONTENIDO"
+                android:layout_gravity="end"
+                android:textColor="@color/colorPrimary"
+                android:background="#ffffff"
+                android:id="@+id/unit_content_btn"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/unit_id"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

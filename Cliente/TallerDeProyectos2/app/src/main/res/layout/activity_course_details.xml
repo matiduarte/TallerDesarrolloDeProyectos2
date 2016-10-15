@@ -1,8 +1,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -27,7 +27,22 @@
                 android:background="@drawable/default_image"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                android:contentDescription="course image" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/scrim_top"
+                app:layout_collapseMode="pin"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_alignBottom="@+id/image"
+                android:background="@drawable/scrim_bottom"/>
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/anim_toolbar"
                 android:layout_width="match_parent"
@@ -39,7 +54,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollableview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="fill_vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -47,13 +62,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="0dp">
+            android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="10dp"
+                card_view:cardUseCompatPadding="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -82,6 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
@@ -95,6 +114,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:id="@+id/course_teacher_name"
                             android:text="@string/txt_teacher_example"/>
 
@@ -104,7 +124,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
@@ -116,6 +138,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:visibility="gone"
                             android:id="@+id/course_helpers_name"
                             android:text="@string/txt_helpers_example"/>
@@ -126,7 +149,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
@@ -137,6 +162,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:id="@+id/start_date"
                             android:text="@string/txt_start_date_example"/>
 
@@ -146,7 +172,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
@@ -157,65 +185,53 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:id="@+id/inscription_dates"
                             android:text="@string/txt_inscription_example"/>
-
-                    </LinearLayout>
+                     </LinearLayout>
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/top_line"
+                android:visibility="gone"
+                android:background="@android:color/darker_gray"/>
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:padding="10dip"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/colorPrimaryDark"
+                android:id="@+id/units_header"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone"
+                android:background="@color/background"
+                android:text="@string/units_title" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/darker_gray"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/bottom_line"
+                android:visibility="gone"
+                android:background="@android:color/darker_gray"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:padding="10dip"
-                        android:gravity="center_vertical"
-                        android:textSize="20sp"
-                        android:textStyle="bold|italic"
-                        android:textColor="#ffffff"
-                        android:id="@+id/units_header"
-                        android:visibility="gone"
-                        android:background="@color/colorPrimary"
-                        android:text="@string/units_title" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@android:color/darker_gray"/>
-
-                    <ExpandableListView
-                        android:id="@+id/units_list"
-                        android:layout_width="match_parent"
-                        android:divider="@color/colorPrimaryDark"
-                        android:dividerHeight="2dp"
-                        android:background="@color/background"
-                        android:layout_height="190dp"
-                        style="@android:style/Widget.DeviceDefault.ExpandableListView"
-                        android:footerDividersEnabled="true"
-                        android:headerDividersEnabled="true">
-                    </ExpandableListView>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"/>
 
         </LinearLayout>
 

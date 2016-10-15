@@ -1,6 +1,10 @@
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entities.CourseUnity;
+import utils.FileUtil;
 
 
 /**
@@ -40,6 +45,22 @@ public class NewUnityController extends HttpServlet {
 				CourseUnity courseUnity = CourseUnity.getById(id);
 				request.setAttribute("name", courseUnity.getName());
 				request.setAttribute("description", courseUnity.getDescription());
+				request.setAttribute("html", courseUnity.getHtml());
+				if(courseUnity.getVideoUrl() != null && !(courseUnity.getVideoUrl().compareTo("") == 0)){
+					request.setAttribute("videUrl", courseUnity.getVideoUrl());
+					
+					 File file = new File("WebContent/" + courseUnity.getVideoUrl());
+					 DecimalFormat df = new DecimalFormat("#.##");
+					 df.setRoundingMode(RoundingMode.FLOOR);
+					 
+					 double videoSize = file.length();
+					 videoSize = (videoSize/1024)/1024;
+					 
+					 request.setAttribute("videoSize", df.format(videoSize));
+					 
+					 ArrayList<String> subtitles = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + id + "/Subtitles");
+					 request.setAttribute("subtitles", subtitles);
+				}
 			} 
 		}
 		getServletConfig().getServletContext().getRequestDispatcher("/newunity.jsp").forward(request,response);
@@ -52,12 +73,13 @@ public class NewUnityController extends HttpServlet {
 		
 		String name = request.getParameter("name");
     	String description = request.getParameter("description");
+    	String html = request.getParameter("htmlEditor");
     	CourseUnity courseUnity = null;
     	
 		if(request.getParameter("courseId") != null){
 			int courseId = Integer.valueOf(request.getParameter("courseId"));
 			HttpSession session = request.getSession(true);
-			if(request.getParameter("id") != null){
+			if(request.getParameter("id") != null && !request.getParameter("id").equals("")){
 				int id = Integer.valueOf(request.getParameter("id"));
 				courseUnity = CourseUnity.getById(id);
 				courseUnity.setId(id);
@@ -69,6 +91,7 @@ public class NewUnityController extends HttpServlet {
 			courseUnity.setCourseId(courseId);
    			courseUnity.setName(name);
    			courseUnity.setDescription(description);
+   			courseUnity.setHtml(html);
 			courseUnity.save();
 		}
 		
