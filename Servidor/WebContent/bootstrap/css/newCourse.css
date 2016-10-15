@@ -2,7 +2,7 @@
 	width: 60%;
 }
 
-.newCourseButton{
+.newCourseButton{ 
 	float: right;
 }
 
@@ -61,4 +61,8 @@ body {
 
 .ui-state-hover {
    background: #000000;
+}
+
+.p-a-3 {
+  padding: ($spacer-y * 3) ($spacer-x * 3) !important;
 }

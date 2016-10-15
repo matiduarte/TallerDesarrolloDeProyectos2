@@ -115,7 +115,8 @@
         </br>
         
         <button class="btn btn-primary btn-file backeButton" onclick="goBack();return false">Volver</button>
-        <button class="btn btn-raised btn-primary newCourseButton btn" type="submit">Confirmar</button>
+        <button class="btn btn-primary btn-raised" type="submit">Confirmar</button>
+        <button id="btn_ver_detalles" class="btn btn-primary btn-file pull-right backeButton" onclick="goToDetails();return false">Ver detalles</button>
       </form>
 
 
@@ -277,6 +278,10 @@ $("#inputTeacher").autocomplete({
 			window.location.href = "cursos/admin";
 		}
 	
+		function goToDetails(){
+			window.location.href = '/Servidor/courseDetail?id=' + <% out.print(course.getId()); %> + '&user=admin';
+		}
+		
 	</script>
   </body>
 </html>

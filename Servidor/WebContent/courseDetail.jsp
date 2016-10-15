@@ -517,9 +517,27 @@
     	}    	
     	
     	function goBack(){
-			window.location.href = "courselist";
+    		
+    		var tipo_user = $.urlParam("user");
+    		
+    		if ( "admin" == tipo_user ) {
+    			window.location.href = "editCourse?id=" + $('#courseId').val();
+    		} else {
+    			window.location.href = "courselist";
+    		}
+    		
+    		
 		}
     
+    	$.urlParam = function(name){
+    	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    	    if (results==null){
+    	       return null;
+    	    }
+    	    else{
+    	       return results[1] || 0;
+    	    }
+    	}
     </script>
   </body>
 </html>
