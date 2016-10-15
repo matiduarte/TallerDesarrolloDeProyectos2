@@ -1,7 +1,10 @@
 package entities;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -178,14 +181,14 @@ public class Course {
 	}
 
 	public boolean hasStarted() {
-		// ACA HAY Q HACER LA LOGICA QUE CHEQUEE SI YA ARRANCO O NO
-		return false;
+		return this.hasActiveSession();
 	}
 
 	public boolean hasStudents() {
 		// ACA HAY Q HACER LA LOGICA QUE CHEQUEE SI TIENE UNA SESION ABIERTA O NO		
 		return false;
 	}
+
 	public boolean isSuscribed() {
 		return isSubscribed;
 	}
@@ -205,5 +208,18 @@ public class Course {
 				}
 			}
 		}
+	}
+	
+	public static List<Course> getSoon() {
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 7);
+		String oneWeekDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+		
+		String query = "SELECT * FROM Course c INNER JOIN CourseSession cs ON c.id = cs.courseId WHERE STR_TO_DATE(cs.date, '%d/%m/%Y') > '" + date + "' AND STR_TO_DATE(cs.date, '%d/%m/%Y') < '" + oneWeekDate + "' GROUP BY c.id";
+		System.out.println(query);
+		return (List<Course>)StoreData.getByCustomQuery(Course.class, query);
 	}
 }

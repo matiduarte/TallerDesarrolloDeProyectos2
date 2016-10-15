@@ -248,4 +248,22 @@ public class StoreData {
 		return 0;
 	}
 
+	public static List<?> getByCustomQuery(Class<?> objectClass, String query) {
+		//creating session object  
+		Session session = StoreData.getInstance().factory.openSession();  
+
+		List<Object> obj = null;
+		try{
+			return session.createSQLQuery(query).addEntity(objectClass).list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+
+		return obj;
+	}
+
 }  

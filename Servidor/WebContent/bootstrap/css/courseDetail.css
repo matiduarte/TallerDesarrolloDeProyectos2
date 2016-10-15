@@ -15,7 +15,7 @@
 	float: right;
     width: 400px;
     height: 250px;
-    margin-top: -16px;
+    margin-top: 10px;
 }
 
 
@@ -47,24 +47,22 @@ table, th, td {
 }
 
 .tableSessionContainer{
-	float: left;
+	/*float: left;
+	margin: 10px;*/
 }
 
 .tableUnityContainer{
-	float: right;
+	/*float: right;
+	margin: 10px;*/
 }
 
 .staticInfoContainer{
-	height: 210px;
+	height: auto;
+	width: auto;
 }
 
 .btnNew{
-	width: 116px;
-	height: 48px;
-    margin-top: -4px;
-    margin-left: 50px;
     font-size: smaller;
-    padding-left: 17px;
 }
 
 .btnBack{
@@ -142,5 +140,13 @@ hr {
 
 #sessionSucces{
 	width: 350px;
+}
+
+.no-visible{
+	display: none;
+}
+
+.ocupar-espacio{
+	width: 100%;
 }
 
