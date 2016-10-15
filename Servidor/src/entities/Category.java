@@ -43,7 +43,7 @@ public class Category {
 			List<Course> courses = Course.getByCategoryId(category.getId());
 			List<Course> coursesFixed = new ArrayList<Course>();
 			for (Course course : courses) {
-				if(course.getTeacherId() != null && course.hasActiveSession()){
+				if(course.getTeacherId() != null){
 					course.checkIfStudentIsSuscribed(studentId);
 					coursesFixed.add(course);
 				}

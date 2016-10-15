@@ -140,7 +140,7 @@ public class Course {
 		
 		for (CourseCategory courseCategory : listOfCouseCategory) {
 			Course course = Course.getById(courseCategory.getCourseId());
-			if(course != null && course.getTeacherId() != null && course.hasActiveSession()){
+			if(course != null && course.getTeacherId() != null){
 				listOfCourses.add(course);
 			}
 		}
@@ -178,7 +178,7 @@ public class Course {
 		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "name", search);
 		List<Course> coursesFixed = new ArrayList<Course>();
 		for (Course course : courses) {
-			if(course.getTeacherId() != null && course.hasActiveSession()){
+			if(course.getTeacherId() != null){
 				coursesFixed.add(course);
 			}
 		}
@@ -266,7 +266,7 @@ public class Course {
 		cal.add(Calendar.DATE, 7);
 		String oneWeekDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 		
-		String query = "SELECT * FROM Course c INNER JOIN CourseSession cs ON c.id = cs.courseId WHERE STR_TO_DATE(cs.date, '%d/%m/%Y') > '" + date + "' AND STR_TO_DATE(cs.date, '%d/%m/%Y') < '" + oneWeekDate + "' GROUP BY c.id";
+		String query = "SELECT * FROM Course c INNER JOIN CourseSession cs ON c.id = cs.courseId WHERE c.teacherId > 0 AND STR_TO_DATE(cs.date, '%d/%m/%Y') > '" + date + "' AND STR_TO_DATE(cs.date, '%d/%m/%Y') < '" + oneWeekDate + "' GROUP BY c.id";
 		System.out.println(query);
 		return (List<Course>)StoreData.getByCustomQuery(Course.class, query);
 	}
