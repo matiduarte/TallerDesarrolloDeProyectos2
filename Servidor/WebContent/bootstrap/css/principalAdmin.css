@@ -124,3 +124,15 @@ hr {
     border: 1px solid #009968;
     border-top: none;
 }
+
+.contenido-largo {
+	width: 40%;
+}
+
+.contenido-corto {
+	width: 7%;
+}
+
+.contenido-medio {
+	width: 15%;
+}

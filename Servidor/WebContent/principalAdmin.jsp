@@ -91,16 +91,18 @@
 						<td class="tg-yw4l">
 							<%  out.print(item.getCourse().getName()); %>
 						</td>
-						<td class="tg-yw4l">
+						<td class="tg-yw4l contenido-largo">
+							<span >
 						  	<%  out.print(item.getCourse().getDescription()); %>
+						  	</span>
 						</td>
 						<td class="tg-yw4l">
 						  	<%  out.print(String.join(", ", item.getCategoriesNames() )); %>
 						</td>
-						<td class="tg-yw4l">
+						<td class="tg-yw4l contenido-medio">
 						  	<%  out.print(item.getTeacher().getFirstName() + " " + item.getTeacher().getLastName()); %>
 						</td>
-						<td class="tg-yw4l">
+						<td class="tg-yw4l contenido-corto">
 							<button class="btn btnAction" type="submit" onclick="editeCourse(<%out.print(item.getCourse().getId());%>)">
 								<img  src="../images/edit_icon.png" class="actionButtonImage" alt="Editar" >
 							</button>
@@ -130,6 +132,8 @@
 	<div id="deleteCourseId" class="hide"></div>
 
 	<script>
+	
+	$(document).load( ordenarTabla() );
 	
 	function editeCourse(courseId) {
 		window.location.href = "../editCourse?id=" + courseId;
@@ -217,6 +221,24 @@
 			$(".noResultsMsg").removeClass("hide");
 		}
 	}
+	
+	function ordenarTabla() {
+    	var tbody = $('#tableCourse');
+    	tbody.find('tr:not(:first)').sort(function(a,b){ 
+    	    var nombre1_con_espacios = $(a).find('td:eq(0)').text();
+    	    var nombre2_con_espacios = $(b).find('td:eq(0)').text();
+    	    
+    	    var nombre1 = $.trim(nombre1_con_espacios);
+    	    var nombre2 = $.trim(nombre2_con_espacios);
+			
+    	            // if a < b return 1
+    	    return nombre1 > nombre2 ? 1 
+    	           // else if a > b return -1
+    	           : nombre1 < nombre2 ? -1 
+    	           // else they are equal - return 0    
+    	           : 0;           
+    	}).appendTo(tbody);
+	} 	
 	
 	</script>
 
