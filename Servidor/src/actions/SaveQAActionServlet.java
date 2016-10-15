@@ -42,6 +42,7 @@ public class SaveQAActionServlet extends HttpServlet {
 		String questionTittle = request.getParameter("question");
 		String[] answersList = request.getParameterValues("answersArray[]");
 		String[] checkboxsList = request.getParameterValues("selectedRows[]");
+		int questionId = Integer.valueOf(request.getParameter("questionId"));
 		
 		CourseUnity unity = CourseUnity.getById(unityId);
 		
@@ -52,28 +53,81 @@ public class SaveQAActionServlet extends HttpServlet {
     		unity.save();
     		unityId = unity.getId();
     	}
-		
-		//Guardo la pregunta
-		Question question = new Question();
+		DataTransfer dt = new DataTransfer();
+		Question question = Question.getById(questionId);
+		if (question != null){
+			dt.setEdit(true);
+			question.setId(questionId);
+		} else {
+			dt.setEdit(false);
+			question = new Question();
+		}
 		question.setQuestion(questionTittle);
 		question.setUnityId(unityId);
 		question.save();
 		
+		ArrayList<Answer> al = (ArrayList<Answer>) Answer.getByQuestionId(questionId);
+		if (al.size() == 0){
 		//Guardo todas las respuestas y seteo la correcta
-		for (int i=0 ; i < answersList.length; i++){
-			Answer answer = new Answer();
-			answer.setQuestionId(question.getId());
-			if (checkboxsList[i].equals("1")){
-				answer.setIsCorrect(true);
-				answer.setAnswer(answersList[i]);
-			} else {
-				answer.setIsCorrect(false);
-				answer.setAnswer(answersList[i]);
+			for (int i=0 ; i < answersList.length; i++){
+				Answer answer = new Answer();
+				answer.setQuestionId(question.getId());
+				if (checkboxsList[i].equals("1")){
+					answer.setIsCorrect(true);
+					answer.setAnswer(answersList[i]);
+				} else {
+					answer.setIsCorrect(false);
+					answer.setAnswer(answersList[i]);
+				}
+				answer.save();
 			}
-			answer.save();
+		} else {
+			Answer answer = new Answer();
+			if (answersList.length <= al.size()){
+				for (int i=0 ; i < answersList.length; i++){
+					answer.setId(al.get(i).getId());
+					answer.setQuestionId(question.getId());
+					if (checkboxsList[i].equals("1")){
+						answer.setIsCorrect(true);
+						answer.setAnswer(answersList[i]);
+					} else {
+						answer.setIsCorrect(false);
+						answer.setAnswer(answersList[i]);
+					}
+					answer.save();
+				}
+			//Agregue nuevas preguntas
+			} else {
+				//Copio las viejas
+				for (int i=0 ; i < al.size(); i++){
+					answer.setId(al.get(i).getId());
+					answer.setQuestionId(question.getId());
+					if (checkboxsList[i].equals("1")){
+						answer.setIsCorrect(true);
+						answer.setAnswer(answersList[i]);
+					} else {
+						answer.setIsCorrect(false);
+						answer.setAnswer(answersList[i]);
+					}
+					answer.save();
+				}
+				
+				for (int j = al.size(); j < answersList.length; j++){
+					answer = new Answer();
+					answer.setQuestionId(question.getId());
+					if (checkboxsList[j].equals("1")){
+						answer.setIsCorrect(true);
+						answer.setAnswer(answersList[j]);
+					} else {
+						answer.setIsCorrect(false);
+						answer.setAnswer(answersList[j]);
+					}
+					answer.save();
+				}
+			}
 		}
 		
-		DataTransfer dt = new DataTransfer();
+		
 		dt.setQuestion(question.getQuestion());
 		dt.setQuestionId(question.getId());
 		dt.setUnityId(unityId);
