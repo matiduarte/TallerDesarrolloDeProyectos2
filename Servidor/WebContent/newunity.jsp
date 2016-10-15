@@ -46,6 +46,16 @@
   </div>
 </div>
  
+ <div id="questionError" class="alerta-ques alert alert-danger fade in" style="display:none;">
+    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    	<strong>Debe agregar una pregunta. </strong>
+  	</div>
+ 
+ <div id="answerError" class="alerta-ans alert alert-danger fade in" style="display:none;">
+    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    	<strong>Debe agregar por lo menos dos respuestas.</strong>
+  	</div>
+ 
 <form id="identicalForm" class="register" method="post" action="newunity" enctype="multipart/form-data">
 <input type="hidden" name="courseId" id="courseId" value="${courseId}">
 <%if(request.getAttribute("id") != null) {%>
@@ -248,6 +258,14 @@
 		window.location.href = '/Servidor/courseDetail?id=' + id;
 	}		
 	
+	function checkLenghtQuestion(input) {
+	    if (input.value.length < 1) {
+	        input.setCustomValidity('Debe ingresar una respuesta');
+	    } else {
+	        input.setCustomValidity('');
+	   }
+	}
+	
 
 	function saveQuestion(){
 		
@@ -279,7 +297,7 @@
 				answersArray[i] = answersOb[i].value;
 		}	
 		
-		if(($("#addQuestion").val() != "") && (answersArray.length > 0)){
+		if(($("#addQuestion").val() != "") && (answersArray.length >= 2)){
 			
 			$.ajax({
 			    data: {courseId: courseId, unityId: unityId, question: question, answersArray: answersArray, selectedRows: selectedRows, questionId: questionId},
@@ -312,6 +330,18 @@
 			});
 		}else{
 			
+			var showAlertQuestion = false;
+			if ($('input[name="addQuestion"]').val() == ""){
+				$('#addQuestion').show().focus();
+				showAlertQuestion = true;
+				$('#questionError').show();
+				setTimeout(function() {$('#questionError').hide();},4000);
+			}
+			if ((answersArray.length < 2) && !(showAlertQuestion)){
+				$('#questionError').hide();
+				$('#answerError').show();
+				setTimeout(function() {$('#answerError').hide();},4000);
+			}
 		}
 	}
 	

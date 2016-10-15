@@ -100,6 +100,21 @@ table, th, td {
 	text-align: center;
 }
 
+.alerta-ques{
+	text-align: center;
+	margin-left: 40px;
+	margin-right: auto;
+	width: 20%;
+}
+
+.alerta-ans{
+	text-align: center;
+	margin-right: auto;
+	margin-left: 40px;
+	width: 20%;
+}
+
+
 @media screen and (min-width: 768px) { 
   .modal:before {
     display: inline-block;
