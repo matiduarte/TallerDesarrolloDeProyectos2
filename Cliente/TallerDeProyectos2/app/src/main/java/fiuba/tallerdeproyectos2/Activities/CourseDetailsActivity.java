@@ -56,6 +56,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
     private RecyclerView.Adapter adapter;
     ArrayList units = new ArrayList<>();
+    public Integer unitId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         Intent intent = getIntent();
-        int itemId = intent.getIntExtra("courseId", 0);
+        int courseId = intent.getIntExtra("courseId", 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
@@ -81,7 +82,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getCourseDataById(itemId);
+        Call<ServerResponse> call = apiService.getCourseDataById(courseId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -110,7 +111,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             JSONObject courseSessionsArray = new JSONObject(courseSessionsData.getString(0));
                             String startDateString = courseSessionsArray.getString("date");
                             courseStartDate.setText(startDateString);
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(startDate);
@@ -165,6 +166,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             public void onItemClick(int position, View v) {
                                 Log.i(" Clicked on Item ", String.valueOf(position));
                                 TextView tv = (TextView) v.findViewById(R.id.unit_id);
+                                unitId = Integer.valueOf(tv.getText().toString());
                                 navigateToUnitDetailsActivity();
                             }
                         });
@@ -230,6 +232,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("unitId", unitId);
         startActivity(intent);
     }
 

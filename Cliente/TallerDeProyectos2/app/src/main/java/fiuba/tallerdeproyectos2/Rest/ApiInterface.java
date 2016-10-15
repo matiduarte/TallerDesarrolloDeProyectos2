@@ -22,5 +22,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("proyectos2/student")
     Call<ServerResponse> postStudentData(@Field("email")String email, @Field("firstName")String firstName, @Field("lastName")String lastName, @Field("source")String source);
+
+    @GET("proyectos2/unity/{id}")
+    Call<ServerResponse> getUnitDataById(@Path("id") Integer id);
 }
 

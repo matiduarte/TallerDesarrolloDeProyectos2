@@ -345,11 +345,8 @@
 	    	    var fecha1 = $.trim(fecha1_con_espacios);
 	    	    var fecha2 = $.trim(fecha2_con_espacios);
 				
-	    	            // if a < b return 1
 	    	    return fecha1 > fecha2 ? 1 
-	    	           // else if a > b return -1
 	    	           : fecha1 < fecha2 ? -1 
-	    	           // else they are equal - return 0    
 	    	           : 0;           
 	    	}).appendTo(tbody);
     	}     	

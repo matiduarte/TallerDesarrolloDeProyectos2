@@ -14,21 +14,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/content_title"
-        android:text="Titulo del texto"
-        android:gravity="center_horizontal"
-        android:padding="10dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/content_text"
+        android:id="@+id/html"
         android:text="Este es el contenido del texto correspondiente a la unidad numero uno del curso Taller de Desarrollo de Proyecto 2 de la Facultad de Ingeniria de Buenos Aires"
         android:padding="10dp"/>
 
     <VideoView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:id="@+id/video"/>
 
 </LinearLayout>
