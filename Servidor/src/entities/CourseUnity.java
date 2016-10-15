@@ -16,7 +16,7 @@ public class CourseUnity {
 	private String html;
 	private String videoUrl;
 	private int videoSize;
-	private int questionSize;
+	private Integer questionSize;
 	
 	
 	public int getId() {
@@ -78,7 +78,7 @@ public class CourseUnity {
 	public void setVideoSize(int videoSize) {
 		this.videoSize = videoSize;
 	}
-	public int getQuestionSize() {
+	public Integer getQuestionSize() {
 		return questionSize;
 	}
 	public void setQuestionSize(Integer questionSize) {

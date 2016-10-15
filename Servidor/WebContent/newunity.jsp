@@ -63,127 +63,130 @@
 <%} else{%>
 	<input type="hidden" name="id" id="id" value="">
 <%} %>
-<div class="unityFirstBlock">
-	  <div class="form-group label-floating">
-	    <label class="control-label" for="name">Nombre</label>
-	    <c:choose>
-	    	<c:when test="${name != NULL}">
-	  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
-	  </c:when>
-	          <c:otherwise>
-	          <input class="form-control" id="name" name="name" type="text" required>
-	          </c:otherwise>
-	   </c:choose>
+<div class="blocksContainer">
+	<div class="unityFirstBlock">
+		  <div class="form-group label-floating">
+		    <label class="control-label" for="name">Nombre</label>
+		    <c:choose>
+		    	<c:when test="${name != NULL}">
+		  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
+		  </c:when>
+		          <c:otherwise>
+		          <input class="form-control" id="name" name="name" type="text" required>
+		          </c:otherwise>
+		   </c:choose>
+		  </div>
+		  <div class="form-group label-floating">
+		    <label class="control-label" for="lastName">Descripci&oacute;n</label>
+		    <c:choose>
+		    	<c:when test="${description != NULL}">
+		  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
+		  </c:when>
+		          <c:otherwise>
+		          <input class="form-control" id="description" name="description" type="text" required>
+		          </c:otherwise>
+		   </c:choose>
+		  </div>
+		  <div class="form-group label-floating">
+		    <label class="control-label" for="questions">Cantidad de Preguntas</label>
+		    <c:choose>
+		    	<c:when test="${questionSize != NULL}">
+		    <input class="form-control" id="questions" name="questions" type="text" value="${questionSize}" required>
+		    </c:when>
+		          <c:otherwise>
+		          <input class="form-control" id="questions" name="questions" type="text" required>
+		          </c:otherwise>
+		   </c:choose>
+		    </div>
+		  <div id="htmlEditor" name="htmlEditor"></div>
 	  </div>
-	  <div class="form-group label-floating">
-	    <label class="control-label" for="lastName">Descripci&oacute;n</label>
-	    <c:choose>
-	    	<c:when test="${description != NULL}">
-	  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
-	  </c:when>
-	          <c:otherwise>
-	          <input class="form-control" id="description" name="description" type="text" required>
-	          </c:otherwise>
-	   </c:choose>
+	  <div class="unitySecondBlock">
+	  <label class="detail-label">Videos:</label>
+	     <label id="btnAddVideo" class="btn btn-raised btn-primary addVideoButton btnNew" <%if(request.getAttribute("videUrl") != null) {out.print("style='display:none;'");}%>>
+	     	Agregar video <input type="file" style="display: none;" id="video" name="video" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
+	     </label>
+	     
+	     <table class="tg" id="tableVideo">
+			  <tr>
+			    <th class="tg-zyzu">Video</th>
+			    <th class="tg-zyzu">Subt&iacute;tulos</th>
+			    <th class="tg-zyzu">Tama&ntilde;o</th>
+			    <th class="tg-zyzu">Acciones</th>
+			  </tr>
+				<%if(request.getAttribute("videUrl") != null) {%>
+			 	<tr id="tr_video_">
+				    <td class="tg-yw4l">
+				    	<%  out.print(request.getAttribute("videUrl")); %>
+				    </td>
+				    <td class="tg-yw4l">
+				    	<div id="subtitleLabelsContainers">
+					    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
+							 for (String subtitle: subtitles)
+							 { %>
+							 <a class="subtitleLabel" onclick="showSubtitlePopup('<% out.print(subtitle); %>')">
+								<% out.print(subtitle + "</a><br/>");
+							 }%>
+						 </div>
+				    	<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">
+				    </td>
+				    <td class="tg-yw4l">
+				    	<%  out.print(request.getAttribute("videoSize")); %> mb
+				    </td>
+				    <td class="tg-yw4l">
+				    	<button class="btn btnAction" type="button" onclick="$('#video').click()">
+							<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+						</button>
+						
+						<button class="btn btnAction" type="button" onclick="deleteVideo();">
+							<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+						</button>
+				    </td>
+			  </tr>
+			  <%} %>
+		</table>
+		<div class="blockQuestions">
+	  <label class="detail-label">Preguntas:</label>
+	    <button class="btn btn-raised btn-primary pull-right" onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar Pregunta</button>
+	     
+	     <table class="tg" id="tableQuestions">
+			  <tr>
+			    <th class="tg-zyzu col-md-8">Pregunta</th>
+			    <th class="tg-zyzu col-md-8">Acciones</th>
+			  </tr>
+				<c:if test="${questionsList != NULL}">
+				<c:forEach items="${questionsList}" var="questions">
+				<tr id="tr_question_${questions.getId()}">
+				    <td>
+				    	${questions.getQuestion()}
+				    </td>
+				<td class="tg-yw4l">
+				    	<button class="btn btnAction" type="button" onclick="editQuestion(${questions.getId()});">
+							<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+						</button>
+						
+						<button class="btn btnAction" type="button" onclick="deleteQuestion(${questions.getId()});">
+							<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+						</button>
+				    </td>
+				    </tr>
+				    </c:forEach>
+				    </c:if>
+		</table>
+		</div>
 	  </div>
-	  <div class="form-group label-floating">
-	    <label class="control-label" for="questions">Cantidad de Preguntas</label>
-	    <c:choose>
-	    	<c:when test="${questionSize != NULL}">
-	    <input class="form-control" id="questions" name="questions" type="text" value="${questionSize}" required>
-	    </c:when>
-	          <c:otherwise>
-	          <input class="form-control" id="questions" name="questions" type="text" required>
-	          </c:otherwise>
-	   </c:choose>
-	    </div>
-	  <div id="htmlEditor" name="htmlEditor"></div>
   </div>
-  <div class="unitySecondBlock">
-  <label class="detail-label">Videos:</label>
-     <label class="btn btn-raised btn-primary addVideoButton btnNew" >
-     	Agregar video <input type="file" style="display: none;" id="video" name="video" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
-     </label>
-     
-     <table class="tg" id="tableVideo">
-		  <tr>
-		    <th class="tg-zyzu">Video</th>
-		    <th class="tg-zyzu">Subt&iacute;�tulos</th>
-		    <th class="tg-zyzu">Tama&ntilde;o</th>
-		    <th class="tg-zyzu">Acciones</th>
-		  </tr>
-			<%if(request.getAttribute("videUrl") != null) {%>
-		 	<tr id="tr_video_">
-			    <td class="tg-yw4l">
-			    	<%  out.print(request.getAttribute("videUrl")); %>
-			    </td>
-			    <td class="tg-yw4l">
-			    	<div id="subtitleLabelsContainers">
-				    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
-						 for (String subtitle: subtitles)
-						 { %>
-						 <a class="subtitleLabel" onclick="showSubtitlePopup('<% out.print(subtitle); %>')">
-							<% out.print(subtitle + "</a><br/>");
-						 }%>
-					 </div>
-			    	<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">
-			    </td>
-			    <td class="tg-yw4l">
-			    	<%  out.print(request.getAttribute("videoSize")); %> mb
-			    </td>
-			    <td class="tg-yw4l">
-			    	<button class="btn btnAction" type="button" onclick="$('#video').click()">
-						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
-					</button>
-					
-					<button class="btn btnAction" type="button" onclick="deleteVideo();">
-						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
-					</button>
-			    </td>
-		  </tr>
-		  <%} %>
-	</table>
-	<div class="blockQuestions">
-  <label class="detail-label">Preguntas:</label>
-    <button class="btn btn-raised btn-primary pull-right" onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar Pregunta</button>
-     
-     <table class="tg" id="tableQuestions">
-		  <tr>
-		    <th class="tg-zyzu col-md-8">Pregunta</th>
-		    <th class="tg-zyzu col-md-8">Acciones</th>
-		  </tr>
-			<c:if test="${questionsList != NULL}">
-			<c:forEach items="${questionsList}" var="questions">
-			<tr id="tr_question_${questions.getId()}">
-			    <td>
-			    	${questions.getQuestion()}
-			    </td>
-			<td class="tg-yw4l">
-			    	<button class="btn btnAction" type="button" onclick="editQuestion(${questions.getId()});">
-						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
-					</button>
-					
-					<button class="btn btnAction" type="button" onclick="deleteQuestion(${questions.getId()});">
-						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
-					</button>
-			    </td>
-			    </tr>
-			    </c:forEach>
-			    </c:if>
-	</table>
+  	<div class="buttonsContainer">
+		<c:choose>
+		   	<c:when test="${id != NULL}">
+		 			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
+		 		</c:when>
+			<c:otherwise>
+				<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
+		         </c:otherwise>
+		  </c:choose>
+		  <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Volver</button>
 	</div>
-  </div>
-  
- <c:choose>
-    	<c:when test="${id != NULL}">
-  			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
-  		</c:when>
-		<c:otherwise>
-			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
-          </c:otherwise>
-   </c:choose>
-   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
-	</form>
+</form>
 	
 	<div id="subtitlePopup">
 		<label class="labelPopup" id="popupSessionTitle">Agregar subt&iacute;tulo</label>
@@ -465,6 +468,7 @@
 		})
 		 .done(function( data, textStatus, jqXHR ) {
 			 $("#tr_video_").remove();
+			 $("#btnAddVideo").show();
 		 })
 		 .fail(function( jqXHR, textStatus, errorThrown ) {
 		     if ( console && console.log ) {
@@ -517,7 +521,7 @@
 		}
 
 		$('#tableVideo tr:last').after(row);
-
+		$("#btnAddVideo").hide();
 	}
 	
 	function getFileSizeFromBytes(size){

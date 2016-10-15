@@ -158,3 +158,8 @@ hr {
 	text-decoration: underline;
 	cursor: pointer;
 }
+
+.blocksContainer{
+	width: 100%;
+    min-height: 650px;
+}
