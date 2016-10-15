@@ -84,10 +84,10 @@
         <h4 class="fondo-verde position-absolute ancho-completo espaciado-chico borde-redondeado"><strong>${courses.getName()}</strong>
         
 	   	<c:if test="${courses.hasActiveSession()}">
-	   		<span class="badge progress-bar-success">Activo</span>
+	   		<span class="badge progress-bar-success borde-fino">Activo</span>
 	   	</c:if>
 	   	<c:if test="${!courses.hasActiveSession()}">
-	   		<span class="badge progress-bar-danger">No activo</span>
+	   		<span class="badge progress-bar-danger borde-fino">No activo</span>
 	   	</c:if>
         
         </h4>

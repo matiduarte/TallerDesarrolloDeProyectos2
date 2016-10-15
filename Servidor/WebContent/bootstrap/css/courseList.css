@@ -129,3 +129,7 @@ body {
 .borde-redondeado {
 	border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
+
+.borde-fino {
+	border: 1px solid #d6d6d6;
+}
