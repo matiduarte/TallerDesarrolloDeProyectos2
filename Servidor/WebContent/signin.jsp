@@ -104,6 +104,7 @@
   
   
   	<img src="bootstrap/img/icono.ico" class="logo" alt="Logo" style="width:100px;height:100px;"> 
+    <p class="appName">FIUBA Cursos</p>
     <div class="container">
     
 		<form name="loginForm" method="post" action="signin" class="form-signin">
@@ -117,7 +118,7 @@
   		</div>
 		
 		<button class="btn btn-lg btn-raised btn-primary btn-block" name="btn_ini_ses" type="submit">Iniciar Sesión</button>
-        <button class="btn btn-lg btn-raised btn-primary btn-block"  onclick="registro()" type="button">Registrate</button>
+        <button class="btn btn-lg btn-raised btn-primary btn-block"  onclick="registro()" type="button">Registrarse</button>
         <div class="login-register">
 				<a href="#" onclick="recuperarContrasenia()">¿Olvidó su contraseña?</a>
 			</div>

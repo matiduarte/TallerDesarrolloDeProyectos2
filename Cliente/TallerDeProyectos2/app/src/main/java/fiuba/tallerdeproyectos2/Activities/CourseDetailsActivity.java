@@ -8,6 +8,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -35,10 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
-import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
 import fiuba.tallerdeproyectos2.Models.CourseData;
-import fiuba.tallerdeproyectos2.Models.Courses;
-import fiuba.tallerdeproyectos2.Models.CoursesCardViewData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
@@ -67,6 +65,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Integer itemId = intent.getIntExtra("courseId", 0);
 
+        session = new SessionManagerActivity(getApplicationContext());
+        session.checkLogin();
+        user = session.getUserDetails();
+        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,7 +86,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getCourseDataById(itemId);
+        Call<ServerResponse> call = apiService.getCourseDataById(itemId, studentId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -113,7 +116,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             String startDateString = courseSessionsArray.getString("date");
                             sessionId = Integer.valueOf(courseSessionsArray.getString("id"));
                             courseStartDate.setText(startDateString);
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
+
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/DD/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
                             Date today = calendar.getTime();
@@ -125,10 +129,22 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Date finishInscriptionDate = calendar.getTime();
                             String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
                             courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
-                            if(startDate.before(today) && !today.after(finishInscriptionDate) && !isSubscribed){
+
+                            Log.d("startDate", String.valueOf(startDate));
+
+
+                            Log.d("startInscriptionDate", String.valueOf(startInscriptionDate));
+                            Log.d("finishInscriptionDate", String.valueOf(finishInscriptionDate));
+                            Log.d("today", String.valueOf(today));
+
+
+                            Log.d("isSubscribed", isSubscribed.toString());
+
+
+                            if(!isSubscribed){
                                 Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
                                 inscriptionButton.setVisibility(View.VISIBLE);
-                            } else if (isSubscribed){
+                            } else {
                                 Button unsubscriptionButton = (Button)findViewById(R.id.unsubscription_btn);
                                 unsubscriptionButton.setVisibility(View.VISIBLE);
                             }
@@ -196,10 +212,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
         });
 
-        session = new SessionManagerActivity(getApplicationContext());
-        session.checkLogin();
-        user = session.getUserDetails();
-        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
     }
 
     @Override
@@ -262,7 +274,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Boolean success =response.body().getSuccess();
                 if(success.equals(true)){
                     navigateToMainActivity();
-                    Toast.makeText(getApplicationContext(), "Se ha inscripto en el curso satisfactoriamente!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.inscription_success, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -282,7 +294,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Boolean success =response.body().getSuccess();
                 if(success.equals(true)){
                     navigateToMainActivity();
-                    Toast.makeText(getApplicationContext(), "Se ha dado de baja del curso satisfactoriamente!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.unsubscription_success, Toast.LENGTH_LONG).show();
                 }
             }
 

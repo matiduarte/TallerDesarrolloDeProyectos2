@@ -1,10 +1,6 @@
 package fiuba.tallerdeproyectos2.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,11 +76,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                 try {
                                                     session.createLoginSession(object.getString("email"), profile.getFirstName() + profile.getMiddleName(),
                                                             profile.getLastName(),profile.getProfilePictureUri(200, 200).toString(), data);
+                                                    Toast.makeText(getApplicationContext(), R.string.facebook_success_login, Toast.LENGTH_LONG).show();
+                                                    navigateToMainActivity();
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
-                                                Toast.makeText(getApplicationContext(), R.string.facebook_success_login, Toast.LENGTH_LONG).show();
-                                                navigateToMainActivity();
                                             }
                                         }
                                         @Override

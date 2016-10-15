@@ -7,6 +7,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -17,7 +18,7 @@ public interface ApiInterface {
     Call<ServerResponse> getCourses(@Path("studentId") Integer studentId);
 
     @GET("proyectos2/course/{id}")
-    Call<ServerResponse> getCourseDataById(@Path("id") Integer id);
+    Call<ServerResponse> getCourseDataById(@Path("id") Integer id, @Query("studentId") Integer studentId);
 
     @FormUrlEncoded
     @POST("proyectos2/student")

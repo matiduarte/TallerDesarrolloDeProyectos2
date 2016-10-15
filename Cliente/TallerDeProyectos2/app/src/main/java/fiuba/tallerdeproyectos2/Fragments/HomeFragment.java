@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
                                     if(coursesInCategoryArray.getBoolean("isSubscribed")){
-                                        subscribeMark.setVisibility(View.VISIBLE);
+                                       // subscribeMark.setVisibility(View.VISIBLE);
                                     }
                                     courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                                 }
@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
                             if(soonCoursesArray.getBoolean("isSubscribed")){
-                                courseIconInscripted.setVisibility(View.VISIBLE);
+                               // courseIconInscripted.setVisibility(View.VISIBLE);
                             }
                             CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
                             soonCourses.add(i, obj);
@@ -146,12 +146,17 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        subscribeMark = (ImageView) rootView.findViewById(R.id.subscribed_mark);
-        courseIconInscripted = (ImageView) rootView.findViewById(R.id.course_icon_inscripted);
+        expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableList);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+
+        session = new SessionManagerActivity(getContext());
+        session.checkLogin();
+        user = session.getUserDetails();
+        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getCourses(studentId);
@@ -175,8 +180,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 for (int j=0; j<coursesInCategoryData.length(); j++) {
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
+                                    Log.d("isSubscribed", coursesInCategoryArray.getString("isSubscribed"));
                                     if(coursesInCategoryArray.getBoolean("isSubscribed")){
-                                        subscribeMark.setVisibility(View.VISIBLE);
+                                        //subscribeMark.setVisibility(View.VISIBLE);
                                     }
                                     courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                                 }
@@ -184,8 +190,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                         }
 
+                        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
+                        expandableListView.setAdapter(expandableListViewAdapter);
+                        expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
+
                         String pictureUrl;
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
+
+                        Log.d("soonCourses", soonCoursesData.toString());
+
+
                         for (int i=0; i< soonCoursesData.length(); i++) {
                             JSONObject soonCoursesArray = new JSONObject(soonCoursesData.getString(i));
                             pictureUrl = "";
@@ -193,11 +207,27 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
                             if(soonCoursesArray.getBoolean("isSubscribed")){
-                                courseIconInscripted.setVisibility(View.VISIBLE);
+                                //courseIconInscripted.setVisibility(View.VISIBLE);
                             }
                             CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
                             soonCourses.add(i, obj);
                         }
+
+                        recyclerView.setHasFixedSize(true);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerView.setLayoutManager(layoutManager);
+                        adapter = new RecyclerViewAdapter(soonCourses);
+                        recyclerView.setAdapter(adapter);
+
+                        ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
+                            @Override
+                            public void onItemClick(int position, View v) {
+                                TextView tv = (TextView) v.findViewById(R.id.course_id);
+                                courseId = Integer.valueOf(tv.getText().toString());
+                                navigateToCourseDetailsActivity();
+                            }
+                        });
+
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, e.getLocalizedMessage());
@@ -209,28 +239,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Log.e(TAG, t.toString());
             }
         });
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(soonCourses);
-        recyclerView.setAdapter(adapter);
-
-        session = new SessionManagerActivity(getContext());
-        session.checkLogin();
-        user = session.getUserDetails();
-        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated (View view, Bundle savedInstanceState) {
-        expandableListView = (ExpandableListView) view.findViewById(R.id.expandableList);
-        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
-        expandableListView.setAdapter(expandableListViewAdapter);
-        expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -260,6 +268,12 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 return true;
             }
         });
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated (View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -279,14 +293,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onResume() {
         super.onResume();
-        ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                TextView tv = (TextView) v.findViewById(R.id.course_id);
-                courseId = Integer.valueOf(tv.getText().toString());
-                navigateToCourseDetailsActivity();
-            }
-        });
     }
 
 }

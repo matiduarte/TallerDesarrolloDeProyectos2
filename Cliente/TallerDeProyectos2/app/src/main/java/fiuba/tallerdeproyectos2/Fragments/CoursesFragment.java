@@ -20,13 +20,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import fiuba.tallerdeproyectos2.Activities.CourseDetailsActivity;
 import fiuba.tallerdeproyectos2.Activities.SessionManagerActivity;
 import fiuba.tallerdeproyectos2.Adapters.RecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.CourseData;
-import fiuba.tallerdeproyectos2.Models.Courses;
 import fiuba.tallerdeproyectos2.Models.CoursesCardViewData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
@@ -45,6 +43,7 @@ public class CoursesFragment extends Fragment {
     private static final String TAG = CoursesFragment.class.getSimpleName();
     ArrayList myCourses = new ArrayList<>();
     ImageView courseIconInscripted;
+    RecyclerView recyclerView;
 
 
     public CoursesFragment() {}
@@ -52,15 +51,9 @@ public class CoursesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(getDataSet());
-        recyclerView.setAdapter(adapter);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
         courseIconInscripted = (ImageView) rootView.findViewById(R.id.course_icon_inscripted);
-
 
         session = new SessionManagerActivity(getContext());
         session.checkLogin();
@@ -76,6 +69,9 @@ public class CoursesFragment extends Fragment {
                     Boolean success =response.body().getSuccess();
                     if(success.equals(true)){
                         String data = response.body().getData();
+
+                        Log.d("mis cursos", data.toString());
+
                         Gson gson = new Gson();
                         CourseData course = gson.fromJson(data, CourseData.class);
 
@@ -88,12 +84,28 @@ public class CoursesFragment extends Fragment {
                                 pictureUrl = courseDataArray.getString("pictureUrl");
                             }
                             if(courseDataArray.getBoolean("isSubscribed")){
-                                courseIconInscripted.setVisibility(View.VISIBLE);
+                                //courseIconInscripted.setVisibility(View.VISIBLE);
                             }
                             CoursesCardViewData obj = new CoursesCardViewData(courseDataArray.getString("name"), pictureUrl, courseDataArray.getString("id"));
                             myCourses.add(i, obj);
                         }
                     }
+
+                    recyclerView.setHasFixedSize(true);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    recyclerView.setLayoutManager(layoutManager);
+                    adapter = new RecyclerViewAdapter(myCourses);
+                    recyclerView.setAdapter(adapter);
+
+                    ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
+                        @Override
+                        public void onItemClick(int position, View v) {
+                            TextView tv = (TextView) v.findViewById(R.id.course_id);
+                            courseId = Integer.valueOf(tv.getText().toString());
+                            navigateToCourseDetailsActivity();
+                        }
+                    });
+
                 } catch (JSONException e) {
                     Log.e(TAG, e.getLocalizedMessage());
                 }
@@ -120,26 +132,6 @@ public class CoursesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                TextView tv = (TextView) v.findViewById(R.id.course_id);
-                courseId = Integer.valueOf(tv.getText().toString());
-                navigateToCourseDetailsActivity();
-            }
-        });
     }
-
-    private ArrayList<CoursesCardViewData> getDataSet() {
-        ArrayList results = new ArrayList<CoursesCardViewData>();
-        for (int index = 0; index < 20; index++) {
-            CoursesCardViewData obj = new CoursesCardViewData("Algoritmos y Programacion I",
-                    "Files/Course/11/img_oficina_de_proyectos_4.jpg", String.valueOf(index));
-            results.add(index, obj);
-        }
-        return results;
-    }
-
-
 
 }

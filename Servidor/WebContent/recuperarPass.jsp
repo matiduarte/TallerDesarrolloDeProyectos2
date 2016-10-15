@@ -37,8 +37,8 @@
 </div>
 
 
-<h4><ins>Ingrese el email con el que se registro y le enviaremos los pasos a seguir
-						para recuperar su contraseña.</ins></h4>
+<h4><ins>Ingrese el email con el que se registró y le enviaremos los pasos a seguir
+						para recuperar su contraseña:</ins></h4>
 
 <form  class="register" method="post" action="recuperarPass">
 
