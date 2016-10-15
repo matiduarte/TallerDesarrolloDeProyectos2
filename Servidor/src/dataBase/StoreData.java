@@ -39,12 +39,14 @@ public class StoreData {
 			}
 			
 			//Aca se agregan los configs de cada clase
+			cfg.addResource("dataBase/question.hbm.xml");
 			cfg.addResource("dataBase/user.hbm.xml");
 			cfg.addResource("dataBase/course.hbm.xml");
 			cfg.addResource("dataBase/category.hbm.xml");
 			cfg.addResource("dataBase/courseCategory.hbm.xml");
 			cfg.addResource("dataBase/courseUnity.hbm.xml");
 			cfg.addResource("dataBase/courseSession.hbm.xml");
+			cfg.addResource("dataBase/answer.hbm.xml");
 
 			//creating seession factory object  
 			this.factory = cfg.buildSessionFactory();

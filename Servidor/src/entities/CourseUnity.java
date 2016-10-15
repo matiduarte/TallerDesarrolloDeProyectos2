@@ -13,6 +13,10 @@ public class CourseUnity {
 	private int courseId;
 	private String name;
 	private String description;
+	private String html;
+	private String videoUrl;
+	private int videoSize;
+	private Integer questionSize;
 	
 	
 	public int getId() {
@@ -56,4 +60,29 @@ public class CourseUnity {
 	public void delete(){
 		StoreData.delete(this);
 	}
+	public String getHtml() {
+		return html;
+	}
+	public void setHtml(String html) {
+		this.html = html;
+	}
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+	public int getVideoSize() {
+		return videoSize;
+	}
+	public void setVideoSize(int videoSize) {
+		this.videoSize = videoSize;
+	}
+	public Integer getQuestionSize() {
+		return questionSize;
+	}
+	public void setQuestionSize(Integer questionSize) {
+		this.questionSize = questionSize;
+	}
+	
 }
