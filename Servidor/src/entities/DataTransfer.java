@@ -7,6 +7,7 @@ public class DataTransfer {
 	private int unityId;
 	private int questionId;
 	private ArrayList<Answer> answerList;
+	private boolean edit;
 	
 	public String getQuestion() {
 		return question;
@@ -31,6 +32,12 @@ public class DataTransfer {
 	}
 	public void setAnswerList(ArrayList<Answer> answerList) {
 		this.answerList = answerList;
+	}
+	public boolean isEdit() {
+		return edit;
+	}
+	public void setEdit(boolean edit) {
+		this.edit = edit;
 	}
 	
 	

@@ -214,7 +214,7 @@
       </div>
       
       <div class="qmb modal-body">
-      
+      <input type="hidden" id="qId" name="qId" value="0">
         <div class="form-group label-floating">
     <label class="control-label" for="addQuestion">Ingrese una pregunta</label>
   	<input class="form-control" id="addQuestion" name="addQuestion" type="text" required>
@@ -247,7 +247,6 @@
 		
 	var count = 0;
 	
-	
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
 	}		
@@ -255,6 +254,8 @@
 
 	function saveQuestion(){
 		
+		
+		var questionId = document.getElementById("qId").value;
 		var unityId = "0";
 		if($('#id').val() != ""){
 			unityId = $('#id').val();
@@ -284,7 +285,7 @@
 		if(($("#addQuestion").val() != "") && (answersArray.length > 0)){
 			
 			$.ajax({
-			    data: {courseId: courseId, unityId: unityId, question: question, answersArray: answersArray, selectedRows: selectedRows},
+			    data: {courseId: courseId, unityId: unityId, question: question, answersArray: answersArray, selectedRows: selectedRows, questionId: questionId},
 			    //Cambiar a type: POST si necesario
 			    type: "POST",
 			    // Formato de datos que se espera en la respuesta
@@ -294,11 +295,18 @@
 			})
 			 .done(function( data, textStatus, jqXHR ) {
 				 hideQuestionsPopup();
+				
+				
+				 $(".qmb #qId").attr({
+		               value: data.questionId,
+		             });
+				
 				 loadQuestionRow(data);
 				 if($('#id').val() == ""){
 						$('#id').val(data.unityId);
 						window.location= "newunity?courseId=" + $('#courseId').val() + "&id=" + data.unityId;
 				 }
+				 
 			 })
 			 .fail(function( jqXHR, textStatus, errorThrown ) {
 			     if ( console && console.log ) {
@@ -325,6 +333,9 @@
 			 
 			 var addbtn = document.getElementById("addBtn");
 			 $(".qmb #addQuestion").val(data.question).trigger('change');
+			 $(".qmb #qId").attr({
+	               value: data.questionId,
+	             });
 			 for (var i = 0; i < data.answerList.length; i++){
 				 addbtn.click();
 				 $(".qmb #inp"+i).val(data.answerList[i]["answer"]);
@@ -437,6 +448,7 @@
 	}
 	
 	function loadQuestionRow(data){
+		
 		row = '<tr id="tr_question_'+data.questionId+'">'
 	    + '<td>'
     	+ data.question
@@ -451,7 +463,15 @@
     	+  '</td>'
     	+ '</tr>';
     	
-		$('#tableQuestions tr:last').after(row);
+    	
+		if(data.edit){
+			var rowIndex = $('#tr_question_'+data.questionId).index();
+			$('#tr_question_'+data.questionId).remove();
+			$('#tableQuestions tr').eq(rowIndex - 1).after(row);
+		} else {
+			$('#tableQuestions tr:last').after(row);
+		}
+    	
 	}
 	
 	function loadVideoRow(data){
@@ -564,6 +584,9 @@
 	
 	function showQuestionsPopUp() {
 		$("#addQuestionPopup").show();
+		$(".qmb #qId").attr({
+            value: "0",
+          });
 	}
 	
 	function hideQuestionsPopup(){
