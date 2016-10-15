@@ -82,6 +82,7 @@ public class NewUnityController extends HttpServlet {
     	String html = request.getParameter("htmlEditor");
     	String questionSize = request.getParameter("questions");
     	CourseUnity courseUnity = null;
+    	boolean editQuestionSize = true;
     	
 		if(request.getParameter("courseId") != null){
 			int courseId = Integer.valueOf(request.getParameter("courseId"));
@@ -91,23 +92,35 @@ public class NewUnityController extends HttpServlet {
 				courseUnity = CourseUnity.getById(id);
 				courseUnity.setId(id);
 				session.setAttribute("alertType", "edit");
+				
 			}else{
 	   			courseUnity = new CourseUnity();
 	   			session.setAttribute("alertType", "create");
 			}
-			courseUnity.setCourseId(courseId);
-   			courseUnity.setName(name);
-   			courseUnity.setDescription(description);
-   			courseUnity.setHtml(html);
-   			courseUnity.setQuestionSize(Integer.valueOf(questionSize));
-			courseUnity.save();
+			ArrayList<Question> qList = (ArrayList<Question>) Question.getByUnityId(courseUnity.getId());
+			
+			if (Integer.valueOf(questionSize) * 4 <= qList.size()){
+	   			courseUnity.setQuestionSize(Integer.valueOf(questionSize));
+	   			editQuestionSize = false;
+			} else {
+				session.setAttribute("alertType", "edit");
+				session.setAttribute("moreQuestions", qList.size());
+			}
+				courseUnity.setCourseId(courseId);
+	   			courseUnity.setName(name);
+	   			courseUnity.setDescription(description);
+	   			courseUnity.setHtml(html);
+				courseUnity.save();
+			
 		}
 		
 		String create_btn = request.getParameter("create_btn");
 		
 		if (create_btn != null){
-			response.sendRedirect(request.getContextPath() + "/courseDetail?id=" + request.getParameter("courseId"));
-			
+			if (!editQuestionSize)
+				response.sendRedirect(request.getContextPath() + "/courseDetail?id=" + request.getParameter("courseId"));
+			else
+				response.sendRedirect(request.getContextPath() + "/newunity?courseId=" + request.getParameter("courseId") + "&id=" + courseUnity.getId());
 		}
 	}
 

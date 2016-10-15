@@ -46,6 +46,24 @@
   </div>
 </div>
  
+ 
+
+					  <%
+
+		if(request.getSession(false).getAttribute("moreQuestions") != null){
+%>
+
+
+	<div class="alerta-more alerta alert alert-danger">
+  		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  		<strong>Necesita agregar mas preguntas</strong>
+	</div>
+ 
+ <%
+ 			request.getSession(true).setAttribute("moreQuestions", null);
+		}
+%>
+  
  <div id="questionError" class="alerta-ques alert alert-danger fade in" style="display:none;">
     	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     	<strong>Debe agregar una pregunta. </strong>
@@ -97,6 +115,7 @@
 		          <input class="form-control" id="questions" name="questions" type="text" required>
 		          </c:otherwise>
 		   </c:choose>
+		   <p class="help-block">Para almacenar este valor, deben haber el cuadruple de preguntas guardadas.</p>
 		    </div>
 		  <div id="htmlEditor" name="htmlEditor"></div>
 	  </div>
