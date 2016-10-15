@@ -267,7 +267,6 @@ public class Course {
 		String oneWeekDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 		
 		String query = "SELECT * FROM Course c INNER JOIN CourseSession cs ON c.id = cs.courseId WHERE c.teacherId > 0 AND STR_TO_DATE(cs.date, '%d/%m/%Y') > '" + date + "' AND STR_TO_DATE(cs.date, '%d/%m/%Y') < '" + oneWeekDate + "' GROUP BY c.id";
-		System.out.println(query);
 		return (List<Course>)StoreData.getByCustomQuery(Course.class, query);
 	}
 }
