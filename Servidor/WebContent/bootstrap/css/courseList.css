@@ -107,3 +107,25 @@ body {
 	min-width: 40%;
 	min-height: 40%;
 }
+
+.fondo-verde {
+	background-color: #009688;
+	color: #FFFFFF;
+}
+
+.position-absolute {
+	position: absolute;
+	margin: 0px;
+}
+
+.ancho-completo {
+	width: 100%;
+}
+
+.espaciado-chico {
+	padding: 5px;
+}
+
+.borde-redondeado {
+	border-radius: 0.5em 0.5em 0.5em 0.5em;
+}

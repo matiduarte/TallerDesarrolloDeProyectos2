@@ -60,27 +60,46 @@
 %>
 
 
-  <div class="row nopadding">
+  <div id="lista_cursos" class="row nopadding">
   <c:forEach items="${list}" var="courses">
     <div class="${col} padding-chico">
     	<div id="img_container" class="img_container nopadding">
-		<span class="my_badge ${course} badge">${courses.getName()}</span>
-           
-	   	<c:if test="${courses.hasActiveSession()}">
+		<%-- <span class="my_badge ${course} badge">${courses.getName()}</span> --%>           
+<%-- 	   	<c:if test="${courses.hasActiveSession()}">
 	   		<span class="label label-success actividad">Activo</span>
 	   	</c:if>
 	   	<c:if test="${!courses.hasActiveSession()}">
 	   		<span class="label label-danger actividad">No activo</span>
-	   	</c:if>            
-              	
-    	<c:choose>
+	   	</c:if>   --%>
+
+<%--      	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
           <img src="${courses.getPictureUrl()}" class="img-rounded img-responsive altura-ajustable" style="${max}">
           </c:when>
           <c:otherwise>
             	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded img-responsive altura-ajustable" style="${max}">
-          </c:otherwise>
-          </c:choose>
+        </c:otherwise>
+        </c:choose> --%>
+        
+        <h4 class="fondo-verde position-absolute ancho-completo espaciado-chico borde-redondeado"><strong>${courses.getName()}</strong>
+        
+	   	<c:if test="${courses.hasActiveSession()}">
+	   		<span class="badge progress-bar-success">Activo</span>
+	   	</c:if>
+	   	<c:if test="${!courses.hasActiveSession()}">
+	   		<span class="badge progress-bar-danger">No activo</span>
+	   	</c:if>
+        
+        </h4>
+              	
+     	<c:choose>
+    	<c:when test="${courses.getPictureUrl() != NULL}">
+          <img src="${courses.getPictureUrl()}" class="img-rounded img-responsive" style="${max}">
+          </c:when>
+          <c:otherwise>
+            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded img-responsive" style="${max}">
+        </c:otherwise>
+        </c:choose>
 
           <button class="btn btn-sm ${btn_ver} btn-raised btn-primary" onclick="getCourseId(${courses.getId()});">Ver más</button>
    		</div>
@@ -106,7 +125,23 @@
 			window.location.href = '/Servidor/courseDetail?id=' + id;
 		}
 	
-	
+		function ordenarLista() {
+	    	var tbody = $('#lista_cursos');
+	    	tbody.find('tr:not(:first)').sort(function(a,b){ 
+	    	    var nombre1_con_espacios = $(a).find('td:eq(0)').text();
+	    	    var nombre2_con_espacios = $(b).find('td:eq(0)').text();
+	    	    
+	    	    var nombre1 = $.trim(nombre1_con_espacios);
+	    	    var nombre2 = $.trim(nombre2_con_espacios);
+				
+	    	            // if a < b return 1
+	    	    return nombre1 > nombre2 ? 1 
+	    	           // else if a > b return -1
+	    	           : nombre1 < nombre2 ? -1 
+	    	           // else they are equal - return 0    
+	    	           : 0;           
+	    	}).appendTo(tbody);
+		} 
 	
 	</script>
 	
