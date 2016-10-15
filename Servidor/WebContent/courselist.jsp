@@ -60,26 +60,10 @@
 %>
 
 
-  <div id="lista_cursos" class="row nopadding">
+  <div id="lista_cursos" class="row">
   <c:forEach items="${list}" var="courses">
-    <div class="${col} padding-chico">
-    	<div id="img_container" class="img_container nopadding">
-		<%-- <span class="my_badge ${course} badge">${courses.getName()}</span> --%>           
-<%-- 	   	<c:if test="${courses.hasActiveSession()}">
-	   		<span class="label label-success actividad">Activo</span>
-	   	</c:if>
-	   	<c:if test="${!courses.hasActiveSession()}">
-	   		<span class="label label-danger actividad">No activo</span>
-	   	</c:if>   --%>
-
-<%--      	<c:choose>
-    	<c:when test="${courses.getPictureUrl() != NULL}">
-          <img src="${courses.getPictureUrl()}" class="img-rounded img-responsive altura-ajustable" style="${max}">
-          </c:when>
-          <c:otherwise>
-            	<img src="bootstrap/img/nodisponible.jpg" class="img-rounded img-responsive altura-ajustable" style="${max}">
-        </c:otherwise>
-        </c:choose> --%>
+    <div class="${col}">
+    	<div id="img_container" class="img_container">
         
         <h4 class="fondo-verde position-absolute ancho-completo espaciado-chico borde-redondeado"><strong>${courses.getName()}</strong>
         

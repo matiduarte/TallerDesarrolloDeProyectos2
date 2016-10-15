@@ -83,31 +83,6 @@ body {
     padding-top: 10px;    
 }
 
-.actividad{
-	position: relative;
-	border-radius: 1em 1em 1em 1em;
-	margin-left: auto;
-	margin-right: auto;	
-	font-size: 15px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    float: left;	
-}
-
-.padding-chico {
-	padding: 5px;
-}
-
-.nopadding {
-	padding: 0;
-   	margin: 0;
-}
-
-.altura-ajustable{
-	min-width: 40%;
-	min-height: 40%;
-}
-
 .fondo-verde {
 	background-color: #009688;
 	color: #FFFFFF;
