@@ -376,6 +376,7 @@
 		}else{
 			
 			var showAlertQuestion = false;
+			var showAlertAnswer = false;
 			if ($('input[name="addQuestion"]').val() == ""){
 				$('#addQuestion').show().focus();
 				showAlertQuestion = true;
@@ -385,9 +386,10 @@
 			if ((answersArray.length < 2) && !(showAlertQuestion)){
 				$('#questionError').hide();
 				$('#answerError').show();
+				showAlertQuestion = true;
 				setTimeout(function() {$('#answerError').hide();},4000);
 			}
-			if (!atLeastOneCorrect) {
+			if (!(atLeastOneCorrect) && !(showAlertQuestion) && !(showAlertAnswer)) {
 				$('#questionError').hide();
 				$('#answerError').hide();
 				$('#answerCorrect').show();
