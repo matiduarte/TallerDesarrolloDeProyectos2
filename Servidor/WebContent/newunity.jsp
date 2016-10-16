@@ -1,6 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="entities.Question" %>
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
@@ -51,123 +53,130 @@
 <%} else{%>
 	<input type="hidden" name="id" id="id" value="">
 <%} %>
-<div class="unityFirstBlock">
-	  <div class="form-group label-floating">
-	    <label class="control-label" for="name">Nombre</label>
-	    <c:choose>
-	    	<c:when test="${name != NULL}">
-	  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
-	  </c:when>
-	          <c:otherwise>
-	          <input class="form-control" id="name" name="name" type="text" required>
-	          </c:otherwise>
-	   </c:choose>
+<div class="blocksContainer">
+	<div class="unityFirstBlock">
+		  <div class="form-group label-floating">
+		    <label class="control-label" for="name">Nombre</label>
+		    <c:choose>
+		    	<c:when test="${name != NULL}">
+		  <input class="form-control" id="name" name="name" type="text" value="${name}" required>
+		  </c:when>
+		          <c:otherwise>
+		          <input class="form-control" id="name" name="name" type="text" required>
+		          </c:otherwise>
+		   </c:choose>
+		  </div>
+		  <div class="form-group label-floating">
+		    <label class="control-label" for="lastName">Descripci&oacute;n</label>
+		    <c:choose>
+		    	<c:when test="${description != NULL}">
+		  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
+		  </c:when>
+		          <c:otherwise>
+		          <input class="form-control" id="description" name="description" type="text" required>
+		          </c:otherwise>
+		   </c:choose>
+		  </div>
+		  <div class="form-group label-floating">
+		    <label class="control-label" for="questions">Cantidad de Preguntas</label>
+		    <c:choose>
+		    	<c:when test="${questionSize != NULL}">
+		    <input class="form-control" id="questions" name="questions" type="text" value="${questionSize}" required>
+		    </c:when>
+		          <c:otherwise>
+		          <input class="form-control" id="questions" name="questions" type="text" required>
+		          </c:otherwise>
+		   </c:choose>
+		    </div>
+		  <div id="htmlEditor" name="htmlEditor"></div>
 	  </div>
-	  <div class="form-group label-floating">
-	    <label class="control-label" for="lastName">Descripci&oacute;n</label>
-	    <c:choose>
-	    	<c:when test="${description != NULL}">
-	  <input class="form-control" id="description" name="description" type="text" value="${description}" required>
-	  </c:when>
-	          <c:otherwise>
-	          <input class="form-control" id="description" name="description" type="text" required>
-	          </c:otherwise>
-	   </c:choose>
+	  <div class="unitySecondBlock">
+	  <label class="detail-label">Videos:</label>
+	     <label id="btnAddVideo" class="btn btn-raised btn-primary addVideoButton btnNew" <%if(request.getAttribute("videUrl") != null) {out.print("style='display:none;'");}%>>
+	     	Agregar video <input type="file" style="display: none;" id="video" name="video" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
+	     </label>
+	     
+	     <table class="tg" id="tableVideo">
+			  <tr>
+			    <th class="tg-zyzu">Video</th>
+			    <th class="tg-zyzu">Subt&iacute;tulos</th>
+			    <th class="tg-zyzu">Tama&ntilde;o</th>
+			    <th class="tg-zyzu">Acciones</th>
+			  </tr>
+				<%if(request.getAttribute("videUrl") != null) {%>
+			 	<tr id="tr_video_">
+				    <td class="tg-yw4l">
+				    	<%  out.print(request.getAttribute("videUrl")); %>
+				    </td>
+				    <td class="tg-yw4l">
+				    	<div id="subtitleLabelsContainers">
+					    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
+							 for (String subtitle: subtitles)
+							 { %>
+							 <a class="subtitleLabel" onclick="showSubtitlePopup('<% out.print(subtitle); %>')">
+								<% out.print(subtitle + "</a><br/>");
+							 }%>
+						 </div>
+				    	<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">
+				    </td>
+				    <td class="tg-yw4l">
+				    	<%  out.print(request.getAttribute("videoSize")); %> mb
+				    </td>
+				    <td class="tg-yw4l">
+				    	<button class="btn btnAction" type="button" onclick="$('#video').click()">
+							<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+						</button>
+						
+						<button class="btn btnAction" type="button" onclick="deleteVideo();">
+							<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+						</button>
+				    </td>
+			  </tr>
+			  <%} %>
+		</table>
+		<div class="blockQuestions">
+	  <label class="detail-label">Preguntas:</label>
+	    <button class="btn btn-raised btn-primary pull-right" onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar Pregunta</button>
+	     
+	     <table class="tg" id="tableQuestions">
+			  <tr>
+			    <th class="tg-zyzu col-md-8">Pregunta</th>
+			    <th class="tg-zyzu col-md-8">Acciones</th>
+			  </tr>
+				<c:if test="${questionsList != NULL}">
+				<c:forEach items="${questionsList}" var="questions">
+				<tr id="tr_question_${questions.getId()}">
+				    <td>
+				    	${questions.getQuestion()}
+				    </td>
+				<td class="tg-yw4l">
+				    	<button class="btn btnAction" type="button" onclick="editQuestion(${questions.getId()});">
+							<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+						</button>
+						
+						<button class="btn btnAction" type="button" onclick="deleteQuestion(${questions.getId()});">
+							<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+						</button>
+				    </td>
+				    </tr>
+				    </c:forEach>
+				    </c:if>
+		</table>
+		</div>
 	  </div>
-	  <div class="form-group label-floating">
-	    <label class="control-label" for="questions">Cantidad de Preguntas</label>
-	    <input class="form-control" id="questions" name="questions" type="text" required>
-	    </div>
-	  <div id="htmlEditor" name="htmlEditor"></div>
   </div>
-  <div class="unitySecondBlock">
-  <label class="detail-label">Videos:</label>
-     <label class="btn btn-raised btn-primary addVideoButton btnNew" >
-     	Agregar video <input type="file" style="display: none;" id="video" name="video" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
-     </label>
-     
-     <table class="tg" id="tableVideo">
-		  <tr>
-		    <th class="tg-zyzu">Video</th>
-		    <th class="tg-zyzu">Subt&iacute;­tulos</th>
-		    <th class="tg-zyzu">Tama&ntilde;o</th>
-		    <th class="tg-zyzu">Acciones</th>
-		  </tr>
-			<%if(request.getAttribute("videUrl") != null) {%>
-		 	<tr id="tr_video_">
-			    <td class="tg-yw4l">
-			    	<%  out.print(request.getAttribute("videUrl")); %>
-			    </td>
-			    <td class="tg-yw4l">
-			    	<div id="subtitleLabelsContainers">
-				    	<%ArrayList<String> subtitles = (java.util.ArrayList)request.getAttribute("subtitles");
-						 for (String subtitle: subtitles)
-						 { %>
-						 <a class="subtitleLabel" onclick="showSubtitlePopup('<% out.print(subtitle); %>')">
-							<% out.print(subtitle + "</a><br/>");
-						 }%>
-					 </div>
-			    	<button class="btn btnAddSubtitle" type="button" onclick="showSubtitlePopup()"><img  src="images/icon_plus.png" class="addSubtitleButtonImage" alt="Agregar subtitulo">
-			    </td>
-			    <td class="tg-yw4l">
-			    	<%  out.print(request.getAttribute("videoSize")); %> mb
-			    </td>
-			    <td class="tg-yw4l">
-			    	<button class="btn btnAction" type="button" onclick="$('#video').click()">
-						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
-					</button>
-					
-					<button class="btn btnAction" type="button" onclick="deleteVideo();">
-						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
-					</button>
-			    </td>
-		  </tr>
-		  <%} %>
-	</table>
-	<div class="blockQuestions">
-  <label class="detail-label">Preguntas:</label>
-    <button class="btn btn-raised btn-primary pull-right" onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar Pregunta</button>
-     
-     <table class="tg" id="tableQuestions">
-		  <tr>
-		    <th class="tg-zyzu col-md-8">Pregunta</th>
-		    <th class="tg-zyzu col-md-8">Acciones</th>
-		  </tr>
-
-		 	<!-- <tr id="tr_video_">
-			    <td class="tg-yw4l">
-			    	Algun nombre
-			    </td>
-			    <td class="tg-yw4l">
-			    	Sub
-			    </td>
-			    <td class="tg-yw4l">
-			    	10 mb
-			    </td>
-			    <td class="tg-yw4l">
-			    	<button class="btn btnAction" type="submit" onclick="">
-						<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
-					</button>
-					
-					<button class="btn btnAction" type="submit" onclick="">
-						<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
-					</button>
-			    </td>
-		  </tr> -->
-	</table>
+  	<div class="buttonsContainer">
+		<c:choose>
+		   	<c:when test="${id != NULL}">
+		 			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
+		 		</c:when>
+			<c:otherwise>
+				<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
+		         </c:otherwise>
+		  </c:choose>
+		  <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Volver</button>
 	</div>
-  </div>
-  
- <c:choose>
-    	<c:when test="${id != NULL}">
-  			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Editar</button>
-  		</c:when>
-		<c:otherwise>
-			<button class="btn btn-raised btn-primary pull-right" name="create_btn" type="submit">Crear</button>
-          </c:otherwise>
-   </c:choose>
-   <button class="btn-back btn btn-primary pull-left" onclick="cancelar(${courseId})" type="button">Cancelar</button>
-	</form>
+</form>
 	
 	<div id="subtitlePopup">
 		<label class="labelPopup" id="popupSessionTitle">Agregar subt&iacute;tulo</label>
@@ -177,8 +186,8 @@
 			<label class="control-label" id="labelLanguage" for="language">Idioma:</label>
 			<select class="form-control" id="language">
 			    <option>Espa&ntilde;ol</option>
-			    <option>Inglés</option>
-			    <option>Portugués</option>
+			    <option>Inglï¿½s</option>
+			    <option>Portuguï¿½s</option>
 		  </select>
 		</div>
 		
@@ -204,32 +213,16 @@
         <h4 class="modal-title">Nueva Pregunta</h4>
       </div>
       
-      <div class="modal-body">
-      
+      <div class="qmb modal-body">
+      <input type="hidden" id="qId" name="qId" value="0">
         <div class="form-group label-floating">
     <label class="control-label" for="addQuestion">Ingrese una pregunta</label>
   	<input class="form-control" id="addQuestion" name="addQuestion" type="text" required>
   </div>
 	<div id="dynamicInput">
-		<div id ="ansChild" class="form-group label-floating">
-		  <label class="control-label">Ingrese una respuesta</label>
-		  <div class="input-group">
-		    <input type="text" name='myInputs[]' class="form-control" required>
-		    <span  class="input-group-addon">
-		    <label>
-		    	<input type="checkbox" name="chk[]">
-		    </label>
-		    </span>
-		    <span class="input-group-btn">
-		      <button type="button" class="btn btn-fab-mini btn-primary btn-fab">
-		        <i class="material-icons">delete</i>
-		      </button>
-		    </span>
-		  </div>
-		</div>
 		</div>
 		<span class="input-group-btn">
-		<button type="button" class="btn btn-fab-mini btn-primary btn-fab" onClick="addInput('dynamicInput');">
+		<button id="addBtn" type="button" class="btn btn-fab-mini btn-primary btn-fab addAnswer">
 		   <i class="material-icons">add</i>
 		</button>
 		</span>
@@ -237,15 +230,11 @@
       <div class="modal-footer">
         <button type="button" onclick="saveQuestion();" class="btn btn-primary">Agregar</button>
       </div>
-  
-      
-     
     </div>
      
   </div>
 </div>
 
-	
 
 	<!-- <script src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
@@ -270,38 +259,27 @@
 		var barra_titulo = $( "#barra_superior" );
 		barra_titulo.text( "Editar unidad" );
 	}
+		
+	var count = 0;
 	
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;
-	}	
-	
-	
-	function addInput(divName){
-		var newdiv = document.createElement('div');
-			newdiv.innerHTML ="<div class='form-group label-floating'>"
-	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
-	    	+  "<div class='input-group'>"
-	        +  "<input class='form-control' type='text' name='myInputs[]' required>"
-	        +  	"<span class='input-group-addon'>"
-	        +  		"<label>"
-	        +           "<input type='checkbox' name='chk[]'>"
-	        +         "</label>"
-	        +     "</span>"
-	        +  	"<span class='input-group-btn'>"
-	        +  		"<button type='button' class='btn btn-fab-mini btn-primary btn-fab'>"
-	        +           "<i class='material-icons'>delete</i>"
-	        +         "</button>"
-	        +     "</span>"
-	        +    "</div>"
-	    	+ "</div>";
-	    	document.getElementById(divName).appendChild(newdiv);
-	}
+	}		
 	
 
 	function saveQuestion(){
 		
+		
+		var questionId = document.getElementById("qId").value;
+		var unityId = "0";
+		if($('#id').val() != ""){
+			unityId = $('#id').val();
+		}
+		var courseId = $('#courseId').val();
+		
 		var question = document.getElementById("addQuestion").value;
 		var answersOb = $('input[name="myInputs[]"]');
+		
 		
 		var checkBoxes = document.getElementsByName('chk[]');
             var selectedRows = [];
@@ -320,8 +298,9 @@
 		}	
 		
 		if(($("#addQuestion").val() != "") && (answersArray.length > 0)){
+			
 			$.ajax({
-			    data: {question: question, answersArray: answersArray, selectedRows: selectedRows},
+			    data: {courseId: courseId, unityId: unityId, question: question, answersArray: answersArray, selectedRows: selectedRows, questionId: questionId},
 			    //Cambiar a type: POST si necesario
 			    type: "POST",
 			    // Formato de datos que se espera en la respuesta
@@ -331,6 +310,18 @@
 			})
 			 .done(function( data, textStatus, jqXHR ) {
 				 hideQuestionsPopup();
+				
+				
+				 $(".qmb #qId").attr({
+		               value: data.questionId,
+		             });
+				
+				 loadQuestionRow(data);
+				 if($('#id').val() == ""){
+						$('#id').val(data.unityId);
+						window.location= "newunity?courseId=" + $('#courseId').val() + "&id=" + data.unityId;
+				 }
+				 
 			 })
 			 .fail(function( jqXHR, textStatus, errorThrown ) {
 			     if ( console && console.log ) {
@@ -340,6 +331,66 @@
 		}else{
 			
 		}
+	}
+	
+	function editQuestion(questionId){
+		
+		$.ajax({
+		    data: {questionId: questionId},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviarÃ¡ la solicitud Ajax
+		    url: "EditQAActionServlet",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 
+			 var addbtn = document.getElementById("addBtn");
+			 $(".qmb #addQuestion").val(data.question).trigger('change');
+			 $(".qmb #qId").attr({
+	               value: data.questionId,
+	             });
+			 for (var i = 0; i < data.answerList.length; i++){
+				 addbtn.click();
+				 $(".qmb #inp"+i).val(data.answerList[i]["answer"]);
+				 if (data.answerList[i]["isCorrect"] == true){
+					 $(".qmb #chk"+i).prop("checked", true);
+				 }
+			 }
+			 $("#addQuestionPopup").show();
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
+	}
+	
+	
+	function deleteQuestion(id){
+		var unityId = "0";
+		if($('#id') != undefined){
+			unityId = $('#id').val();
+		}
+		
+		$.ajax({
+		    data: {unityId:unityId, questionId: id},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviarÃ¡ la solicitud Ajax
+		    url: "DeleteQAActionServlet",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 $("#tr_question_" + data.questionId).remove();
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
 	}
 	
 	function saveVideo(){
@@ -402,12 +453,40 @@
 		})
 		 .done(function( data, textStatus, jqXHR ) {
 			 $("#tr_video_").remove();
+			 $("#btnAddVideo").show();
 		 })
 		 .fail(function( jqXHR, textStatus, errorThrown ) {
 		     if ( console && console.log ) {
 		         console.log( "La solicitud a fallado: " +  textStatus);
 		     }
 		});
+	}
+	
+	function loadQuestionRow(data){
+		
+		row = '<tr id="tr_question_'+data.questionId+'">'
+	    + '<td>'
+    	+ data.question
+    	+ '</td>'
+		+ '<td class="tg-yw4l">'
+    	+ '<button class="btn btnAction" type="button" onclick="editQuestion('+data.questionId+');">'
+		+	'<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >'
+		+ '</button>'
+		+ '<button class="btn btnAction" type="button" onclick="deleteQuestion('+data.questionId+');">'
+		+	'<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
+		+ '</button>'
+    	+  '</td>'
+    	+ '</tr>';
+    	
+    	
+		if(data.edit){
+			var rowIndex = $('#tr_question_'+data.questionId).index();
+			$('#tr_question_'+data.questionId).remove();
+			$('#tableQuestions tr').eq(rowIndex - 1).after(row);
+		} else {
+			$('#tableQuestions tr:last').after(row);
+		}
+    	
 	}
 	
 	function loadVideoRow(data){
@@ -421,11 +500,13 @@
     	+ '<button class="btn btnAction" type="button" onclick="deleteVideo();"><img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >'
 		+ '</button></td></tr>';
 		
+		
 		if($('#tr_video_').length){
 			$('#tr_video_').empty();	
 		}
-		
+
 		$('#tableVideo tr:last').after(row);
+		$("#btnAddVideo").hide();
 	}
 	
 	function getFileSizeFromBytes(size){
@@ -515,12 +596,25 @@
 		return true;
 	}
 	
+	
 	function showQuestionsPopUp() {
 		$("#addQuestionPopup").show();
+		$(".qmb #qId").attr({
+            value: "0",
+          });
 	}
 	
 	function hideQuestionsPopup(){
+		
+		$('.qmb').find('input').val('').end();
+		
+		for (var i = 0; i < count; i++){
+				$(".qmb #ans"+i).remove();
+		}
+		
 		$("#addQuestionPopup").hide();
+		count = 0;
+		
 	}
 
 	function readURL(input) {
@@ -553,6 +647,38 @@
 		if(request.getAttribute("html") != null ){%>
 			$("#htmlEditor").trumbowyg("html", '<% out.print(request.getAttribute("html")); %>');
 		<%} %>
+		
+		
+		
+		$('.addAnswer').click(function(e){
+			
+			var newdiv = document.createElement('div');
+			newdiv.innerHTML ="<div id=ans"+count+" class=form-group label-floating>"
+	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
+	    	+  "<div class='input-group'>"
+	        +  "<input id=inp"+count+ " class='form-control' type='text' name='myInputs[]' required>"
+	        +  	"<span class='input-group-addon'>"
+	        +  		"<label>"
+	        +           "<input id=chk"+count+ " type='checkbox' name='chk[]'>"
+	        +         "</label>"
+	        +     "</span>"
+	        +  	"<span class='input-group-btn'>"
+	        +  		"<button id='rmvBtn' type='button' class='removeAnswer btn btn-fab-mini btn-primary btn-fab'>"
+	        +           "<i class='material-icons'>delete</i>"
+	        +         "</button>"
+	        +     "</span>"
+	        +    "</div>"
+	    	+ "</div>";
+	    	document.getElementById('dynamicInput').appendChild(newdiv);
+	    	count++;
+	    	
+	    	
+	    	$('.removeAnswer').click(function(){
+	    		document.getElementById(this.parentNode.parentNode.parentNode.id).remove();
+	    	});
+		});
+		
+		
 	});
 	
 

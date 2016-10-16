@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entities.CourseUnity;
+import entities.Question;
 import utils.FileUtil;
 
 
@@ -46,6 +47,7 @@ public class NewUnityController extends HttpServlet {
 				request.setAttribute("name", courseUnity.getName());
 				request.setAttribute("description", courseUnity.getDescription());
 				request.setAttribute("html", courseUnity.getHtml());
+				request.setAttribute("questionSize", courseUnity.getQuestionSize());
 				if(courseUnity.getVideoUrl() != null && !(courseUnity.getVideoUrl().compareTo("") == 0)){
 					request.setAttribute("videUrl", courseUnity.getVideoUrl());
 					
@@ -61,6 +63,10 @@ public class NewUnityController extends HttpServlet {
 					 ArrayList<String> subtitles = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + id + "/Subtitles");
 					 request.setAttribute("subtitles", subtitles);
 				}
+				ArrayList<Question> questionList = (ArrayList<Question>) Question.getByUnityId(id);
+				if (questionList.size() > 0){
+					request.setAttribute("questionsList", questionList);
+				}
 			} 
 		}
 		getServletConfig().getServletContext().getRequestDispatcher("/newunity.jsp").forward(request,response);
@@ -74,6 +80,7 @@ public class NewUnityController extends HttpServlet {
 		String name = request.getParameter("name");
     	String description = request.getParameter("description");
     	String html = request.getParameter("htmlEditor");
+    	String questionSize = request.getParameter("questions");
     	CourseUnity courseUnity = null;
     	
 		if(request.getParameter("courseId") != null){
@@ -92,6 +99,7 @@ public class NewUnityController extends HttpServlet {
    			courseUnity.setName(name);
    			courseUnity.setDescription(description);
    			courseUnity.setHtml(html);
+   			courseUnity.setQuestionSize(Integer.valueOf(questionSize));
 			courseUnity.save();
 		}
 		
