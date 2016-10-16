@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dataBase.StoreData;
@@ -8,6 +9,7 @@ public class Question {
 	private int id;
 	private String question;
 	private int unityId;
+	private List<Answer> answers;
 	
 	public int getId() {
 		return id;
@@ -41,6 +43,12 @@ public class Question {
 	
 	public void delete(){
 		StoreData.delete(this);
+	}
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+	public void setAnswers(List<Answer> list) {
+		this.answers = list;
 	}
 	
 }
