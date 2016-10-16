@@ -107,6 +107,12 @@ table, th, td {
 	width: 20%;
 }
 
+.alerta-correct{
+	text-align: center;
+	margin-left: 40px;
+	margin-right: auto;
+	width: 20%;
+}
 
 .alerta-more{
 	text-align: center;
