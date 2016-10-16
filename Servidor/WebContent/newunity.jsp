@@ -74,6 +74,11 @@
     	<strong>Debe agregar por lo menos dos respuestas.</strong>
   	</div>
  
+ <div id="answerCorrect" class="alerta-correct alert alert-danger fade in" style="display:none;">
+    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    	<strong>Debe seleccionar por lo menos una respuesta correcta.</strong>
+  	</div>
+ 
 <form id="identicalForm" class="register" method="post" action="newunity" enctype="multipart/form-data">
 <input type="hidden" name="courseId" id="courseId" value="${courseId}">
 <%if(request.getAttribute("id") != null) {%>
@@ -319,11 +324,12 @@
 		var question = document.getElementById("addQuestion").value;
 		var answersOb = $('input[name="myInputs[]"]');
 		
-		
+		var atLeastOneCorrect = false;
 		var checkBoxes = document.getElementsByName('chk[]');
             var selectedRows = [];
             for (var i = 0, l = checkBoxes.length; i < l; i++) {
                 if (checkBoxes[i].checked) {
+                	atLeastOneCorrect = true;
                     selectedRows.push(1);
                 } else {
                 	selectedRows.push(0);
@@ -336,7 +342,7 @@
 				answersArray[i] = answersOb[i].value;
 		}	
 		
-		if(($("#addQuestion").val() != "") && (answersArray.length >= 2)){
+		if(($("#addQuestion").val() != "") && (answersArray.length >= 2) && (atLeastOneCorrect)){
 			
 			$.ajax({
 			    data: {courseId: courseId, unityId: unityId, question: question, answersArray: answersArray, selectedRows: selectedRows, questionId: questionId},
@@ -380,6 +386,12 @@
 				$('#questionError').hide();
 				$('#answerError').show();
 				setTimeout(function() {$('#answerError').hide();},4000);
+			}
+			if (!atLeastOneCorrect) {
+				$('#questionError').hide();
+				$('#answerError').hide();
+				$('#answerCorrect').show();
+				setTimeout(function() {$('#answerCorrect').hide();},4000);
 			}
 		}
 	}
