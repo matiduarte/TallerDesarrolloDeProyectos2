@@ -185,14 +185,14 @@
 		<div class="form-group label-floating inputSessionDate">	
 			<label class="control-label" id="labelLanguage" for="language">Idioma:</label>
 			<select class="form-control" id="language">
-			    <option>Espa&ntilde;ol</option>
-			    <option>Ingl�s</option>
-			    <option>Portugu�s</option>
+			    <option>Espanol</option>
+			    <option>Ingles</option>
+			    <option>Portugues</option>
 		  </select>
 		</div>
 		
 		<label class="btn btn-primary btn-raised btn-file">
-			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".srt" onchange="loadSubtitle();">
+			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".vtt" onchange="loadSubtitle();">
 		</label>
 		<div id="subtitleNameContainer">
 		</div>
