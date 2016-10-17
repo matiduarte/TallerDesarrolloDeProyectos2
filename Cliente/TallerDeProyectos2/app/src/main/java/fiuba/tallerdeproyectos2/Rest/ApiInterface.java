@@ -7,20 +7,38 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
     @GET("proyectos2/course/search/{search}")
     Call<ServerResponse> getSearchCourses(@Path("search") String search);
 
-    @GET("proyectos2/categories")
-    Call<ServerResponse> getCourses();
+    @GET("proyectos2/categories/student/{studentId}")
+    Call<ServerResponse> getCourses(@Path("studentId") Integer studentId);
 
     @GET("proyectos2/course/{id}")
-    Call<ServerResponse> getCourseDataById(@Path("id") Integer id);
+    Call<ServerResponse> getCourseDataById(@Path("id") Integer id, @Query("studentId") Integer studentId);
 
     @FormUrlEncoded
     @POST("proyectos2/student")
     Call<ServerResponse> postStudentData(@Field("email")String email, @Field("firstName")String firstName, @Field("lastName")String lastName, @Field("source")String source);
+
+    @FormUrlEncoded
+    @POST("proyectos2/student/subscribe")
+    Call<ServerResponse> postStudentSubscribe(@Field("studentId")Integer studentId, @Field("sessionId")Integer sessionId);
+
+    @FormUrlEncoded
+    @POST("proyectos2/student/unsubscribe")
+    Call<ServerResponse> postStudentUnsubscribe(@Field("studentId")Integer studentId, @Field("sessionId")Integer sessionId);
+
+    @GET("proyectos2/student/subscriptions/{studentId}")
+    Call<ServerResponse> getSubscriptions(@Path("studentId") Integer studentId);
+
+    @GET("proyectos2/unity/{id}")
+    Call<ServerResponse> getUnitDataById(@Path("id") Integer id);
+
+    @GET("proyectos2/unity/test/{id}")
+    Call<ServerResponse> getUnitExam(@Path("id") Integer id);
 }
 

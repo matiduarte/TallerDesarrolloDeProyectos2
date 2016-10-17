@@ -68,15 +68,10 @@
         <h4 class="fondo-verde position-absolute ancho-completo espaciado-chico borde-redondeado"><strong>${courses.getName()}</strong>
         
 	   	<c:if test="${courses.hasActiveSession()}">
-	   		<span class="badge progress-bar-success borde-fino">Activo</span>
-	   	</c:if>
-	   	<c:if test="${!courses.hasActiveSession()}">
-	   		<span class="badge progress-bar-danger borde-fino">No activo</span>
-	   	</c:if>
-        
-        </h4>
-              	
-     	<c:choose>
+	   		<span class="${course} label-is-active">Activo</span>
+	   	</c:if>    	
+    	
+    	<c:choose>
     	<c:when test="${courses.getPictureUrl() != NULL}">
           <img src="${courses.getPictureUrl()}" class="img-rounded img-responsive" style="${max}">
           </c:when>
@@ -118,11 +113,8 @@
 	    	    var nombre1 = $.trim(nombre1_con_espacios);
 	    	    var nombre2 = $.trim(nombre2_con_espacios);
 				
-	    	            // if a < b return 1
 	    	    return nombre1 > nombre2 ? 1 
-	    	           // else if a > b return -1
 	    	           : nombre1 < nombre2 ? -1 
-	    	           // else they are equal - return 0    
 	    	           : 0;           
 	    	}).appendTo(tbody);
 		} 

@@ -1,7 +1,11 @@
 package entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,6 +21,7 @@ public class Course {
 	private String pictureUrl;
 	private Integer teacherId;
 	private String teacherName;
+	private boolean isSubscribed;
 	
 	private ArrayList<CourseSession> courseSessions;
 	private ArrayList<CourseUnity> courseUnities;
@@ -69,8 +74,16 @@ public class Course {
 	public static Course getById(int id){
 		Course c = (Course)StoreData.getById(Course.class, id);
 		if(c != null){
-			c.setCourseSessions((ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId()));
-			c.setCourseUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(c.getId()));
+			ArrayList<CourseSession> sessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId());
+			c.setCourseSessions(sessions);
+			CourseSession activeSession = Course.getActiveSession(sessions);
+			
+			ArrayList<CourseUnity> unities = (ArrayList<CourseUnity>) CourseUnity.getByCourseId(c.getId());
+			if(activeSession != null){
+				unities = Course.getActiveUnities(unities, activeSession);
+			}
+			
+			c.setCourseUnities(unities);
 			
 			if(c.getTeacherId() != null){
 				User teacher = User.getById(c.getTeacherId());
@@ -82,13 +95,52 @@ public class Course {
 		return c;
 	}
 	
+	private static ArrayList<CourseUnity> getActiveUnities(ArrayList<CourseUnity> unities, CourseSession activeSession) {
+		String dateString = activeSession.getDate();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Date currentDate = new Date();
+		
+		try {
+			Date date = format.parse(dateString);
+			long startTimestamp = date.getTime()/1000;
+			long currentTimestamp = currentDate.getTime()/1000;
+			long difference = currentTimestamp - startTimestamp;
+			float result = difference/(3600*24);//cantidad de dias de diferencia
+			result = result/7; //semanas de distancia
+			int activeUnity = (int) result; 
+			
+			ArrayList<CourseUnity> fixed = new ArrayList<CourseUnity>();
+			for (int i = 0; i < unities.size(); i++) {
+				CourseUnity current = unities.get(i);
+				if(i == activeUnity){
+					current.setActive(true);
+				}
+				fixed.add(current);
+			}
+			
+			return fixed;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return unities;
+	}
+	private static CourseSession getActiveSession(ArrayList<CourseSession> sessions) {
+		for (CourseSession courseSession : sessions) {
+			if(courseSession.isActive()){
+				return courseSession;
+			}
+		}
+		return null;
+	}
 	public static List<Course> getByCategoryId(int categoryId){
 		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCategoryId(categoryId);	 
 		List<Course> listOfCourses = new ArrayList<Course>();
 		
 		for (CourseCategory courseCategory : listOfCouseCategory) {
 			Course course = Course.getById(courseCategory.getCourseId());
-			if(course != null && course.getTeacherId() != null && course.hasActiveSession()){
+			if(course != null && course.getTeacherId() != null){
 				listOfCourses.add(course);
 			}
 		}
@@ -105,11 +157,12 @@ public class Course {
 		return (List<Course>)StoreData.getByField(Course.class, "1", "1");
 	}
 
-	public static List<Course> getAllActive(){
+	public static List<Course> getAllActive(int studentId){
 		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "1", "1");
 		List<Course> coursesFixed = new ArrayList<Course>();
 		for (Course course : courses) {
 			if(course.getTeacherId() != null && course.hasActiveSession()){
+				course.checkIfStudentIsSuscribed(studentId);
 				coursesFixed.add(course);
 			}
 		}
@@ -125,7 +178,7 @@ public class Course {
 		List<Course> courses = (List<Course>)StoreData.getByField(Course.class, "name", search);
 		List<Course> coursesFixed = new ArrayList<Course>();
 		for (Course course : courses) {
-			if(course.getTeacherId() != null && course.hasActiveSession()){
+			if(course.getTeacherId() != null){
 				coursesFixed.add(course);
 			}
 		}
@@ -176,12 +229,44 @@ public class Course {
 	}
 
 	public boolean hasStarted() {
-		// ACA HAY Q HACER LA LOGICA QUE CHEQUEE SI YA ARRANCO O NO
-		return false;
+		return this.hasActiveSession();
 	}
 
 	public boolean hasStudents() {
 		// ACA HAY Q HACER LA LOGICA QUE CHEQUEE SI TIENE UNA SESION ABIERTA O NO		
 		return false;
+	}
+
+	public boolean isSuscribed() {
+		return isSubscribed;
+	}
+	public void setSuscribed(boolean isSuscribed) {
+		this.isSubscribed = isSuscribed;
+	}
+	public void checkIfStudentIsSuscribed(int studentId) {
+		List<CourseSession> courseSessions = CourseSession.getByCourseId(this.getId());
+		if(courseSessions != null && !courseSessions.isEmpty()){
+			for (CourseSession courseSession : courseSessions) {
+				if(courseSession.isActive()){
+					StudentSession studentSessions = StudentSession.getByStudentIdAndSessionId(studentId, courseSession.getId());
+					if(studentSessions != null){
+						this.setSuscribed(true);
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	public static List<Course> getSoon() {
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 7);
+		String oneWeekDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+		
+		String query = "SELECT * FROM Course c INNER JOIN CourseSession cs ON c.id = cs.courseId WHERE c.teacherId > 0 AND STR_TO_DATE(cs.date, '%d/%m/%Y') > '" + date + "' AND STR_TO_DATE(cs.date, '%d/%m/%Y') < '" + oneWeekDate + "' GROUP BY c.id,cs.id";
+		return (List<Course>)StoreData.getByCustomQuery(Course.class, query);
 	}
 }

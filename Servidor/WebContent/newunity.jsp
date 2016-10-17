@@ -278,7 +278,6 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script type="text/javascript">
-
 	
 	$.urlParam = function(name){
 	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -294,9 +293,8 @@
 		var barra_titulo = $( "#barra_superior" );
 		barra_titulo.text( "Editar unidad" );
 	}
-
+		
 	var count = 0;
-
 	
 	function cancelar(id){	
 		window.location.href = '/Servidor/courseDetail?id=' + id;

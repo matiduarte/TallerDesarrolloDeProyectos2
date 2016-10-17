@@ -46,7 +46,9 @@ public class StoreData {
 			cfg.addResource("dataBase/courseCategory.hbm.xml");
 			cfg.addResource("dataBase/courseUnity.hbm.xml");
 			cfg.addResource("dataBase/courseSession.hbm.xml");
+			cfg.addResource("dataBase/studentSession.hbm.xml");
 			cfg.addResource("dataBase/answer.hbm.xml");
+
 
 			//creating seession factory object  
 			this.factory = cfg.buildSessionFactory();
@@ -247,6 +249,24 @@ public class StoreData {
 			}
 		}
 		return 0;
+	}
+
+	public static List<?> getByCustomQuery(Class<?> objectClass, String query) {
+		//creating session object  
+		Session session = StoreData.getInstance().factory.openSession();  
+
+		List<Object> obj = null;
+		try{
+			return session.createSQLQuery(query).addEntity(objectClass).list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+
+		return obj;
 	}
 
 }  

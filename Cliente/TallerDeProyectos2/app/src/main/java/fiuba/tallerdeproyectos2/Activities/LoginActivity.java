@@ -1,18 +1,13 @@
 package fiuba.tallerdeproyectos2.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import fiuba.tallerdeproyectos2.Models.Search;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
@@ -37,11 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public GoogleApiClient googleApiClient;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 007;
-    private ProgressDialog progressDialog;
     SessionManagerActivity session;
 
     @Override
@@ -71,12 +61,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
+                            public void onCompleted(final JSONObject object, GraphResponse response) {
                                 try {
-                                    Profile profile = Profile.getCurrentProfile();
-                                    session.createLoginSession(object.getString("email"), profile.getFirstName() + profile.getMiddleName(),
-                                            profile.getLastName(),profile.getProfilePictureUri(200, 200).toString());
-
+                                    final Profile profile = Profile.getCurrentProfile();
                                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
                                     Call<ServerResponse> call = apiService.postStudentData(object.getString("email"), profile.getFirstName() + profile.getMiddleName(),
                                             profile.getLastName(), "Facebook");
@@ -84,9 +71,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         @Override
                                         public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                                             Boolean success = response.body().getSuccess();
+                                            String data = response.body().getData();
                                             if (success.equals(true)) {
-                                                Toast.makeText(getApplicationContext(), R.string.facebook_success_login, Toast.LENGTH_LONG).show();
-                                                navigateToMainActivity();
+                                                try {
+                                                    session.createLoginSession(object.getString("email"), profile.getFirstName() + profile.getMiddleName(),
+                                                            profile.getLastName(),profile.getProfilePictureUri(200, 200).toString(), data);
+                                                    Toast.makeText(getApplicationContext(), R.string.facebook_success_login, Toast.LENGTH_LONG).show();
+                                                    navigateToMainActivity();
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                         @Override
@@ -119,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onError(FacebookException e) {
                 Log.e(TAG, "Facebook error:" + e.getMessage());
                 Utilities.appendToErrorLog(TAG, "Facebook error:" + e.getMessage());
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.facebook_login_error, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -160,11 +154,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
+            final GoogleSignInAccount acct = result.getSignInAccount();
             Log.i(TAG, "Google");
             Utilities.appendToInfoLog(TAG, "Google");
-            session.createLoginSession(acct.getEmail(), acct.getGivenName(),acct.getFamilyName(), acct.getPhotoUrl().toString());
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<ServerResponse> call = apiService.postStudentData(acct.getEmail(), acct.getGivenName(),
                     acct.getFamilyName(), "Google");
@@ -172,7 +164,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 @Override
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                     Boolean success = response.body().getSuccess();
+                    String data = response.body().getData();
                     if (success.equals(true)) {
+                        session.createLoginSession(acct.getEmail(), acct.getGivenName(),acct.getFamilyName(), acct.getPhotoUrl().toString(), data);
                         Toast.makeText(getApplicationContext(), R.string.google_success_login, Toast.LENGTH_LONG).show();
                         navigateToMainActivity();
                     }
@@ -186,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         } else {
             Log.d(TAG, "Google Failed");
             Utilities.appendToDebugLog(TAG, "Google Failed");
-            Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.google_login_failed, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -204,18 +198,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Utilities.appendToDebugLog(TAG, "Google connection failed:" + connectionResult);
     }
 
-    private void showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Loading");
-            progressDialog.setIndeterminate(true);
-        }
-        progressDialog.show();
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
-    private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.hide();
-        }
-    }
 }

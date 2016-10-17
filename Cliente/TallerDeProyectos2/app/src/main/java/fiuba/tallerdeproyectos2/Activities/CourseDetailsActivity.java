@@ -1,24 +1,24 @@
 package fiuba.tallerdeproyectos2.Activities;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,10 +39,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
-import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
+import fiuba.tallerdeproyectos2.Adapters.UnitRecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.CourseData;
-import fiuba.tallerdeproyectos2.Models.Search;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
+import fiuba.tallerdeproyectos2.Models.UnitsCardViewData;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
@@ -51,14 +52,15 @@ import retrofit2.Response;
 
 public class CourseDetailsActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbar;
-    private Integer itemId;
-    private ExpandableListView expandableListView;
-    private List<String> unitsTitle = new ArrayList<String>();
-    HashMap<String, List<String>> unitsContent = new HashMap<String, List<String>>();
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
-    private int lastExpandedPosition = -1;
+    private RecyclerView.Adapter adapter;
+    ArrayList units = new ArrayList<>();
+    Integer sessionId, studentId, unitId, courseId;
+    SessionManagerActivity session;
+    HashMap<String, String> user;
+    ArrayList activeUnits = new ArrayList();
+    Boolean showExam = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +68,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         Intent intent = getIntent();
-        itemId = intent.getIntExtra("courseId", 0);
+        courseId = intent.getIntExtra("courseId", 0);
 
-        toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        session = new SessionManagerActivity(getApplicationContext());
+        session.checkLogin();
+        user = session.getUserDetails();
+        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -84,7 +91,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         });
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getCourseDataById(itemId);
+        Call<ServerResponse> call = apiService.getCourseDataById(courseId, studentId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -105,17 +112,19 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
-
+                        final Boolean isSubscribed = courseData.getBoolean("isSubscribed");
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
                         TextView courseStartDate = (TextView) findViewById(R.id.start_date);
                         TextView courseInscriptionDates = (TextView) findViewById(R.id.inscription_dates);
                         if(courseSessionsData.length() > 0){
                             JSONObject courseSessionsArray = new JSONObject(courseSessionsData.getString(0));
                             String startDateString = courseSessionsArray.getString("date");
+                            sessionId = Integer.valueOf(courseSessionsArray.getString("id"));
                             courseStartDate.setText(startDateString);
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
+                            Date today = calendar.getTime();
                             calendar.setTime(startDate);
                             calendar.add(Calendar.DAY_OF_YEAR, -7);
                             Date startInscriptionDate = calendar.getTime();
@@ -124,6 +133,20 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Date finishInscriptionDate = calendar.getTime();
                             String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
                             courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
+
+                            Log.d("startInscription", String.valueOf(startInscriptionDate.compareTo(today)));
+                            Log.d("finishInscription", String.valueOf(finishInscriptionDate.compareTo(today)));
+
+                            Log.d("isSubscribed", isSubscribed.toString());
+
+                            if(startInscriptionDate.compareTo(today) <= 0 && finishInscriptionDate.compareTo(today) >= 0
+                                &&!isSubscribed){
+                                Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
+                                inscriptionButton.setVisibility(View.VISIBLE);
+                            } else if(isSubscribed){
+                                Button unsubscriptionButton = (Button)findViewById(R.id.unsubscription_btn);
+                                unsubscriptionButton.setVisibility(View.VISIBLE);
+                            }
                         } else {
                             TextView courseStartDateTxt = (TextView) findViewById(R.id.start_date_txt);
                             TextView courseInscriptionDatesTxt = (TextView) findViewById(R.id.inscription_label);
@@ -134,19 +157,55 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
 
                         JSONArray courseUnitiesData = new JSONArray(courseData.getString("courseUnities"));
+
                         if(courseUnitiesData.length() > 0){
                             TextView unitsHeader = (TextView) findViewById(R.id.units_header);
                             unitsHeader.setVisibility(View.VISIBLE);
+                            View topLine = findViewById(R.id.top_line);
+                            topLine.setVisibility(View.VISIBLE);
+                            View bottomLine = findViewById(R.id.bottom_line);
+                            bottomLine.setVisibility(View.VISIBLE);
                             for (int i=0; i<courseUnitiesData.length(); i++) {
                                 JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
-                                String unitName = courseUnitiesArray.getString("name");
-                                unitsTitle.add(unitName);
-                                List<String> unitContentList = new ArrayList<String>();
-                                String unitDesc = courseUnitiesArray.getString("description");
-                                unitContentList.add(unitDesc + "... (Ver contenido)");
-                                unitsContent.put(unitsTitle.get(i), unitContentList);
+                                Boolean isActive = courseUnitiesArray.getBoolean("isActive");
+                                Log.d("isActive", String.valueOf(isActive));
+                                if(isActive){
+                                    activeUnits.add(i);
+                                }
+                                if(isSubscribed && isActive || !isSubscribed){
+                                    Log.d("unitName", courseUnitiesArray.getString("name"));
+                                    Log.d("unitDesc", courseUnitiesArray.getString("description"));
+
+                                    UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
+                                    units.add(i, obj);
+                                }
                             }
                         }
+                        Log.d("activeUnits", activeUnits.toString());
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+                        recyclerView.setHasFixedSize(true);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(layoutManager);
+
+                        adapter = new UnitRecyclerViewAdapter(units);
+                        recyclerView.setAdapter(adapter);
+
+                        ((UnitRecyclerViewAdapter) adapter).setOnItemClickListener(new UnitRecyclerViewAdapter.MyClickListener() {
+                            @Override
+                            public void onItemClick(int position, View v) {
+                                TextView tv = (TextView) v.findViewById(R.id.unit_id);
+                                unitId = Integer.valueOf(tv.getText().toString());
+                                TextView uniteTitle = (TextView) v.findViewById(R.id.unit_title);
+                                Log.d("showExam", String.valueOf(activeUnits.contains(position+1)));
+                                //if(activeUnits.contains(unitId+1)){
+                                    showExam = true;
+                                //}
+                                if(isSubscribed){
+                                    navigateToUnitDetailsActivity();
+                                }
+                            }
+                        });
+
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
                     }
@@ -162,31 +221,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Log.e(TAG, t.toString());
             }
         });
-
-        expandableListView = (ExpandableListView) findViewById(R.id.units_list);
-        ExpandableListViewAdapter expandableListViewAdapter = new ExpandableListViewAdapter(getApplicationContext(), unitsTitle, unitsContent);
-        expandableListView.setAdapter(expandableListViewAdapter);
-        expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    expandableListView.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                TextView tv = (TextView) v.findViewById(R.id.child_layout);
-                navigateToUnitDetailsActivity();
-                return true;
-            }
-        });
     }
 
     @Override
@@ -198,10 +232,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -232,11 +263,58 @@ public class CourseDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("unitId", unitId);
+        intent.putExtra("courseId", courseId);
+        intent.putExtra("showExam", showExam);
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
+        navigateToMainActivity();
+    }
+
+    public void onInscriptionButtonClick(View view){
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ServerResponse> call = apiService.postStudentSubscribe(studentId, sessionId);
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
+                Boolean success =response.body().getSuccess();
+                if(success.equals(true)){
+                    navigateToMainActivity();
+                    Toast.makeText(getApplicationContext(), R.string.inscription_success, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse>call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    public void onUnsubsriptionButtonClick(View view){
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ServerResponse> call = apiService.postStudentUnsubscribe(studentId, sessionId);
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
+                Boolean success =response.body().getSuccess();
+                if(success.equals(true)){
+                    navigateToMainActivity();
+                    Toast.makeText(getApplicationContext(), R.string.unsubscription_success, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse>call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    private void navigateToMainActivity(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

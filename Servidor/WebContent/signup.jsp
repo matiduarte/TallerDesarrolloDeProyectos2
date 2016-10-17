@@ -26,7 +26,7 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
       </button>
-      <a class="navbar-brand" href="javascript:void(0)">Registación</a>
+      <a class="navbar-brand" href="javascript:void(0)">Registración</a>
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse"> 
     </div>
@@ -51,7 +51,7 @@
 <form id="identicalForm" class="register" method="post" action="signup">
 
   <div class="form-group label-floating">
-    <label class="control-label" for="email">Email *</label>
+    <label class="control-label" for="email">Email (*)</label>
     <c:choose>
     	<c:when test="${email != NULL}">
   <input class="form-control" id="email" name="email" type="email" value="${email}"pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
@@ -62,15 +62,15 @@
    </c:choose>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="password">Contraseña *</label>
+    <label class="control-label" for="password">Contraseña (*)</label>
   <input class="pepito form-control" id="password" name="password" oninput="checkLenghtPass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="passwordconf">Repita Contraseña *</label>
+    <label class="control-label" for="passwordconf">Repita Contraseña (*)</label>
   <input class="form-control" id="passwordconf" name="passwordconf" oninput="checkSamePass(this)" type="password" required>
   </div>
   <div class="form-group label-floating">
-  <label class="control-label" for="name">Nombre *</label>
+  <label class="control-label" for="name">Nombre (*)</label>
   <c:choose>
     	<c:when test="${name != NULL}">
     <input class="form-control" id="name" name="name" type="text" value="${name}" required>
@@ -81,7 +81,7 @@
    </c:choose>
   </div>
   <div class="form-group label-floating">
-    <label class="control-label" for="lastName">Apellido *</label>
+    <label class="control-label" for="lastName">Apellido (*)</label>
     <c:choose>
     	<c:when test="${lastName != NULL}">
   <input class="form-control" id="lastName" name="lastName" type="text" value="${lastName}" required>

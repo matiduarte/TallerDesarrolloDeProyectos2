@@ -55,7 +55,7 @@ public class CourseSession {
 	public boolean isActive() {
 		String date = this.getDate();
 		if(date != null){
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
 		    Date date1;
 			try {
