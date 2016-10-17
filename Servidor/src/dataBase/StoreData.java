@@ -55,6 +55,7 @@ public class StoreData {
 
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
+			System.out.println("AAA");  
 			e.printStackTrace();
 		}
 	}
@@ -189,6 +190,7 @@ public class StoreData {
 		try{
 			return session.createSQLQuery(query).addEntity(objectClass).list();
 		} catch (Exception e) {
+			System.out.println(query);
 			e.printStackTrace();
 		} finally {
 			if (session != null && session.isOpen()) {
