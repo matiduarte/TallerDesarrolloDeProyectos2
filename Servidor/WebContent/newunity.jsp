@@ -130,12 +130,12 @@
 	     	Agregar video <input type="file" style="display: none;" id="video" name="video" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
 	     </label>
 
-	     <div class="alert alert-danger" id="videoError" style="display:none;">
+	     <div class="alert alert-danger" id="videoError" style="display:none;clear:both;">
 	   		<button onclick="$('#videoError').hide()" class="close" aria-label="close" type="button">&times;</button>
 		  	<span id="videoErrorMessage">El video no puede exceder los 100 MB</span>
 		</div>
 		
-		<div class="alert alert-success" id="videoSuccess" style="display:none;">
+		<div class="alert alert-success" id="videoSuccess" style="display:none;clear:both;">
 	   		<button onclick="$('#videoSuccess').hide()" class="close" aria-label="close" type="button">&times;</button>
 		  	<span id="videoSuccessMessage">Video agregado satisfactoriamente!</span>
 		</div>
@@ -658,7 +658,7 @@
 		}
 
 
-		if((input.files[0].size / 1024) > 1001200){
+		if((input.files[0].size / 1024) > 101200){
 			$('#videoError').show();
 			$('#videoErrorMessage')[0].innerHTML = "El video no puede exceder los 100 MB";
 			return false;
