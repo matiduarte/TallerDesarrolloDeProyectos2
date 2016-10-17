@@ -1,21 +1,35 @@
 package fiuba.tallerdeproyectos2.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaFormat;
 import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.MediaController;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.Models.UnitData;
@@ -32,6 +46,8 @@ public class UnitDetailsActivity extends AppCompatActivity {
     VideoView videoView;
     MediaController mediaController;
     TextView html;
+    HashMap<String, String> subtitles;
+    Spinner subtitlesSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +60,26 @@ public class UnitDetailsActivity extends AppCompatActivity {
         html = (TextView) findViewById(R.id.html);
         videoView = (VideoView) findViewById(R.id.video);
         mediaController = new MediaController(this);
+        subtitlesSpinner = (Spinner) findViewById(R.id.subtitles_spinner);
+        subtitlesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                videoView.resume();
+                String languageSelected = subtitlesSpinner.getSelectedItem().toString();
+                String subtitleUrl = subtitles.get(languageSelected);
+                if(subtitleUrl != null){
+                    new RetrieveSubtitlesTask(videoView, getApplicationContext()).execute(subtitleUrl);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        subtitles = new HashMap<String, String>();
 
         Intent intent = getIntent();
         int unitId = intent.getIntExtra("unitId", 0);
@@ -59,11 +95,33 @@ public class UnitDetailsActivity extends AppCompatActivity {
                         String data = response.body().getData();
                         Gson gson = new Gson();
                         UnitData unit = gson.fromJson(data, UnitData.class);
-                        JSONObject unitData = new JSONObject(unit.getUnitData());
+                        final JSONObject unitData = new JSONObject(unit.getUnitData());
                         setTitle(unitData.getString("name"));
                         html.setText(Html.fromHtml(unitData.getString("html")));
+
+                        JSONObject subData = new JSONObject(data);
+                        JSONArray subsArray = new JSONArray(subData.getString("subtitles"));
+                        if(subsArray.length() > 0){
+                            List<String> languages = new ArrayList<String>();
+                            languages.add("Idioma");
+                            subtitlesSpinner.setVisibility(View.VISIBLE);
+                            for (int i=0; i<subsArray.length(); i++) {
+                                String subUrl = subsArray.getString(i);
+                                String language = getLanguageSubtitleUrl(subUrl);
+                                subtitles.put(language, subUrl);
+                                languages.add(language);
+                            }
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                                    getApplicationContext(), android.R.layout.simple_spinner_item, languages);
+
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            subtitlesSpinner.setAdapter(adapter);
+                        }
+
                         if(unitData.has("videoUrl")){
                             videoView.setVideoPath(ApiClient.BASE_URL + unitData.getString("videoUrl"));
+
                             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                                 @Override
                                 public void onPrepared(MediaPlayer mp) {
@@ -76,7 +134,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                                     });
                                 }
                             });
-                            unitData.getString("subtitles");
+
                             videoView.setVisibility(View.VISIBLE);
                             videoView.start();
                         }
@@ -95,11 +153,43 @@ public class UnitDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private String getLanguageSubtitleUrl(String subUrl) {
+        String[] parts = subUrl.split("/");
+        return parts[parts.length - 1];
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(getApplicationContext(), CourseDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+}
+
+class RetrieveSubtitlesTask extends AsyncTask<String, Void, InputStream> {
+
+    private Exception exception;
+    private VideoView videoView;
+    private Context context;
+    private Locale locale;
+
+    public RetrieveSubtitlesTask(VideoView videoView, Context c){
+        this.videoView = videoView;
+        this.context = c;
+    }
+
+    protected InputStream doInBackground(String... url) {
+        try {
+            return new URL(ApiClient.BASE_URL + url[0]).openStream();
+        } catch (Exception e) {
+            this.exception = e;
+
+            return null;
+        }
+    }
+
+    protected void onPostExecute(InputStream subsInput) {
+        videoView.addSubtitleSource(subsInput , MediaFormat.createSubtitleFormat("text/vtt", Locale.CANADA.getLanguage()));
     }
 }

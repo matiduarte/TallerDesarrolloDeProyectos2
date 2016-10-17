@@ -98,7 +98,7 @@ public class CourseUnity {
 		ArrayList<String> result = new ArrayList<String>();
 		
 		for (String sub : subs) {
-			result.add("WebContent/Files/CourseUnity/" + this.getId() + "/Subtitles/" + sub);
+			result.add("Files/CourseUnity/" + this.getId() + "/Subtitles/" + sub);
 		}
 		
 		return result;
