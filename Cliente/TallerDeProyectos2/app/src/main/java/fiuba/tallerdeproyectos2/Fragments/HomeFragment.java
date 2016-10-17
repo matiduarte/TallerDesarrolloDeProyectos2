@@ -38,6 +38,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -79,6 +81,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+        soonCourses.clear();
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getCourses(studentId);
         call.enqueue(new Callback<ServerResponse>() {
@@ -180,7 +183,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 for (int j=0; j<coursesInCategoryData.length(); j++) {
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
-                                    Log.d("isSubscribed", coursesInCategoryArray.getString("isSubscribed"));
                                     if(coursesInCategoryArray.getBoolean("isSubscribed")){
                                         //subscribeMark.setVisibility(View.VISIBLE);
                                     }
@@ -190,15 +192,12 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                         }
 
-                        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity().getApplicationContext(), parentHeaderInformation, childContent);
+                        expandableListViewAdapter = new ExpandableListViewAdapter(getApplicationContext(), parentHeaderInformation, childContent);
                         expandableListView.setAdapter(expandableListViewAdapter);
                         expandableListView.setIndicatorBounds(expandableListView.getWidth(), expandableListView.getRight() - 40);
 
                         String pictureUrl;
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
-
-                        Log.d("soonCourses", soonCoursesData.toString());
-
 
                         for (int i=0; i< soonCoursesData.length(); i++) {
                             JSONObject soonCoursesArray = new JSONObject(soonCoursesData.getString(i));

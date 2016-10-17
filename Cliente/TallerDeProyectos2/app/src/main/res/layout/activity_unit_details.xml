@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/html"
-        android:text="Este es el contenido del texto correspondiente a la unidad numero uno del curso Taller de Desarrollo de Proyecto 2 de la Facultad de Ingeniria de Buenos Aires"
         android:padding="10dp"/>
 
     <VideoView
@@ -23,5 +22,52 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:id="@+id/video"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/exam_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="#8BC34A"
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:onClick="examButtonClick"
+            android:text="Rendir Examen"/>
+
+        <Button
+            android:id="@+id/exam_pass_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="#B71C1C"
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:text="Examen Rendido"/>
+
+        <Button
+            android:id="@+id/practice_exam_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="#1976D2"
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:onClick="practiceExamButtonClick"
+            android:text="Practicar Examen"/>
+
+    </LinearLayout>
 
 </LinearLayout>

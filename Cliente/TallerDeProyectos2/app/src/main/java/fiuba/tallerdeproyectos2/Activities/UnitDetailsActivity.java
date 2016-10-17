@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,9 @@ public class UnitDetailsActivity extends AppCompatActivity {
     VideoView videoView;
     MediaController mediaController;
     TextView html;
+    Integer unitId, courseId;
+    String unitName;
+    Boolean showExam, passExam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,10 @@ public class UnitDetailsActivity extends AppCompatActivity {
         mediaController = new MediaController(this);
 
         Intent intent = getIntent();
-        int unitId = intent.getIntExtra("unitId", 0);
+        unitId = intent.getIntExtra("unitId", 0);
+        courseId = intent.getIntExtra("courseId", 0);
+        showExam = intent.getBooleanExtra("showExam", false);
+        passExam = intent.getBooleanExtra("passExam", false);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getUnitDataById(unitId);
@@ -61,6 +70,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                         UnitData unit = gson.fromJson(data, UnitData.class);
                         JSONObject unitData = new JSONObject(unit.getUnitData());
                         setTitle(unitData.getString("name"));
+                        unitName = unitData.getString("name");
                         html.setText(Html.fromHtml(unitData.getString("html")));
                         if(unitData.has("videoUrl")){
                             videoView.setVideoPath(ApiClient.BASE_URL + unitData.getString("videoUrl"));
@@ -76,9 +86,17 @@ public class UnitDetailsActivity extends AppCompatActivity {
                                     });
                                 }
                             });
-                            unitData.getString("subtitles");
+                            JSONObject subtitles = new JSONObject(unit.getSubtitles());
+
                             videoView.setVisibility(View.VISIBLE);
                             videoView.start();
+                        }
+                        if(showExam){
+                            Button examButton = (Button)findViewById(R.id.exam_btn);
+                            examButton.setVisibility(View.VISIBLE);
+                        } else if(passExam){
+                            Button passExamButton = (Button)findViewById(R.id.exam_pass_btn);
+                            passExamButton.setVisibility(View.VISIBLE);
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
@@ -100,6 +118,27 @@ public class UnitDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CourseDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("courseId", courseId);
         startActivity(intent);
+    }
+
+    public void examButtonClick(View view){
+        Intent intent = new Intent(getApplicationContext(), ExamActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("unitId", unitId);
+        intent.putExtra("courseId", courseId);
+        intent.putExtra("unitName", unitName);
+        startActivity(intent);
+    }
+
+    public void practiceExamButtonClick(View view){
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 }

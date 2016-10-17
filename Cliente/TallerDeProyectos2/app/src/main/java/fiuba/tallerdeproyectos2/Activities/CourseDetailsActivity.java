@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,9 +56,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
     private RecyclerView.Adapter adapter;
     ArrayList units = new ArrayList<>();
-    Integer sessionId, studentId, unitId;
+    Integer sessionId, studentId, unitId, courseId;
     SessionManagerActivity session;
     HashMap<String, String> user;
+    ArrayList activeUnits = new ArrayList();
+    Boolean showExam = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_details);
 
         Intent intent = getIntent();
-        int courseId = intent.getIntExtra("courseId", 0);
+        courseId = intent.getIntExtra("courseId", 0);
 
         session = new SessionManagerActivity(getApplicationContext());
         session.checkLogin();
@@ -109,7 +112,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
-                        Boolean isSubscribed = courseData.getBoolean("isSubscribed");
+                        final Boolean isSubscribed = courseData.getBoolean("isSubscribed");
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
                         TextView courseStartDate = (TextView) findViewById(R.id.start_date);
                         TextView courseInscriptionDates = (TextView) findViewById(R.id.inscription_dates);
@@ -131,21 +134,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
                             courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
 
-                            Log.d("startDate", String.valueOf(startDate));
-
-
-                            Log.d("startInscriptionDate", String.valueOf(startInscriptionDate));
-                            Log.d("finishInscriptionDate", String.valueOf(finishInscriptionDate));
-                            Log.d("today", String.valueOf(today));
-
+                            Log.d("startInscription", String.valueOf(startInscriptionDate.compareTo(today)));
+                            Log.d("finishInscription", String.valueOf(finishInscriptionDate.compareTo(today)));
 
                             Log.d("isSubscribed", isSubscribed.toString());
 
-
-                            if(!isSubscribed){
+                            if(startInscriptionDate.compareTo(today) <= 0 && finishInscriptionDate.compareTo(today) >= 0
+                                &&!isSubscribed){
                                 Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
                                 inscriptionButton.setVisibility(View.VISIBLE);
-                            } else {
+                            } else if(isSubscribed){
                                 Button unsubscriptionButton = (Button)findViewById(R.id.unsubscription_btn);
                                 unsubscriptionButton.setVisibility(View.VISIBLE);
                             }
@@ -159,8 +157,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
 
                         JSONArray courseUnitiesData = new JSONArray(courseData.getString("courseUnities"));
-                        Log.d("courseUnities", courseUnitiesData.toString());
-                        Log.d("courseUnitiesLenght", String.valueOf(courseUnitiesData.length()));
 
                         if(courseUnitiesData.length() > 0){
                             TextView unitsHeader = (TextView) findViewById(R.id.units_header);
@@ -171,15 +167,21 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             bottomLine.setVisibility(View.VISIBLE);
                             for (int i=0; i<courseUnitiesData.length(); i++) {
                                 JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
+                                Boolean isActive = courseUnitiesArray.getBoolean("isActive");
+                                Log.d("isActive", String.valueOf(isActive));
+                                if(isActive){
+                                    activeUnits.add(i);
+                                }
+                                if(isSubscribed && isActive || !isSubscribed){
+                                    Log.d("unitName", courseUnitiesArray.getString("name"));
+                                    Log.d("unitDesc", courseUnitiesArray.getString("description"));
 
-                                Log.d("unitName", courseUnitiesArray.getString("name"));
-                                Log.d("unitDesc", courseUnitiesArray.getString("description"));
-
-                                UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
-                                units.add(i, obj);
+                                    UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
+                                    units.add(i, obj);
+                                }
                             }
                         }
-
+                        Log.d("activeUnits", activeUnits.toString());
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
                         recyclerView.setHasFixedSize(true);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -191,10 +193,16 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         ((UnitRecyclerViewAdapter) adapter).setOnItemClickListener(new UnitRecyclerViewAdapter.MyClickListener() {
                             @Override
                             public void onItemClick(int position, View v) {
-                                Log.i(" Clicked on Item ", String.valueOf(position));
                                 TextView tv = (TextView) v.findViewById(R.id.unit_id);
                                 unitId = Integer.valueOf(tv.getText().toString());
-                                navigateToUnitDetailsActivity();
+                                TextView uniteTitle = (TextView) v.findViewById(R.id.unit_title);
+                                Log.d("showExam", String.valueOf(activeUnits.contains(position+1)));
+                                //if(activeUnits.contains(unitId+1)){
+                                    showExam = true;
+                                //}
+                                if(isSubscribed){
+                                    navigateToUnitDetailsActivity();
+                                }
                             }
                         });
 
@@ -256,15 +264,14 @@ public class CourseDetailsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("unitId", unitId);
+        intent.putExtra("courseId", courseId);
+        intent.putExtra("showExam", showExam);
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        navigateToMainActivity();
     }
 
     public void onInscriptionButtonClick(View view){
