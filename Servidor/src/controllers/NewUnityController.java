@@ -64,7 +64,7 @@ public class NewUnityController extends HttpServlet {
 					 request.setAttribute("subtitles", subtitles);
 				}
 				ArrayList<Question> questionList = (ArrayList<Question>) Question.getByUnityId(id);
-				if (questionList.size() > 0){
+				if (questionList != null && questionList.size() > 0){
 					request.setAttribute("questionsList", questionList);
 				}
 			} 

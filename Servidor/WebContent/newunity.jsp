@@ -129,6 +129,16 @@
 	     <label id="btnAddVideo" class="btn btn-raised btn-primary addVideoButton btnNew" <%if(request.getAttribute("videUrl") != null) {out.print("style='display:none;'");}%>>
 	     	Agregar video <input type="file" style="display: none;" id="video" name="video" onchange="if(fileValidated(this))readURL(this);"  accept="video/*">
 	     </label>
+
+	     <div class="alert alert-danger" id="videoError" style="display:none;">
+	   		<button onclick="$('#videoError').hide()" class="close" aria-label="close" type="button">&times;</button>
+		  	<span id="videoErrorMessage">El video no puede exceder los 100 MB</span>
+		</div>
+		
+		<div class="alert alert-success" id="videoSuccess" style="display:none;">
+	   		<button onclick="$('#videoSuccess').hide()" class="close" aria-label="close" type="button">&times;</button>
+		  	<span id="videoSuccessMessage">Video agregado satisfactoriamente!</span>
+		</div>
 	     
 	     <table class="tg" id="tableVideo">
 			  <tr>
@@ -226,7 +236,7 @@
 		</div>
 		
 		<label class="btn btn-primary btn-raised btn-file">
-			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".srt" onchange="loadSubtitle();">
+			Seleccionar<input type="file" id="subtitle" style="display:none" name="subtitle"  accept=".vtt" onchange="loadSubtitle();">
 		</label>
 		<div id="subtitleNameContainer">
 		</div>
@@ -553,6 +563,9 @@
 
 		$('#tableVideo tr:last').after(row);
 		$("#btnAddVideo").hide();
+
+		$('#videoSuccess').show();
+		$('#videoSuccessMessage')[0].innerHTML = "Video agregado satisfactoriamente!";
 	}
 	
 	function getFileSizeFromBytes(size){
@@ -576,6 +589,14 @@
 	
 	function saveSubtitle(){
 		if($("#subtitle")[0].files[0] != undefined){
+			var ext = $("#subtitle")[0].files[0].name.split('.').pop().toLowerCase();
+			if($.inArray(ext, ['vtt']) == -1) {
+				$('#videoError').show();
+				$('#videoErrorMessage')[0].innerHTML = "El formato del subtitulo debe ser .vvt";
+				hideSubtitlePopup();
+				return false;
+			}
+
 			var unityId = "0";
 			if($('#id') != undefined){
 				unityId = $('#id').val();
@@ -624,19 +645,22 @@
 		
 		$("#subtitleNameContainer").html("");
 		hideSubtitlePopup();
+		$('#videoSuccess').show();
+		$('#videoSuccessMessage')[0].innerHTML = "Subtitulos agregados satisfactoriamente!";
 	}
 	
 	function fileValidated(input){
 		var ext = $('#video').val().split('.').pop().toLowerCase();
 		if($.inArray(ext, ['mp4','mpeg','mpg','mkv']) == -1) {
-			/* $("#pictureTypeError").show();
-			$('#imageHolder').attr('src', "images/photo_upload.jpg")				 */
+			$('#videoError').show();
+			$('#videoSuccessMessage')[0].innerHTML = "Debe ingresar un video";
 			return false;
 		}
 
 
-		if((input.files[0].size / 1024) > 51200){
-			/* $("#pictureError").show();	 */		
+		if((input.files[0].size / 1024) > 1001200){
+			$('#videoError').show();
+			$('#videoErrorMessage')[0].innerHTML = "El video no puede exceder los 100 MB";
 			return false;
 		}
 		return true;
