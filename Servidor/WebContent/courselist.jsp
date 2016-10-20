@@ -65,8 +65,8 @@
     <div class="${col}">
     	<div id="img_container" class="img_container">
         
-        <h4 class="fondo-verde position-absolute ancho-completo espaciado-chico borde-redondeado"><strong>${courses.getName()}</strong>
-        
+        <span class="my_badge ${course} badge">${courses.getName()}</span>
+    	
 	   	<c:if test="${courses.hasActiveSession()}">
 	   		<span class="${course} label-is-active">Activo</span>
 	   	</c:if>    	
