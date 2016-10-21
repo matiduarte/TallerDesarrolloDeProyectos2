@@ -61,13 +61,17 @@
         <activity
             android:name=".Activities.CourseDetailsActivity"
             android:parentActivityName=".Activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.UnitDetailsActivity"
-            android:parentActivityName=".Activities.CourseDetailsActivity"></activity>
+            android:parentActivityName=".Activities.CourseDetailsActivity" />
         <activity
             android:name=".Activities.ExamActivity"
-            android:parentActivityName=".Activities.UnitDetailsActivity"></activity>
+            android:parentActivityName=".Activities.UnitDetailsActivity" />
+        <activity
+            android:name=".Activities.CourseChatActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".Activities.CourseDetailsActivity" ></activity>
     </application>
 
 </manifest>

@@ -61,6 +61,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
     HashMap<String, String> user;
     ArrayList activeUnits = new ArrayList();
     Boolean showExam = false;
+    String courseName;
+    Boolean isSubscribed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         JSONObject courseData = new JSONObject(course.getCourseData());
                         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
                         collapsingToolbar.setTitle(courseData.getString("name"));
+                        courseName = courseData.getString("name");
                         TextView courseDesc = (TextView) findViewById(R.id.course_description);
                         courseDesc.setText(courseData.getString("description"));
                         TextView teacherName = (TextView) findViewById(R.id.course_teacher_name);
@@ -112,7 +115,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
-                        final Boolean isSubscribed = courseData.getBoolean("isSubscribed");
+                        isSubscribed = courseData.getBoolean("isSubscribed");
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
                         TextView courseStartDate = (TextView) findViewById(R.id.start_date);
                         TextView courseInscriptionDates = (TextView) findViewById(R.id.inscription_dates);
@@ -133,11 +136,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             Date finishInscriptionDate = calendar.getTime();
                             String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
                             courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
-
-                            Log.d("startInscription", String.valueOf(startInscriptionDate.compareTo(today)));
-                            Log.d("finishInscription", String.valueOf(finishInscriptionDate.compareTo(today)));
-
-                            Log.d("isSubscribed", isSubscribed.toString());
 
                             if(startInscriptionDate.compareTo(today) <= 0 && finishInscriptionDate.compareTo(today) >= 0
                                 &&!isSubscribed){
@@ -173,15 +171,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                     activeUnits.add(i);
                                 }
                                 if(isSubscribed && isActive || !isSubscribed){
-                                    Log.d("unitName", courseUnitiesArray.getString("name"));
-                                    Log.d("unitDesc", courseUnitiesArray.getString("description"));
-
                                     UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
                                     units.add(i, obj);
                                 }
                             }
                         }
-                        Log.d("activeUnits", activeUnits.toString());
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
                         recyclerView.setHasFixedSize(true);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -196,12 +190,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 TextView tv = (TextView) v.findViewById(R.id.unit_id);
                                 unitId = Integer.valueOf(tv.getText().toString());
                                 TextView uniteTitle = (TextView) v.findViewById(R.id.unit_title);
-                                Log.d("showExam", String.valueOf(activeUnits.contains(position+1)));
                                 //if(activeUnits.contains(unitId+1)){
                                     showExam = true;
                                 //}
                                 if(isSubscribed){
                                     navigateToUnitDetailsActivity();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Tenes que estar inscripto para poder acceder al contenido de las unidades!", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -225,14 +220,25 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.global, menu);
+        getMenuInflater().inflate(R.menu.activity_course_details, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_chat:
+                //if(isSubscribed){
+                    navigateToCourseChatActivity();
+                //} else {
+                    //Toast.makeText(getApplicationContext(), "Tenes que estar inscripto para poder acceder al foro del curso!", Toast.LENGTH_LONG).show();
+                //}
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -266,6 +272,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
         intent.putExtra("unitId", unitId);
         intent.putExtra("courseId", courseId);
         intent.putExtra("showExam", showExam);
+        startActivity(intent);
+    }
+
+    private void navigateToCourseChatActivity(){
+        Intent intent = new Intent(getApplicationContext(), CourseChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("courseId", courseId);
+        intent.putExtra("courseName", courseName);
         startActivity(intent);
     }
 
