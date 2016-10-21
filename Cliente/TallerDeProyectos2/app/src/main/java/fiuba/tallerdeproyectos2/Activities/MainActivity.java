@@ -3,6 +3,7 @@ package fiuba.tallerdeproyectos2.Activities;
 import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -35,6 +36,7 @@ import fiuba.tallerdeproyectos2.Fragments.CertificatesFragment;
 import fiuba.tallerdeproyectos2.Fragments.CoursesFragment;
 import fiuba.tallerdeproyectos2.Fragments.ExitFragment;
 import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
+import fiuba.tallerdeproyectos2.Notifications.RegistrationService;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Utilities.Utilities;
 
@@ -86,6 +88,9 @@ public class MainActivity extends AppCompatActivity
         userName.setText(user.get(SessionManagerActivity.KEY_NAME));
         userSurname.setText(user.get(SessionManagerActivity.KEY_SURNAME));
         userEmail.setText(user.get(SessionManagerActivity.KEY_EMAIL));
+
+        Intent i = new Intent(this, RegistrationService.class);
+        startService(i);
     }
 
     @Override

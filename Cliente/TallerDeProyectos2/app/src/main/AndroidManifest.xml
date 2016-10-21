@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <permission
+        android:name="fiuba.tallerdeproyectos2.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission
+        android:name="fiuba.tallerdeproyectos2.permission.C2D_MESSAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/appicon"
@@ -61,13 +67,37 @@
         <activity
             android:name=".Activities.CourseDetailsActivity"
             android:parentActivityName=".Activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activities.UnitDetailsActivity"
-            android:parentActivityName=".Activities.CourseDetailsActivity"></activity>
+            android:parentActivityName=".Activities.CourseDetailsActivity"/>
         <activity
             android:name=".Activities.ExamActivity"
-            android:parentActivityName=".Activities.UnitDetailsActivity"></activity>
+            android:parentActivityName=".Activities.UnitDetailsActivity"/>
+        <service android:name=".Notifications.RegistrationService"
+            android:exported="false" />
+        <service
+            android:name=".Notifications.TokenRefreshListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Notifications.NotificationsListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="fiuba.tallerdeproyectos2" />
+            </intent-filter>
+        </receiver>
     </application>
-
 </manifest>
