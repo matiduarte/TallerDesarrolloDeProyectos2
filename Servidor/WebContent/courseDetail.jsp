@@ -74,7 +74,7 @@
 				<div id="moderate-btn" class="moderate input-group">
    					<div class="togglebutton">
           				<label id="label-moderate">
-            				<input type="checkbox"> Moderar Foro
+            				<input type="checkbox" class="checkbox_check"> Moderar Foro
           				</label>
         			</div>
 					   <span class="input-group-btn">
@@ -574,7 +574,14 @@
     	
     	function showForum(sessionId){
     		
-    		window.location.href = "forummessage?id=" + sessionId;
+    		var moderate = null
+    		if ($('input.checkbox_check').is(':checked')) {
+    			moderate = 1;
+    		} else {
+    			moderate = 0;
+    		}
+    		
+    		window.location.href = "forummessage?id=" + sessionId + "&mod=" + moderate;
     		
     	}
     	
