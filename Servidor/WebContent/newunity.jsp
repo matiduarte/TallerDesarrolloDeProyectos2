@@ -88,7 +88,7 @@
 <%} %>
 <div class="blocksContainer">
 	<div class="unityFirstBlock">
-		  <div class="form-group label-floating">
+		  <div class="form-group label-floating sin-margen sin-padding">
 		    <label class="control-label" for="name">Nombre</label>
 		    <c:choose>
 		    	<c:when test="${name != NULL}">
@@ -99,7 +99,7 @@
 		          </c:otherwise>
 		   </c:choose>
 		  </div>
-		  <div class="form-group label-floating">
+		  <div class="form-group label-floating sin-margen sin-padding">
 		    <label class="control-label" for="lastName">Descripci&oacute;n</label>
 		    <c:choose>
 		    	<c:when test="${description != NULL}">
@@ -110,7 +110,7 @@
 		          </c:otherwise>
 		   </c:choose>
 		  </div>
-		  <div class="form-group label-floating">
+		  <div class="form-group label-floating sin-margen sin-padding">
 		    <label class="control-label" for="questions">Cantidad de Preguntas</label>
 		    <c:choose>
 		    	<c:when test="${questionSize != NULL}">
@@ -729,6 +729,10 @@
 		{
 		    lang: 'es'
 		});
+		
+		$("#htmlEditor").trumbowyg({
+		    prefix: 'sin-margen'
+		});		
 		
 		<% 
 		if(request.getAttribute("html") != null ){%>
