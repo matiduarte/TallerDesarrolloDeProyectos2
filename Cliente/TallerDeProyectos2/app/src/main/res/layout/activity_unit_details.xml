@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:background="#8BC34A"
+            android:background="@color/approveExam"
             android:textColor="#ffffff"
             android:visibility="gone"
             android:textStyle="bold"
@@ -57,11 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:background="#B71C1C"
+            android:background="@color/disapproveExam"
             android:textColor="#ffffff"
-            android:visibility="gone"
             android:textStyle="bold"
-            android:text="Examen Rendido"/>
+            android:visibility="gone"
+
+            android:text="Examen Rendido - Nota:"/>
 
         <Button
             android:id="@+id/practice_exam_btn"
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:background="#1976D2"
+            android:background="@color/practiceExam"
             android:textColor="#ffffff"
             android:visibility="gone"
             android:textStyle="bold"

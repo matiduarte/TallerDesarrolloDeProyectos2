@@ -46,7 +46,7 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
     ImageView courseIconInscripted;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    TextView noCourses;
 
     public CoursesFragment() {}
 
@@ -56,6 +56,7 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
         courseIconInscripted = (ImageView) rootView.findViewById(R.id.course_icon_inscripted);
+        noCourses = (TextView) rootView.findViewById(R.id.no_courses);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -100,6 +101,10 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     recyclerView.setLayoutManager(layoutManager);
                     adapter = new RecyclerViewAdapter(myCourses);
                     recyclerView.setAdapter(adapter);
+
+                    if(myCourses.isEmpty()){
+                        noCourses.setVisibility(View.VISIBLE);
+                    }
 
                     ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
                         @Override

@@ -6,6 +6,15 @@
     android:layout_marginTop="55dp"
     tools:context="fiuba.tallerdeproyectos2.Fragments.CoursesFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:id="@+id/no_courses"
+        android:textStyle="bold"
+        android:text="No se encuentra inscripto a ningun grupo!"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"

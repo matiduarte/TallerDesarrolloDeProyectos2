@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,9 +50,10 @@ public class UnitDetailsActivity extends AppCompatActivity {
     TextView html;
     Integer unitId, courseId;
     String unitName;
-    Boolean showExam, passExam;
+    Boolean showExam, passExam, isPractice;
     HashMap<String, String> subtitles;
     Spinner subtitlesSpinner;
+    Double nota;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +86,14 @@ public class UnitDetailsActivity extends AppCompatActivity {
 
         });
 
-        subtitles = new HashMap<String, String>();
+        subtitles = new HashMap<>();
 
         Intent intent = getIntent();
         unitId = intent.getIntExtra("unitId", 0);
         courseId = intent.getIntExtra("courseId", 0);
         showExam = intent.getBooleanExtra("showExam", false);
         passExam = intent.getBooleanExtra("passExam", false);
+        nota = intent.getDoubleExtra("nota", 0);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getUnitDataById(unitId);
@@ -113,7 +114,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                         JSONArray subsArray = new JSONArray(unit.getSubtitles());
 
                         if(subsArray.length() > 0){
-                            List<String> languages = new ArrayList<String>();
+                            List<String> languages = new ArrayList<>();
                             languages.add("Idioma");
                             subtitlesSpinner.setVisibility(View.VISIBLE);
                             for (int i=0; i< subsArray.length(); i++) {
@@ -123,7 +124,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                                 languages.add(language);
                             }
 
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(
                                     getApplicationContext(), android.R.layout.simple_spinner_item, languages);
 
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -147,12 +148,27 @@ public class UnitDetailsActivity extends AppCompatActivity {
                             videoView.setVisibility(View.VISIBLE);
                             videoView.start();
                         }
-                        if(showExam){
-                            Button examButton = (Button)findViewById(R.id.exam_btn);
-                            examButton.setVisibility(View.VISIBLE);
-                        } else if(passExam){
+                        if(passExam){
                             Button passExamButton = (Button)findViewById(R.id.exam_pass_btn);
-                            passExamButton.setVisibility(View.VISIBLE);
+                            if (passExamButton != null) {
+                                if(nota >= 6){
+                                    passExamButton.setBackgroundColor(getResources().getColor(R.color.approveExam));
+                                }
+                                passExamButton.setText("Examen Rendido - Nota: " + nota);
+                                passExamButton.setVisibility(View.VISIBLE);
+                            }
+                        } else if(showExam){
+                            Button examButton = (Button)findViewById(R.id.exam_btn);
+                            if (examButton != null) {
+                                examButton.setVisibility(View.VISIBLE);
+                                isPractice = false;
+                            }
+                        } else {
+                            Button practiceExamButton = (Button)findViewById(R.id.practice_exam_btn);
+                            if (practiceExamButton != null) {
+                                practiceExamButton.setVisibility(View.VISIBLE);
+                                isPractice = true;
+                            }
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
@@ -184,17 +200,22 @@ public class UnitDetailsActivity extends AppCompatActivity {
     }
 
     public void examButtonClick(View view){
+        navigateToExamActivity();
+    }
+
+    public void practiceExamButtonClick(View view){
+        navigateToExamActivity();
+    }
+
+    private void navigateToExamActivity(){
         Intent intent = new Intent(getApplicationContext(), ExamActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("unitId", unitId);
         intent.putExtra("courseId", courseId);
         intent.putExtra("unitName", unitName);
+        intent.putExtra("isPractice", isPractice);
         startActivity(intent);
-    }
-
-    public void practiceExamButtonClick(View view){
-
     }
 
     @Override
@@ -210,7 +231,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
         private Context context;
         private Locale locale;
 
-        public RetrieveSubtitlesTask(VideoView videoView, Context c){
+        RetrieveSubtitlesTask(VideoView videoView, Context c){
             this.videoView = videoView;
             this.context = c;
         }

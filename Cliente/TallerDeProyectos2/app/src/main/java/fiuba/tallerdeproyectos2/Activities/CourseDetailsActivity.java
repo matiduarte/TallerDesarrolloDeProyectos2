@@ -196,12 +196,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                                 TextView tv = (TextView) v.findViewById(R.id.unit_id);
                                 unitId = Integer.valueOf(tv.getText().toString());
                                 TextView uniteTitle = (TextView) v.findViewById(R.id.unit_title);
-                                Log.d("showExam", String.valueOf(activeUnits.contains(position+1)));
-                                //if(activeUnits.contains(unitId+1)){
+                                if(activeUnits.contains(unitId+1)){
                                     showExam = true;
-                                //}
+                                }
                                 if(isSubscribed){
                                     navigateToUnitDetailsActivity();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Debes estar inscripto para ver el contenido!", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });

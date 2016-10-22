@@ -26,6 +26,15 @@
                 android:background="@color/background"
                 android:text="@string/course_coming_soon" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:id="@+id/no_soon_courses"
+                android:visibility="gone"
+                android:text="No hay cursos proximos a empezar!"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"

@@ -11,14 +11,6 @@
     android:orientation="vertical"
     tools:context="fiuba.tallerdeproyectos2.Activities.ExamActivity">
 
-    <TextView
-        android:id="@+id/exam_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/exam_info"
-        android:paddingBottom="10dp"
-        android:textSize="15sp"/>
-
     <LinearLayout
         android:id="@+id/exam"
         android:orientation="vertical"
@@ -31,7 +23,7 @@
         android:background="@color/colorPrimary"
         android:textColor="#ffffff"
         android:layout_gravity="bottom|right"
-        android:onClick="finishExam"
-        android:text="Entregar"/>
+        android:id="@+id/finishExam"
+        android:text="Terminar"/>
 
 </LinearLayout>

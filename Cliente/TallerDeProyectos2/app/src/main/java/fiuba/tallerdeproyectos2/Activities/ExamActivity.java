@@ -1,5 +1,7 @@
 package fiuba.tallerdeproyectos2.Activities;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
@@ -10,11 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -22,8 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import fiuba.tallerdeproyectos2.Fragments.ExamInfoDialogFragment;
+import fiuba.tallerdeproyectos2.Fragments.ExitDialogFragment;
 import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
 import fiuba.tallerdeproyectos2.Models.Courses;
 import fiuba.tallerdeproyectos2.Models.Exam;
@@ -35,14 +43,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ExamActivity extends AppCompatActivity {
+public class ExamActivity extends AppCompatActivity implements ExamInfoDialogFragment.ExamInfoDialogListener{
 
     private static final String TAG = ExamActivity.class.getSimpleName();
     LinearLayout exam;
     List selchkboxlist = new ArrayList();
     List<AnswersInfo> answersInfo = new ArrayList<>();
     List<ExamInfo> examInfo = new ArrayList<>();
-    Integer unitId, courseId;
+    Integer unitId, courseId, nota;
+    Boolean isPractice;
+
     public class AnswersInfo{
         public Integer id;
         public Boolean isCorrect;
@@ -54,9 +64,9 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     public class ExamInfo{
-        public Integer questionId;
-        public Integer correctAnswers;
-        public List<AnswersInfo> answersInfo;
+        Integer questionId;
+        Integer correctAnswers;
+        List<AnswersInfo> answersInfo;
 
         ExamInfo(Integer questionId, Integer correctAnswers, List<AnswersInfo> answersInfo){
             this.questionId = questionId;
@@ -76,11 +86,16 @@ public class ExamActivity extends AppCompatActivity {
         Intent intent = getIntent();
         unitId = intent.getIntExtra("unitId", 0);
         courseId = intent.getIntExtra("courseId", 0);
+        isPractice = intent.getBooleanExtra("isPractice", false);
         String unitName = intent.getStringExtra("unitName");
 
         setTitle("Examen - Unidad " + unitName);
 
         exam = (LinearLayout) findViewById(R.id.exam);
+
+        if(!isPractice){
+            showExamInfoDialog();
+        }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getUnitExam(unitId);
@@ -96,26 +111,22 @@ public class ExamActivity extends AppCompatActivity {
                         Exam examData = gson.fromJson(data, Exam.class);
                         JSONArray questions = new JSONArray(examData.getQuestions());
                         Integer correctAnswers = 0;
-                        Log.d("questions", questions.toString());
                         for (int i=0; i < questions.length(); i++) {
                             JSONObject questionArray = new JSONObject(questions.getString(i));
                             String question = questionArray.getString("question");
-                            Log.d("question", question);
                             TextView textView = new TextView(ExamActivity.this);
                             textView.setText(question);
                             textView.setTextSize(15);
                             textView.setTypeface(null, Typeface.BOLD_ITALIC);
                             textView.setLayoutParams( new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                            textView.setPadding(0,10,0,10);
                             exam.addView(textView);
 
                             JSONArray answers = new JSONArray(questionArray.getString("answers"));
-                            Log.d("answers", answers.toString());
                             for (int j=0; j < answers.length(); j++) {
                                 JSONObject answerArray = new JSONObject(answers.getString(j));
                                 String answer = answerArray.getString("answer");
                                 Boolean isCorrect = answerArray.getBoolean("isCorrect");
-                                Log.d("answer", answer);
-                                Log.d("isCorrect", isCorrect.toString());
                                 if(isCorrect){
                                     correctAnswers++;
                                 }
@@ -128,8 +139,7 @@ public class ExamActivity extends AppCompatActivity {
 
                                 checkBox.setOnClickListener(new View.OnClickListener() {
                                     public void onClick(View v) {
-                                        Integer chk = null;
-                                        chk = v.getId();
+                                        Integer chk = v.getId();
                                         if (((CheckBox) v).isChecked()) {
                                             selchkboxlist.add(chk);
 
@@ -153,10 +163,22 @@ public class ExamActivity extends AppCompatActivity {
 
             }
         });
+
+        Button finishExamButton = (Button)findViewById(R.id.finishExam);
+        if (finishExamButton != null) {
+            finishExamButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    nota = calcularNota();
+                    navigateToUnitDetailsActivity(false, nota, !isPractice);
+                }
+            });
+        }
+
     }
 
-    public void finishExam(View view){
-        double points = 0;
+    private Integer calcularNota(){
+        Integer points = 0;
         Integer totalPoints = examInfo.size();
         for (int i = 0; i < examInfo.size(); i++){
             Integer correctResponses = 0;
@@ -169,27 +191,27 @@ public class ExamActivity extends AppCompatActivity {
                     }
                 }
             }
-            points += correctResponses/correctAnswers;
+            if(Objects.equals(correctResponses, correctAnswers)){
+                points += 1;
+            }
         }
-        double nota = (points/totalPoints)*10;
-        Toast.makeText(getApplicationContext(), "La nota del examen es: " + nota, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("unitId", unitId);
-        intent.putExtra("courseId", courseId);
-        intent.putExtra("passExam", true);
-        startActivity(intent);
+        return (points/totalPoints)*10;
     }
 
     @Override
     public void onBackPressed() {
+        navigateToUnitDetailsActivity(!isPractice, nota, false);
+    }
+
+    private void navigateToUnitDetailsActivity(Boolean showExam, Integer nota, Boolean passExam){
         Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("unitId", unitId);
         intent.putExtra("courseId", courseId);
-        intent.putExtra("showExam", true);
+        intent.putExtra("showExam", showExam);
+        intent.putExtra("passExam", passExam);
+        intent.putExtra("nota", nota);
         startActivity(intent);
     }
 
@@ -197,5 +219,14 @@ public class ExamActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
+    }
+
+    public void showExamInfoDialog() {
+        DialogFragment dialog = new ExamInfoDialogFragment();
+        dialog.show(getFragmentManager(), "examInfo");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
     }
 }

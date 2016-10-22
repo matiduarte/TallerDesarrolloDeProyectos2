@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     Integer studentId;
     ImageView subscribeMark, courseIconInscripted;
     RecyclerView recyclerView;
+    TextView noSoonCourses;
 
     public HomeFragment() {}
 
@@ -151,6 +152,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableList);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        noSoonCourses = (TextView) rootView.findViewById(R.id.no_soon_courses);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -198,7 +200,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                         String pictureUrl;
                         JSONArray soonCoursesData = new JSONArray(courses.getSoonCourses());
-
                         for (int i=0; i< soonCoursesData.length(); i++) {
                             JSONObject soonCoursesArray = new JSONObject(soonCoursesData.getString(i));
                             pictureUrl = "";
@@ -217,6 +218,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         recyclerView.setLayoutManager(layoutManager);
                         adapter = new RecyclerViewAdapter(soonCourses);
                         recyclerView.setAdapter(adapter);
+
+                        if(soonCourses.isEmpty()){
+                            noSoonCourses.setVisibility(View.VISIBLE);
+                        }
 
                         ((RecyclerViewAdapter) adapter).setOnItemClickListener(new RecyclerViewAdapter.MyClickListener() {
                             @Override
