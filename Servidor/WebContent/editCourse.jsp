@@ -190,8 +190,7 @@
 		</div>        
         
         <button class="btn btn-primary btn-file backeButton" onclick="goBack();return false">Volver</button>
-        <button class="btn btn-primary btn-raised" type="submit">Confirmar</button>
-        <button id="btn_ver_detalles" class="btn btn-primary btn-file pull-right backeButton" onclick="goToDetails();return false">Ver detalles</button>
+        <button class="btn btn-primary btn-raised pull-right" type="submit">Confirmar</button>
       </form>
 
 	<div id="newSessionPopup">
