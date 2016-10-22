@@ -2,6 +2,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="entities.Category" %>
 <%@ page import="entities.Course" %>
+<%@ page import="entities.CourseSession" %>
+<%@ page import="entities.CourseUnity" %>
 <%@ page import="entities.User" %>
 
 <% Course course = (Course)request.getAttribute("course"); 
@@ -21,12 +23,17 @@
 	<link href="bootstrap/css/bootstrap-material-design.min.css" rel="stylesheet">
     <link href="bootstrap/css/ripples.min.css" rel="stylesheet">
     <link href="bootstrap/css/newCourse.css" rel="stylesheet">
+    <link href="bootstrap/css/courseDetail.css" rel="stylesheet">
+    <link href="bootstrap/css/editCourse.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap-tagsinput.js"></script>
 	<script src="bootstrap/js/typeahead.bundle.js"></script>
 	
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/js/ripples.min.js"></script>
+	<script src="bootstrap/js/bootbox.min.js"></script>
 	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
@@ -65,7 +72,6 @@
 	   		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		  	No se puede cambiar/eliminar el docente de un curso con sesion activa!
 		</div>
-		
 
       <form id="editCurseForm" name="editCurseForm" method="post" action="editCourse" class="form-signin" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<% out.print(course.getId()); %>">
@@ -112,13 +118,108 @@
         	<input type="hidden" id="teacherSelectedId" name="teacherSelectedId" value="<% out.print(course.getTeacherId()); %>">
         </div>
         
-        </br>
+        
+        <div class="row">
+         <div class="col-md-8">
+	     <label class="detail-label">Sesiones activas:</label>
+	     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="showPopup();return false">Crear nueva sesión</button>
+	     
+	     <table class="tg ocupar-espacio" id="tableSession">
+			  <tr>
+			    <th class="tg-zyzu no-visible">Id</th>
+			    <th class="tg-zyzu">Fecha de inicio</th>
+			    <th class="tg-zyzu">Acciones</th>
+			  </tr>
+			   <%ArrayList<CourseSession> courseSessions = (java.util.ArrayList)request.getAttribute("courseSessions");
+				 for (CourseSession courseSession: courseSessions)
+				 { %>
+				 	<tr id="tr_session_<%  out.print(courseSession.getId()); %>">
+					    <td class="tg-yw4l no-visible">
+					    	<%  out.print(courseSession.getId()); %>
+					    </td>
+					    <td class="tg-yw4l">
+					    	<%  out.print(courseSession.getDate()); %>
+					    </td>
+					    <td class="tg-yw4l">
+					    	<button class="btn btnAction" type="submit" onclick="editSession(<%  out.print(courseSession.getId()); %>);return false">
+								<img  src="images/edit_icon.png" class="actionButtonImage" alt="Editar" >
+							</button>
+							
+							<button class="btn btnAction" type="submit" onclick="deleteSession(<%  out.print(courseSession.getId()); %>);return false">
+								<img  src="images/delete_icon.png" class="actionButtonImage" alt="Borrar" >
+							</button>
+					    </td>
+				  </tr>
+				<%}%>
+		  </table>
+		 </div>
+		 
+		 <div class="col-md-4">
+	     <label class="detail-label">Unidades:</label>
+	     
+	     <table class="tg ocupar-espacio" id="tableUnity">
+			  <tr>
+			    <th class="tg-zyzu no-visible">Id</th>
+			    <th class="tg-zyzu">Nombre</th>
+			  </tr>
+			   <%ArrayList<CourseUnity> courseUnities = (java.util.ArrayList)request.getAttribute("courseUnities");
+				 for (CourseUnity courseUnity: courseUnities)
+				 { %>
+				 	<tr id="tr_unity_<%  out.print(courseUnity.getId()); %>">
+					    <td class="tg-yw4l no-visible">
+					    	<%  out.print(courseUnity.getId()); %>
+					    </td>
+					    <td class="tg-yw4l">
+					    	<%  out.print(courseUnity.getName()); %>
+					    </td>
+				  </tr>
+				<%}%>
+		</table>
+		</div>		
+		
+		</div>
+
+	   	<div class="alert alert-danger" id="sessionError" style="display:none;">
+	   		<button onclick="$('#sessionError').hide(); return false;" class="close" aria-label="close">&times;</button>
+		  	<span id="sessionErrorMessage">La foto elegida supera el tamaño máximo de 1 MB permitido. Seleccione otra e intente nuevamente</span>
+		</div>	
+        
+		<div class="alert alert-success" id="sessionSucces" style="display:none;">
+	   		<button onclick="$('#sessionSucces').hide(); return false;" class="close" aria-label="close">&times;</button>
+		  	<span id="sessionSuccesMessage">Session creada satisfactoriamente!</span>
+		</div>        
         
         <button class="btn btn-primary btn-file backeButton" onclick="goBack();return false">Volver</button>
         <button class="btn btn-primary btn-raised" type="submit">Confirmar</button>
         <button id="btn_ver_detalles" class="btn btn-primary btn-file pull-right backeButton" onclick="goToDetails();return false">Ver detalles</button>
       </form>
 
+	<div id="newSessionPopup">
+		<input type="hidden" name="sessionId" id="sessionId" value="">
+		<label class="labelPopup" id="popupSessionTitle">Crear sesión</label>
+		<br/>
+		
+		<div class="form-group label-floating inputSessionDate">	
+			<label class="control-label" id="labelDate" for="sessionDate">Fecha de inicio</label>
+			<input type="text" id="sessionDate" class="form-control" required required="true"/>
+		</div>
+		
+		<button class="btn btnCalendar" type="submit" onclick="showCalendar(); return false;">
+			<img  src="images/calendar_icon.png" class="calendarIcon" alt="Agregar fecha de inicio" >
+		</button>
+		
+		<br/>
+		<br/>
+		<hr>
+		
+		<div class="popupButtonsContainer">
+			<button class="btn btnPopup" type="submit" onclick="hidePopup(); return false;">Cancelar</button>
+			<button class="btn btnPopup" type="submit" onclick="saveSession(); return false;" id="popupSessionSubmit">Crear</button>
+		</div>
+						
+	</div>
+
+	<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
 
     </div> <!-- /container -->
     
@@ -282,6 +383,196 @@ $("#inputTeacher").autocomplete({
 			window.location.href = '/Servidor/courseDetail?id=' + <% out.print(course.getId()); %> + '&user=admin';
 		}
 		
+	</script>
+	
+	<script type="text/javascript">
+	
+	$('#courseId').val(<% out.print(course.getId()); %>);
+	
+    $(document).ready( ordenarTabla() );
+    
+	$.datepicker.regional.es = {
+		closeText: "Cerrar",
+		prevText: "&#x3C;Ant",
+		nextText: "Sig&#x3E;",
+		currentText: "Hoy",
+		monthNames: [ "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+		"Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre" ],
+		monthNamesShort: [ "Ene","Feb","Mar","Abr","May","Jun",
+		"Jul","Ago","Sep","Oct","Nov","Dic" ],
+		dayNames: [ "Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado" ],
+		dayNamesShort: [ "Dom","Lun","Mar","Mié","Jue","Vie","Sáb" ],
+		dayNamesMin: [ "D","L","M","X","J","V","S" ],
+		weekHeader: "Sm",
+		dateFormat: "dd/mm/yy",
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: "" };
+	$.datepicker.setDefaults( $.datepicker.regional[ "es" ] );
+
+    $( "#sessionDate" ).datepicker();
+
+
+	function showPopup(){
+    	$("#sessionId").val("")
+		$("#popupSessionTitle")[0].innerHTML = "Crear Sesión";
+		$("#popupSessionSubmit")[0].innerHTML = "Crear";
+		$("#sessionDate").val("");
+		$("#newSessionPopup").show();
+	}
+	
+	function hidePopup(){
+		$("#newSessionPopup").hide();
+	}
+	
+	function showCalendar(){
+		$.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+		$( "#sessionDate" ).datepicker("show");
+	}
+	
+	function saveSession(){
+		if($("#sessionDate").val() != ""){
+			var sessionDate = $('#sessionDate').val();
+    		var courseId = $('#courseId').val();
+    		var sessionId = $('#sessionId').val();
+			
+			$.ajax({
+			    data: {sessionDate: sessionDate, courseId: courseId, sessionId: sessionId},
+			    //Cambiar a type: POST si necesario
+			    type: "POST",
+			    // Formato de datos que se espera en la respuesta
+			    dataType: "json",
+			    // URL a la que se enviará la solicitud Ajax
+			    url: "SaveCourseSessionActionServlet",
+			})
+			 .done(function( data, textStatus, jqXHR ) {
+				 if(sessionId != ""){
+					 editSessionRow(data);
+				 }else{
+					 addNewSessionRow(data);	 
+				 }
+				 hidePopup();
+			 })
+			 .fail(function( jqXHR, textStatus, errorThrown ) {
+			     if ( console && console.log ) {
+			         console.log( "La solicitud a fallado: " +  textStatus);
+			     }
+			});
+		}else{
+			
+		}
+		
+		
+	}
+	
+	function editSessionRow(session){
+		$("#tr_session_" + session.id).children()[1].innerHTML = session.date;
+		
+		$("#sessionSuccesMessage")[0].innerHTML = "Sesion modificada satisfactoriamente!";
+		$("#sessionSucces").show();
+	}   	
+	
+	function addNewSessionRow(session){
+		$('#tableSession tr:last').after("<tr id='tr_session_" + session.id + "'>"+
+				"<td class='tg-yw4l no-visible'>" +
+    				session.id +
+    			"</td><td class='tg-yw4l'>" +
+    				session.date +
+    			"</td><td class='tg-yw4l'>"+
+    	"<button class='btn btnAction' type='submit' onclick='editSession(" + session.id + "); return false;'>"+
+			"<img  src='images/edit_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button>"+
+		
+		"<button class='btn btnAction' type='submit' onclick='deleteSession(" + session.id + "); return false;'>"+
+			"<img  src='images/delete_icon.png' class='actionButtonImage' alt='Agregar fecha de inicio' ></button></td></tr>");
+	
+		$("#sessionSuccesMessage")[0].innerHTML = "Sesion creada satisfactoriamente!";
+		$("#sessionSucces").show();
+		
+		ordenarTabla();
+	}
+	
+	function ordenarTabla() {
+    	var tbody = $('#tableSession');
+    	tbody.find('tr:not(:first)').sort(function(a,b){ 
+    	    var fecha1_con_espacios = $(a).find('td:eq(1)').text();
+    	    var fecha2_con_espacios = $(b).find('td:eq(1)').text();
+    	    
+    	    var fecha1 = $.trim(fecha1_con_espacios);
+    	    var fecha2 = $.trim(fecha2_con_espacios);
+			
+    	    return fecha1 > fecha2 ? 1 
+    	           : fecha1 < fecha2 ? -1 
+    	           : 0;           
+    	}).appendTo(tbody);
+	}     	
+	
+	function deleteSessionRow(sessionId){
+		$("#tr_session_" + sessionId).remove();
+		$("#sessionSuccesMessage")[0].innerHTML = "Sesion borrada satisfactoriamente!";
+		$("#sessionSucces").show();
+	}
+	
+	function editSession(sessionId){
+		var dateValue = $("#tr_session_" + sessionId).children()[1].innerHTML.replace(/\s/g, "");
+		var sessionDate = new Date(dateValue)
+		var currentDate = new Date();
+		if(sessionDate > currentDate){
+			$("#sessionId").val(sessionId);
+    		$("#popupSessionTitle")[0].innerHTML = "Editar Sesión";
+    		$("#popupSessionSubmit")[0].innerHTML = "Guardar";
+    		$("#newSessionPopup").show();
+    		//HACK
+    		$( "#sessionDate" ).focus();
+    		$("#sessionDate").val(dateValue);	
+		}else{
+			$("#sessionErrorMessage")[0].innerHTML = "No se puede modificar una sesion activa!";
+	    	$("#sessionError").show();	
+		}
+		
+	}
+	
+	function deleteSessionAfterConfirm(sessionId){
+		$.ajax({
+		    data: {sessionId: sessionId},
+		    //Cambiar a type: POST si necesario
+		    type: "POST",
+		    // Formato de datos que se espera en la respuesta
+		    dataType: "json",
+		    // URL a la que se enviará la solicitud Ajax
+		    url: "DeleteCourseSessionActionServlet",
+		})
+		 .done(function( data, textStatus, jqXHR ) {
+			 if(data.success == true){
+				 deleteSessionRow(sessionId);	 
+			 }else{
+				$("#sessionErrorMessage")[0].innerHTML = data.message;
+		    	$("#sessionError").show();
+			 }
+			 
+		 })
+		 .fail(function( jqXHR, textStatus, errorThrown ) {
+		     if ( console && console.log ) {
+		         console.log( "La solicitud a fallado: " +  textStatus);
+		     }
+		});
+	}
+	
+	function deleteSession(sessionId){	
+		bootbox.confirm({ 
+		    size: 'small',
+		    message: "Estas seguro que queres eliminar la sesion?", 
+		    callback: function(result){if(result){deleteSessionAfterConfirm(sessionId);} },
+		    buttons: {
+		        confirm: {
+		            label: 'Aceptar',
+		        },
+		        cancel: {
+		            label: 'Cancelar',
+		        }
+		    },
+		})
+	}
 	</script>
   </body>
 </html>

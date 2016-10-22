@@ -183,10 +183,13 @@
 	    <button class="btn btn-raised btn-primary pull-right" onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar Pregunta</button>
 	     
 	     <table class="tg" id="tableQuestions">
+	       <thead>
 			  <tr>
 			    <th class="tg-zyzu col-md-8">Pregunta</th>
 			    <th class="tg-zyzu col-md-8">Acciones</th>
 			  </tr>
+			</thead>
+			<tbody>
 				<c:if test="${questionsList != NULL}">
 				<c:forEach items="${questionsList}" var="questions">
 				<tr id="tr_question_${questions.getId()}">
@@ -204,7 +207,8 @@
 				    </td>
 				    </tr>
 				    </c:forEach>
-				    </c:if>
+				    </c:if>	
+			</tbody>		    
 		</table>
 		</div>
 	  </div>

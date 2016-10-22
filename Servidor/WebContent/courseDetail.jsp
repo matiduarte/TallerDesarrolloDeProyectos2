@@ -31,8 +31,8 @@
 	<script src="bootstrap/js/bootbox.min.js"></script>
 	<script src="bootstrap/js/material.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
   </head>
 
@@ -78,7 +78,7 @@
 				if(course.getPictureUrl() != null && course.getPictureUrl() != ""){
 					pictureUrl = course.getPictureUrl(); 
 				} %>
-				<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="newCurseImage" id="imageHolder">
+				<img src="<% out.print(pictureUrl); %>" alt="Foto para la categoria" class="courseImage" id="imageHolder">
 			</div>		     
 	     </div>
 	     </br>
@@ -165,7 +165,6 @@
 	}
 %>
 
-
 			     <label class="detail-label">Unidades:</label>
 			     <button class="btn btn-raised btn-primary newCourseButton btnNew" onclick="editUnity()">Crear unidad</button>
 			     
@@ -199,11 +198,8 @@
 				</table>
 			</div>
 		</div>
-	     
-	     <br/>
-	     <br>
-	     
-	    <button class="btn btn-raised btn-primary newCourseButton btnBack" type="submit" onclick="goBack();" >Volver</button>
+			     
+	    <button class="btn btn-raised btn-primary newCourseButton btnBack pull-left" type="submit" onclick="goBack();" >Volver</button>
 
 	<div id="newSessionPopup">
 		<input type="hidden" name="sessionId" id="sessionId" value="">
