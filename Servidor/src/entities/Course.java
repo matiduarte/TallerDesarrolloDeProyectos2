@@ -134,6 +134,19 @@ public class Course {
 		}
 		return null;
 	}
+	
+	public CourseSession getCurrentSession() {
+		ArrayList<CourseSession> sessions = (ArrayList<CourseSession>)CourseSession.getByCourseId(this.getId());
+		
+		for (CourseSession courseSession : sessions) {
+			if(courseSession.isActive()){
+				return courseSession;
+			}
+		}
+		return null;
+	}
+	
+	
 	public static List<Course> getByCategoryId(int categoryId){
 		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCategoryId(categoryId);	 
 		List<Course> listOfCourses = new ArrayList<Course>();
