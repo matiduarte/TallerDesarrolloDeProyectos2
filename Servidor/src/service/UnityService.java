@@ -7,12 +7,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONException;
@@ -34,8 +36,11 @@ public class UnityService {
 	@Path("{id}")
 	@GET
 	@Produces("application/json")
-	public ServiceResponse getUnity(@PathParam("id") int id){
-		CourseUnity unity = CourseUnity.getById(id);	 
+	public ServiceResponse getUnity(@PathParam("id") int id, @DefaultValue("0") @QueryParam("studentId") int studentId){
+		CourseUnity unity = CourseUnity.getById(id);
+		if(studentId > 0){
+			unity.checkStudentExam(studentId);
+		}
 		if (unity != null){
 			ArrayList<String> subtitles = unity.getSubtitlesUrl();
 	    	JSONObject jo = new JSONObject();
