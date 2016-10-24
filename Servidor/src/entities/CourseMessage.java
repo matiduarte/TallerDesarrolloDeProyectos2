@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 import dataBase.StoreData;
 
 public class CourseMessage {
@@ -45,4 +47,7 @@ public class CourseMessage {
 		StoreData.save(this);
 	}
 
+	public static List<CourseMessage> getBySessionId(int sessionId){
+		return (List<CourseMessage>)StoreData.getByField(CourseMessage.class, "sessionId", String.valueOf(sessionId));
+	}
 }

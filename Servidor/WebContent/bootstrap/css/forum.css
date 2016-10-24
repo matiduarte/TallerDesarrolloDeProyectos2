@@ -1,0 +1,23 @@
+body {
+  background-color: #fff;
+}
+
+.register{
+	
+	margin: 0 auto;
+	width: 70%;
+}
+
+.form-group{
+	padding-bottom: 7px;
+    margin: 0px 0 0 0;
+}
+
+.message{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.btn-back{
+	border: 2px solid;
+}

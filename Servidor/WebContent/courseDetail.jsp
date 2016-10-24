@@ -572,7 +572,7 @@
     		});
     	}
     	
-    	function showForum(sessionId){
+    	function showForum(data){
     		
     		var moderate = null
     		if ($('input.checkbox_check').is(':checked')) {
@@ -581,7 +581,7 @@
     			moderate = 0;
     		}
     		
-    		window.location.href = "forummessage?id=" + sessionId + "&mod=" + moderate;
+    		window.location.href = "forummessage?id=" + data[0] + "&mod=" + moderate + "&courseId=" + data[1];
     		
     	}
     	

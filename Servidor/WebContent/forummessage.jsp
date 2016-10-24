@@ -16,7 +16,7 @@
     <link href="bootstrap/css/ripples.min.css" rel="stylesheet">
 
 	<!-- Custom styles for this template -->
-    <link href="bootstrap/css/signup.css" rel="stylesheet">
+    <link href="bootstrap/css/forum.css" rel="stylesheet">
  
  	
  </head>
@@ -33,7 +33,17 @@
   </div>
 </div>
 
- 
+
+<form id="identicalForm" class="register" method="post" action="forummessage">
+ <c:forEach var="forum" items="${forumList}">
+ <div class="message form-group">
+  <label class="control-label" for="inputDefault">${forum.getName()}</label>
+  <input type="text" class="form-control" id="inputDefault" value="${forum.getMessage()}">
+</div>
+</c:forEach>
+<button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Guardar</button>
+  <button class="btn-back btn btn-primary pull-left" onclick="volver(${courseId})" type="button">Volver</button>
+</form>
 
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
@@ -43,6 +53,13 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
 	
+	<script type="text/javascript">
+	
+	function volver(courseId){
+		window.location.href = "/Servidor/courseDetail?id=" + courseId;
+	}
+	
+	</script>
 	
   </body>
 </html>

@@ -50,8 +50,10 @@ public class GetActiveSessionActionServlet extends HttpServlet {
 			}
 		}
 		
-		
-		String json = new Gson().toJson(sessionId);
+		ArrayList<Integer> data = new ArrayList<Integer>();
+		data.add(sessionId);
+		data.add(courseId);
+		String json = new Gson().toJson(data);
     	response.setContentType("application/json");
     	response.setCharacterEncoding("UTF-8"); 
     	response.getWriter().write(json);
