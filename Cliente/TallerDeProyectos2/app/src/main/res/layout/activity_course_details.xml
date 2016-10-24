@@ -241,7 +241,7 @@
             android:textStyle="bold"
             android:visibility="gone"
             android:onClick="onInscriptionButtonClick"
-            android:text="Inscribirse"/>
+            android:text="@string/inscription_text"/>
 
         <Button
             android:id="@+id/unsubscription_btn"
@@ -254,7 +254,7 @@
             android:visibility="gone"
             android:textStyle="bold"
             android:onClick="onUnsubsriptionButtonClick"
-            android:text="Desinscribirse"/>
+            android:text="@string/unsubscription_text"/>
 
     </LinearLayout>
 

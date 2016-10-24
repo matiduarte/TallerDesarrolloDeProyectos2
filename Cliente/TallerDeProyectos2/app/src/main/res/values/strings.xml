@@ -48,4 +48,19 @@
     <string name="inscription_success">Se ha inscripto en el curso satisfactoriamente!</string>
     <string name="unsubscription_success">Se ha dado de baja del curso satisfactoriamente!</string>
     <string name="exam_info">\u25CF Las preguntas tienen <b><u>una o mas opciones correctas</u></b>. \n\u25CF Cada pregunta correcta sumara 1 punto.\n\u25CF Se aprueba con nota mayor o igual a 6.\n\u25CF Tiene una semana para realizar el examen</string>
+    <string name="unit_detail_alert">Debes estar inscripto para ver el contenido!</string>
+    <string name="error">error</string>
+    <string name="exam_title">"Examen - Unidad "</string>
+    <string name="facebook">Facebook</string>
+    <string name="subtitles_selector">Idioma</string>
+    <string name="pass_exam">"Examen Rendido - Nota: "</string>
+    <string name="exam_info_title">Pautas</string>
+    <string name="gotIt_btn">Entendido</string>
+    <string name="inscription_text">Inscribirse</string>
+    <string name="unsubscription_text">Desinscribirse</string>
+    <string name="finish_exam">Terminar</string>
+    <string name="rendir_examen">Rendir Examen</string>
+    <string name="practice_exam">Practicar Examen</string>
+    <string name="no_my_courses">No se encuentra inscripto a ningun grupo!</string>
+    <string name="no_soon_courses">No hay cursos proximos a empezar!</string>
 </resources>

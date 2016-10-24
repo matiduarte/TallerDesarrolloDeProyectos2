@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     final Profile profile = Profile.getCurrentProfile();
                                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
                                     Call<ServerResponse> call = apiService.postStudentData(object.getString("email"), profile.getFirstName() + profile.getMiddleName(),
-                                            profile.getLastName(), "Facebook");
+                                            profile.getLastName(), getString(R.string.facebook));
                                     call.enqueue(new Callback<ServerResponse>() {
                                         @Override
                                         public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
@@ -98,8 +98,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 parameters.putString("fields", "email");
                 request.setParameters(parameters);
                 request.executeAsync();
-                Log.i(TAG, "Facebook");
-                Utilities.appendToInfoLog(TAG, "Facebook");
+                Log.i(TAG, getString(R.string.facebook));
+                Utilities.appendToInfoLog(TAG, getString(R.string.facebook));
             }
 
             @Override

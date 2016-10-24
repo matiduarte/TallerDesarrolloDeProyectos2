@@ -1,24 +1,19 @@
 package fiuba.tallerdeproyectos2.Activities;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -26,14 +21,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import fiuba.tallerdeproyectos2.Fragments.ExamInfoDialogFragment;
-import fiuba.tallerdeproyectos2.Fragments.ExitDialogFragment;
-import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
-import fiuba.tallerdeproyectos2.Models.Courses;
 import fiuba.tallerdeproyectos2.Models.Exam;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
@@ -55,7 +46,7 @@ public class ExamActivity extends AppCompatActivity implements ExamInfoDialogFra
 
     public class AnswersInfo{
         public Integer id;
-        public Boolean isCorrect;
+        Boolean isCorrect;
 
         AnswersInfo(Integer id, Boolean isCorrect){
             this.id = id;
@@ -89,7 +80,7 @@ public class ExamActivity extends AppCompatActivity implements ExamInfoDialogFra
         isPractice = intent.getBooleanExtra("isPractice", false);
         String unitName = intent.getStringExtra("unitName");
 
-        setTitle("Examen - Unidad " + unitName);
+        setTitle(getString(R.string.exam_title) + unitName);
 
         exam = (LinearLayout) findViewById(R.id.exam);
 

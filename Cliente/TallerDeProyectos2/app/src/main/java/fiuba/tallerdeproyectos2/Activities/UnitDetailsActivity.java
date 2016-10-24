@@ -115,7 +115,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
 
                         if(subsArray.length() > 0){
                             List<String> languages = new ArrayList<>();
-                            languages.add("Idioma");
+                            languages.add(getString(R.string.subtitles_selector));
                             subtitlesSpinner.setVisibility(View.VISIBLE);
                             for (int i=0; i< subsArray.length(); i++) {
                                 String subUrl = subsArray.getString(i);
@@ -154,7 +154,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                                 if(nota >= 6){
                                     passExamButton.setBackgroundColor(getResources().getColor(R.color.approveExam));
                                 }
-                                passExamButton.setText("Examen Rendido - Nota: " + nota);
+                                passExamButton.setText(getString(R.string.pass_exam) + nota);
                                 passExamButton.setVisibility(View.VISIBLE);
                             }
                         } else if(showExam){

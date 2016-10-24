@@ -13,7 +13,7 @@
         android:visibility="gone"
         android:id="@+id/no_courses"
         android:textStyle="bold"
-        android:text="No se encuentra inscripto a ningun grupo!"/>
+        android:text="@string/no_my_courses"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"

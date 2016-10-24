@@ -33,7 +33,7 @@
                 android:textStyle="bold"
                 android:id="@+id/no_soon_courses"
                 android:visibility="gone"
-                android:text="No hay cursos proximos a empezar!"/>
+                android:text="@string/no_soon_courses"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"

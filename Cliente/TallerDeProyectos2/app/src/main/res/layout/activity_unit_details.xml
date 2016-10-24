@@ -49,7 +49,7 @@
             android:visibility="gone"
             android:textStyle="bold"
             android:onClick="examButtonClick"
-            android:text="Rendir Examen"/>
+            android:text="@string/rendir_examen"/>
 
         <Button
             android:id="@+id/exam_pass_btn"
@@ -60,9 +60,7 @@
             android:background="@color/disapproveExam"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:visibility="gone"
-
-            android:text="Examen Rendido - Nota:"/>
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/practice_exam_btn"
@@ -75,7 +73,7 @@
             android:visibility="gone"
             android:textStyle="bold"
             android:onClick="practiceExamButtonClick"
-            android:text="Practicar Examen"/>
+            android:text="@string/practice_exam"/>
 
     </LinearLayout>
 

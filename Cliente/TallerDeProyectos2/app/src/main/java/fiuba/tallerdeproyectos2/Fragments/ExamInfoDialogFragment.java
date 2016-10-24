@@ -14,9 +14,9 @@ public class ExamInfoDialogFragment extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Pautas");
+        builder.setTitle(R.string.exam_info_title);
         builder.setMessage(R.string.exam_info)
-                .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.gotIt_btn, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onDialogPositiveClick(ExamInfoDialogFragment.this);
                     }

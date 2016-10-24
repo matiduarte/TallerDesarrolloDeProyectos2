@@ -24,6 +24,6 @@
         android:textColor="#ffffff"
         android:layout_gravity="bottom|right"
         android:id="@+id/finishExam"
-        android:text="Terminar"/>
+        android:text="@string/finish_exam"/>
 
 </LinearLayout>

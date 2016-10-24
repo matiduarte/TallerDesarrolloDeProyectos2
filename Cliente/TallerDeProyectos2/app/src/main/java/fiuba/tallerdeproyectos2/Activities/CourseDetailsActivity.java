@@ -3,7 +3,6 @@ package fiuba.tallerdeproyectos2.Activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,16 +26,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-import fiuba.tallerdeproyectos2.Adapters.ExpandableListViewAdapter;
 import fiuba.tallerdeproyectos2.Adapters.UnitRecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.CourseData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
@@ -80,15 +74,17 @@ public class CourseDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-            }
-        });
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                }
+            });
+        }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ServerResponse> call = apiService.getCourseDataById(courseId, studentId);
@@ -105,9 +101,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
                         collapsingToolbar.setTitle(courseData.getString("name"));
                         TextView courseDesc = (TextView) findViewById(R.id.course_description);
-                        courseDesc.setText(courseData.getString("description"));
+                        if (courseDesc != null) {
+                            courseDesc.setText(courseData.getString("description"));
+                        }
                         TextView teacherName = (TextView) findViewById(R.id.course_teacher_name);
-                        teacherName.setText(courseData.getString("teacherName"));
+                        if (teacherName != null) {
+                            teacherName.setText(courseData.getString("teacherName"));
+                        }
                         ImageView header = (ImageView) findViewById(R.id.header);
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
@@ -120,7 +120,9 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             JSONObject courseSessionsArray = new JSONObject(courseSessionsData.getString(0));
                             String startDateString = courseSessionsArray.getString("date");
                             sessionId = Integer.valueOf(courseSessionsArray.getString("id"));
-                            courseStartDate.setText(startDateString);
+                            if (courseStartDate != null) {
+                                courseStartDate.setText(startDateString);
+                            }
                             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             Date startDate = dateFormat.parse(startDateString);
                             Calendar calendar = Calendar.getInstance();
@@ -132,83 +134,94 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             calendar.add(Calendar.DAY_OF_YEAR, +9);
                             Date finishInscriptionDate = calendar.getTime();
                             String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
-                            courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
-
-                            Log.d("startInscription", String.valueOf(startInscriptionDate.compareTo(today)));
-                            Log.d("finishInscription", String.valueOf(finishInscriptionDate.compareTo(today)));
-
-                            Log.d("isSubscribed", isSubscribed.toString());
+                            if (courseInscriptionDates != null) {
+                                courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
+                            }
 
                             if(startInscriptionDate.compareTo(today) <= 0 && finishInscriptionDate.compareTo(today) >= 0
                                 &&!isSubscribed){
                                 Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
-                                inscriptionButton.setVisibility(View.VISIBLE);
+                                if (inscriptionButton != null) {
+                                    inscriptionButton.setVisibility(View.VISIBLE);
+                                }
                             } else if(isSubscribed){
                                 Button unsubscriptionButton = (Button)findViewById(R.id.unsubscription_btn);
-                                unsubscriptionButton.setVisibility(View.VISIBLE);
+                                if (unsubscriptionButton != null) {
+                                    unsubscriptionButton.setVisibility(View.VISIBLE);
+                                }
                             }
                         } else {
                             TextView courseStartDateTxt = (TextView) findViewById(R.id.start_date_txt);
                             TextView courseInscriptionDatesTxt = (TextView) findViewById(R.id.inscription_label);
-                            courseStartDateTxt.setVisibility(View.GONE);
-                            courseStartDate.setVisibility(View.GONE);
-                            courseInscriptionDatesTxt.setVisibility(View.GONE);
-                            courseInscriptionDates.setVisibility(View.GONE);
+                            if (courseStartDateTxt != null) {
+                                courseStartDateTxt.setVisibility(View.GONE);
+                            }
+                            if (courseStartDate != null) {
+                                courseStartDate.setVisibility(View.GONE);
+                            }
+                            if (courseInscriptionDatesTxt != null) {
+                                courseInscriptionDatesTxt.setVisibility(View.GONE);
+                            }
+                            if (courseInscriptionDates != null) {
+                                courseInscriptionDates.setVisibility(View.GONE);
+                            }
                         }
 
                         JSONArray courseUnitiesData = new JSONArray(courseData.getString("courseUnities"));
 
                         if(courseUnitiesData.length() > 0){
                             TextView unitsHeader = (TextView) findViewById(R.id.units_header);
-                            unitsHeader.setVisibility(View.VISIBLE);
+                            if (unitsHeader != null) {
+                                unitsHeader.setVisibility(View.VISIBLE);
+                            }
                             View topLine = findViewById(R.id.top_line);
-                            topLine.setVisibility(View.VISIBLE);
+                            if (topLine != null) {
+                                topLine.setVisibility(View.VISIBLE);
+                            }
                             View bottomLine = findViewById(R.id.bottom_line);
-                            bottomLine.setVisibility(View.VISIBLE);
+                            if (bottomLine != null) {
+                                bottomLine.setVisibility(View.VISIBLE);
+                            }
                             for (int i=0; i<courseUnitiesData.length(); i++) {
                                 JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
                                 Boolean isActive = courseUnitiesArray.getBoolean("isActive");
-                                Log.d("isActive", String.valueOf(isActive));
                                 if(isActive){
                                     activeUnits.add(i);
                                 }
-                                if(isSubscribed && isActive || !isSubscribed){
-                                    Log.d("unitName", courseUnitiesArray.getString("name"));
-                                    Log.d("unitDesc", courseUnitiesArray.getString("description"));
-
+                                if(!isSubscribed || isActive){
                                     UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
                                     units.add(i, obj);
                                 }
                             }
                         }
-                        Log.d("activeUnits", activeUnits.toString());
                         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-                        recyclerView.setHasFixedSize(true);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                        recyclerView.setLayoutManager(layoutManager);
+                        if (recyclerView != null) {
+                            recyclerView.setHasFixedSize(true);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                            recyclerView.setLayoutManager(layoutManager);
+                            adapter = new UnitRecyclerViewAdapter(units);
+                            recyclerView.setAdapter(adapter);
+                        }
 
-                        adapter = new UnitRecyclerViewAdapter(units);
-                        recyclerView.setAdapter(adapter);
 
                         ((UnitRecyclerViewAdapter) adapter).setOnItemClickListener(new UnitRecyclerViewAdapter.MyClickListener() {
                             @Override
                             public void onItemClick(int position, View v) {
                                 TextView tv = (TextView) v.findViewById(R.id.unit_id);
                                 unitId = Integer.valueOf(tv.getText().toString());
-                                TextView uniteTitle = (TextView) v.findViewById(R.id.unit_title);
                                 if(activeUnits.contains(unitId+1)){
                                     showExam = true;
                                 }
                                 if(isSubscribed){
                                     navigateToUnitDetailsActivity();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Debes estar inscripto para ver el contenido!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), R.string.unit_detail_alert, Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, e.getLocalizedMessage());
@@ -239,7 +252,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
+        DownloadImageTask(ImageView bmImage) {
                 this.bmImage = bmImage;
             }
 
@@ -250,7 +263,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e(String.valueOf(R.string.error), e.getMessage());
                 e.printStackTrace();
             }
             return mIcon11;
@@ -283,7 +296,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
                 Boolean success =response.body().getSuccess();
                 if(success.equals(true)){
-                    navigateToMainActivity();
+                    refreshActivity();
                     Toast.makeText(getApplicationContext(), R.string.inscription_success, Toast.LENGTH_LONG).show();
                 }
             }
@@ -303,7 +316,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
                 Boolean success =response.body().getSuccess();
                 if(success.equals(true)){
-                    navigateToMainActivity();
+                    refreshActivity();
                     Toast.makeText(getApplicationContext(), R.string.unsubscription_success, Toast.LENGTH_LONG).show();
                 }
             }
@@ -317,6 +330,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     private void navigateToMainActivity(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void refreshActivity(){
+        Intent intent = new Intent(getApplicationContext(), CourseDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
