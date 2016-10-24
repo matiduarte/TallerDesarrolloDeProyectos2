@@ -113,7 +113,7 @@ public class Course {
 			ArrayList<CourseUnity> fixed = new ArrayList<CourseUnity>();
 			for (int i = 0; i < unities.size(); i++) {
 				CourseUnity current = unities.get(i);
-				if(i == activeUnity){
+				if(i <= activeUnity){
 					current.setActive(true);
 				}
 				fixed.add(current);
