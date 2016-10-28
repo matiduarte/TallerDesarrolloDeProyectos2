@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.cj.fabric.xmlrpc.base.Array;
+
 import entities.CourseMessage;
 import entities.User;
 import entities.UserMessage;
@@ -49,11 +51,13 @@ public class ForumMessageController extends HttpServlet {
 				name += " " + us.getLastName();
 				um.setName(name);
 				um.setMessage(c.getMessage());
+				um.setIsModerate(c.getIsModerate());
 				userMessageList.add(um);
 			}
 			request.setAttribute("forumList", userMessageList);
 			request.setAttribute("moderate", moderate);
 			request.setAttribute("courseId", courseId);
+			request.setAttribute("sessionId", sessionId);
 		}
 		
 		getServletConfig().getServletContext().getRequestDispatcher("/forummessage.jsp").forward(request,response);
@@ -63,7 +67,25 @@ public class ForumMessageController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		String sessionId = request.getParameter("sessionId");
+		String[] messageList = request.getParameterValues("message[]");
+		
+		ArrayList<CourseMessage> courseMessageList = (ArrayList<CourseMessage>) CourseMessage.getBySessionId(Integer.valueOf(sessionId));
+		
+		Integer count = 1;
+		for (CourseMessage cm : courseMessageList){
+			cm.setId(count);
+			if (!cm.getMessage().equals(messageList[count - 1]))
+				cm.setIsModerate(true);
+			
+			cm.setMessage(messageList[count - 1]);
+			cm.save();
+			count++;
+		}
+		
+		response.sendRedirect(request.getContextPath() + "/courseDetail?id=" + request.getParameter("courseId"));
+		
 	}
 
 }

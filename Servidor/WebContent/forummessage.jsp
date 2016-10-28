@@ -18,6 +18,9 @@
 	<!-- Custom styles for this template -->
     <link href="bootstrap/css/forum.css" rel="stylesheet">
  
+  <!-- Material Design fonts -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
  	
  </head>
   <body>
@@ -33,14 +36,40 @@
   </div>
 </div>
 
-
 <form id="identicalForm" class="register" method="post" action="forummessage">
- <c:forEach var="forum" items="${forumList}">
- <div class="message form-group">
+<%if(request.getAttribute("sessionId") != null) {%>
+  <input type="hidden" name="sessionId" id="sessionId" value="${sessionId}">
+<%} %>
+
+<%if(request.getAttribute("courseId") != null) {%>
+  <input type="hidden" name="courseId" id="courseId" value="${courseId}">
+<%} %>
+<c:set var="count" value="0" scope="page" />
+<c:forEach var="forum" items="${forumList}">
+<div class="message list-group">
+  <div class="list-group-item">
+    <div class="row-content">
+    <div class="form-group">
+    <c:if test="${moderate == 1}">
+      <div class="action-secondary" onclick="changeLabel('${count}')">
+      	<i class="material-icons">highlight_off</i>
+      </div>
+    </c:if>
   <label class="control-label" for="inputDefault">${forum.getName()}</label>
-  <input type="text" class="form-control" id="inputDefault" value="${forum.getMessage()}">
+  <c:choose>
+    	<c:when test="${forum.getIsModerate()}">
+  <input type="text" class="form-control" style="color:red;" name="message[]" id="message${count}" value="${forum.getMessage()}">
+  </c:when>
+          <c:otherwise>
+          <input type="text" class="form-control" name="message[]" id="message${count}" value="${forum.getMessage()}">
+          </c:otherwise>
+   </c:choose>
 </div>
-</c:forEach>
+    </div>
+  </div>
+  </div>
+  <c:set var="count" value="${count + 1}" scope="page"/>
+ </c:forEach>
 <button class="btn btn-raised btn-primary pull-right" name="finalizar" type="submit">Guardar</button>
   <button class="btn-back btn btn-primary pull-left" onclick="volver(${courseId})" type="button">Volver</button>
 </form>
@@ -59,6 +88,10 @@
 		window.location.href = "/Servidor/courseDetail?id=" + courseId;
 	}
 	
+	function changeLabel(id){
+		$("#message"+id).val("Este mensaje ha sido borrado debido a que el contenido era inapropiado.");
+		$("#message"+id).css("color","red");
+	}
 	</script>
 	
   </body>

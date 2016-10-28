@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.Date;
 import java.util.List;
 
 import dataBase.StoreData;
@@ -11,6 +12,7 @@ public class CourseMessage {
 	private int studentId;
 	private String message;
 	private boolean isModerate;
+	private Date time;
 	
 	public int getId() {
 		return id;
@@ -43,6 +45,12 @@ public class CourseMessage {
 		this.isModerate = isModerate;
 	}
 	
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
+	}
 	public void save(){
 		StoreData.save(this);
 	}

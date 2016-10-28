@@ -3,7 +3,6 @@ body {
 }
 
 .register{
-	
 	margin: 0 auto;
 	width: 70%;
 }
@@ -14,8 +13,7 @@ body {
 }
 
 .message{
-	margin-left: auto;
-	margin-right: auto;
+	width: 110%;
 }
 
 .btn-back{
