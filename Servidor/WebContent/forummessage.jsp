@@ -50,11 +50,19 @@
   <div class="list-group-item">
     <div class="row-content">
     <div class="form-group">
-    <c:if test="${moderate == 1}">
-      <div class="action-secondary" onclick="changeLabel('${count}')">
+    
+  
+	<c:choose>
+    	<c:when test="${moderate == 1}">
+    	<div style="float:right ; margin-right:40px ;margin-top:16px">${forum.getTime()}</div>
+      <div class="action-secondary" onclick="changeLabel('${count}')" >
       	<i class="material-icons">highlight_off</i>
       </div>
-    </c:if>
+       </c:when>
+          <c:otherwise>
+          <div style="float:right ;margin-top:16px">${forum.getTime()}</div>
+          </c:otherwise>
+   </c:choose>
   <label class="control-label" for="inputDefault">${forum.getName()}</label>
   <c:choose>
     	<c:when test="${forum.getIsModerate()}">

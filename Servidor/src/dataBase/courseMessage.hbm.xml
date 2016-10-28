@@ -13,6 +13,7 @@
 	<property name="studentId" type="int"></property>
    	<property name="message" ></property>
 	<property name="isModerate"></property>
+	<property name="time" type="time"></property>
    </class>  
             
  </hibernate-mapping>  

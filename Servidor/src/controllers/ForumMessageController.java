@@ -52,6 +52,7 @@ public class ForumMessageController extends HttpServlet {
 				um.setName(name);
 				um.setMessage(c.getMessage());
 				um.setIsModerate(c.getIsModerate());
+				um.setTime(c.getTime());
 				userMessageList.add(um);
 			}
 			request.setAttribute("forumList", userMessageList);

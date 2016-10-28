@@ -1,10 +1,13 @@
 package entities;
 
+import java.util.Date;
+
 public class UserMessage {
 
 	private String name;
 	private String message;
 	private boolean isModerate;
+	private Date time;
 	
 	public String getName() {
 		return name;
@@ -24,6 +27,13 @@ public class UserMessage {
 	public void setIsModerate(boolean isModerate) {
 		this.isModerate = isModerate;
 	}
+	public Date getTime() {
+		return time;
+	}
+	public void setTime(Date time) {
+		this.time = time;
+	}
+	
 	
 	
 }
