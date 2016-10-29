@@ -151,7 +151,6 @@
     <servlet-name>SaveUnityVideoActionServlet</servlet-name>
     <url-pattern>/SaveUnityVideoActionServlet/*</url-pattern>
   </servlet-mapping>
-
   <servlet>
     <servlet-name>SaveVideoSubtitleActionServlet</servlet-name>
     <servlet-class>actions.SaveVideoSubtitleActionServlet</servlet-class>
@@ -185,11 +184,27 @@
     <url-pattern>/EditQAActionServlet/*</url-pattern>
   </servlet-mapping>
   <servlet>
-	<servlet-name>HasActiveSessionsActionServlet</servlet-name>
-	<servlet-class>actions.HasActiveSessionsActionServlet</servlet-class>
+    <servlet-name>HasActiveSessionsActionServlet</servlet-name>
+    <servlet-class>actions.HasActiveSessionsActionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-	<servlet-name>HasActiveSessionsActionServlet</servlet-name>
-	<url-pattern>/HasActiveSessionsActionServlet/*</url-pattern>
-  </servlet-mapping>  
+    <servlet-name>HasActiveSessionsActionServlet</servlet-name>
+    <url-pattern>/HasActiveSessionsActionServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Forum Message</servlet-name>
+    <servlet-class>controllers.ForumMessageController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Forum Message</servlet-name>
+    <url-pattern>/forummessage/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>GetActiveSessionActionServlet</servlet-name>
+    <servlet-class>actions.GetActiveSessionActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetActiveSessionActionServlet</servlet-name>
+    <url-pattern>/GetActiveSessionActionServlet/*</url-pattern>
+  </servlet-mapping>
 </web-app>
