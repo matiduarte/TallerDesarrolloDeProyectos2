@@ -48,12 +48,14 @@ public class UnitDetailsActivity extends AppCompatActivity {
     VideoView videoView;
     MediaController mediaController;
     TextView html;
-    Integer unitId, courseId;
+    Integer unitId, courseId, studentId, sessionId;
     String unitName;
     Boolean showExam, passExam, isPractice;
     HashMap<String, String> subtitles;
     Spinner subtitlesSpinner;
-    Double nota;
+    Float nota;
+    SessionManagerActivity session;
+    HashMap<String, String> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +93,17 @@ public class UnitDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         unitId = intent.getIntExtra("unitId", 0);
         courseId = intent.getIntExtra("courseId", 0);
+        sessionId = intent.getIntExtra("sessionId", 0);
         showExam = intent.getBooleanExtra("showExam", false);
-        passExam = intent.getBooleanExtra("passExam", false);
-        nota = intent.getDoubleExtra("nota", 0);
+        nota = intent.getFloatExtra("nota", 0);
+
+        session = new SessionManagerActivity(getApplicationContext());
+        session.checkLogin();
+        user = session.getUserDetails();
+        studentId = Integer.valueOf(user.get(SessionManagerActivity.KEY_ID));
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.getUnitDataById(unitId);
+        Call<ServerResponse> call = apiService.getUnitDataById(unitId, studentId);
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
@@ -148,6 +155,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                             videoView.setVisibility(View.VISIBLE);
                             videoView.start();
                         }
+                        passExam = unitData.getBoolean("passExam");
                         if(passExam){
                             Button passExamButton = (Button)findViewById(R.id.exam_pass_btn);
                             if (passExamButton != null) {
@@ -214,6 +222,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
         intent.putExtra("unitId", unitId);
         intent.putExtra("courseId", courseId);
         intent.putExtra("unitName", unitName);
+        intent.putExtra("sessionId", sessionId);
         intent.putExtra("isPractice", isPractice);
         startActivity(intent);
     }

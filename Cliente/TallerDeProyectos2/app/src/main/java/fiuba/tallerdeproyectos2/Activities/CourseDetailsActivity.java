@@ -209,7 +209,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                             public void onItemClick(int position, View v) {
                                 TextView tv = (TextView) v.findViewById(R.id.unit_id);
                                 unitId = Integer.valueOf(tv.getText().toString());
-                                if(activeUnits.contains(unitId+1)){
+                                if(activeUnits.contains(position+1)){
                                     showExam = true;
                                 }
                                 if(isSubscribed){
@@ -280,6 +280,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         intent.putExtra("unitId", unitId);
         intent.putExtra("courseId", courseId);
         intent.putExtra("showExam", showExam);
+        intent.putExtra("sessionId", sessionId);
         startActivity(intent);
     }
 
