@@ -113,7 +113,7 @@ public class Course {
 			ArrayList<CourseUnity> fixed = new ArrayList<CourseUnity>();
 			for (int i = 0; i < unities.size(); i++) {
 				CourseUnity current = unities.get(i);
-				if(i == activeUnity){
+				if(i <= activeUnity){
 					current.setActive(true);
 				}
 				fixed.add(current);
@@ -221,6 +221,21 @@ public class Course {
 		}
 		return false;
 	}
+	
+	
+	public CourseSession getActiveSession() {
+		List<CourseSession> courseSessions = CourseSession.getByCourseId(this.getId());
+		if(courseSessions != null && !courseSessions.isEmpty()){
+			for (CourseSession courseSession : courseSessions) {
+				if(courseSession.isActive()){
+					return courseSession;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
 	public String getTeacherName() {
 		return teacherName;
 	}
@@ -268,5 +283,17 @@ public class Course {
 		
 		String query = "SELECT * FROM Course c INNER JOIN CourseSession cs ON c.id = cs.courseId WHERE c.teacherId > 0 AND STR_TO_DATE(cs.date, '%d/%m/%Y') > '" + date + "' AND STR_TO_DATE(cs.date, '%d/%m/%Y') < '" + oneWeekDate + "' GROUP BY c.id,cs.id";
 		return (List<Course>)StoreData.getByCustomQuery(Course.class, query);
+	}
+	
+	
+	public CourseUnity getUnityWithExam() {
+		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), this.getActiveSession());
+		for (int i = 0; i < unities.size(); i++) {
+			if(!unities.get(i).isActive() && i > 1){
+				return unities.get(i-2);
+			}
+		}
+		
+		return null;
 	}
 }

@@ -2,6 +2,7 @@ package entities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,34 @@ public class CourseSession {
 		    Date currenDate = new Date();
 		    
 		    if (date1.compareTo(currenDate) <= 0) {
+		    	return true;
+		    }
+		}
+		return false;
+	}
+	public boolean startsToday() {
+		String date = this.getDate();
+		if(date != null){
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+		    Date date1;
+			try {
+				date1 = format.parse(date);
+			} catch (ParseException e) {
+				return false;
+			}
+		    Date currenDate = new Date();
+		    
+		    
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    Calendar c = Calendar.getInstance();
+		    
+		    c.setTime(currenDate);
+		    
+		    c.add(Calendar.DATE, 1);  // number of days to add
+		    Date tomorrowDate = c.getTime();
+		    
+		    if (date1.compareTo(currenDate) <= 0 && date1.compareTo(tomorrowDate) >= 0) {
 		    	return true;
 		    }
 		}
