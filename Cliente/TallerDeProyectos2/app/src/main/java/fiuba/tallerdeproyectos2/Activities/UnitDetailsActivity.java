@@ -95,7 +95,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
         courseId = intent.getIntExtra("courseId", 0);
         sessionId = intent.getIntExtra("sessionId", 0);
         showExam = intent.getBooleanExtra("showExam", false);
-        nota = intent.getFloatExtra("nota", 0);
+        //nota = intent.getFloatExtra("nota", 0);
 
         session = new SessionManagerActivity(getApplicationContext());
         session.checkLogin();
@@ -156,6 +156,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
                             videoView.start();
                         }
                         passExam = unitData.getBoolean("passExam");
+                        nota = Float.valueOf(unitData.getString("examResult"));
                         if(passExam){
                             Button passExamButton = (Button)findViewById(R.id.exam_pass_btn);
                             if (passExamButton != null) {

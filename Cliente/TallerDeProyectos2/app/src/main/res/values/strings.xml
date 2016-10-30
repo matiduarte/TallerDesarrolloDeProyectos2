@@ -61,6 +61,6 @@
     <string name="finish_exam">Terminar</string>
     <string name="rendir_examen">Rendir Examen</string>
     <string name="practice_exam">Practicar Examen</string>
-    <string name="no_my_courses">No se encuentra inscripto a ningun grupo!</string>
+    <string name="no_my_courses">No se encuentra inscripto a ningun curso!</string>
     <string name="no_soon_courses">No hay cursos proximos a empezar!</string>
 </resources>
