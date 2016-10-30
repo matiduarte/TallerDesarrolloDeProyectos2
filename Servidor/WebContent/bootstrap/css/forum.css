@@ -19,3 +19,8 @@ body {
 .btn-back{
 	border: 2px solid;
 }
+
+.message .labelName{
+	font-weight: bold !important;
+    color: black;
+}

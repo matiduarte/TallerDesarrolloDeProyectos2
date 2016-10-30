@@ -63,13 +63,13 @@
           <div style="float:right ;margin-top:16px">${forum.getTime()}</div>
           </c:otherwise>
    </c:choose>
-  <label class="control-label" for="inputDefault">${forum.getName()}</label>
+  <label class="control-label labelName" for="inputDefault">${forum.getName()}</label>
   <c:choose>
     	<c:when test="${forum.getIsModerate()}">
-  <input type="text" class="form-control" style="color:red;" name="message[]" id="message${count}" value="${forum.getMessage()}">
+  <input readonly type="text" class="form-control" style="color:red;" name="message[]" id="message${count}" value="${forum.getMessage()}">
   </c:when>
           <c:otherwise>
-          <input type="text" class="form-control" name="message[]" id="message${count}" value="${forum.getMessage()}">
+          <input readonly type="text" class="form-control" name="message[]" id="message${count}" value="${forum.getMessage()}">
           </c:otherwise>
    </c:choose>
 </div>
@@ -88,7 +88,6 @@
 	<script src="bootstrap/js/material.min.js"></script>
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
-	<script src="bootstrap/js/floating-label.js"></script>
 	
 	<script type="text/javascript">
 	
