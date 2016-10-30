@@ -28,6 +28,7 @@ import entities.CourseMessage;
 import entities.CourseSession;
 import entities.CourseUnity;
 import entities.StudentSession;
+import entities.User;
 
 @Path("/forum")
 public class ForumService {
@@ -53,11 +54,24 @@ public class ForumService {
 	@Produces("application/json")
 	public ServiceResponse getForum(@PathParam("sessionId") int sessionId){
 		List<CourseMessage> messages = CourseMessage.getBySessionId(sessionId);
+		
 		if (messages != null && !messages.isEmpty()){
+			List<CourseMessage> messagesFixed = new ArrayList<CourseMessage>();
+			
+			for (CourseMessage courseMessage : messages) {
+				User user = User.getById(courseMessage.getStudentId());
+				if(user != null){
+					courseMessage.setStudentFirstName(user.getFirstName());
+					courseMessage.setStudentLastName(user.getLastName());
+					messagesFixed.add(courseMessage);
+				}
+			}
+			
+			
 	    	JSONObject jo = new JSONObject();
 			try {
 				Gson g = new Gson();
-				String messagesString = g.toJson(messages);
+				String messagesString = g.toJson(messagesFixed);
 				jo.put("messages", messagesString);
 			} catch (JSONException e) {
 				e.printStackTrace();

@@ -13,6 +13,9 @@ public class CourseMessage {
 	private String message;
 	private boolean isModerate;
 	private Date time;
+	private String studentFirstName;
+	private String studentLastName;
+	
 	
 	public int getId() {
 		return id;
@@ -57,5 +60,17 @@ public class CourseMessage {
 
 	public static List<CourseMessage> getBySessionId(int sessionId){
 		return (List<CourseMessage>)StoreData.getByField(CourseMessage.class, "sessionId", String.valueOf(sessionId));
+	}
+	public String getStudentFirstName() {
+		return studentFirstName;
+	}
+	public void setStudentFirstName(String studentFirstName) {
+		this.studentFirstName = studentFirstName;
+	}
+	public String getStudentLastName() {
+		return studentLastName;
+	}
+	public void setStudentLastName(String studentLastName) {
+		this.studentLastName = studentLastName;
 	}
 }
