@@ -16,7 +16,7 @@ public class Exam {
         return questions;
     }
 
-    public void setQuestions(String allCategories) {
+    public void setQuestions(String questions) {
         this.questions = questions;
     }
 

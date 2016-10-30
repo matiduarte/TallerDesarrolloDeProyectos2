@@ -33,7 +33,7 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
 
         @Override
         public void onClick(View v) {
-            clickListener.onItemClick(getAdapterPosition(), v);
+            //clickListener.onItemClick(getAdapterPosition(), v);
         }
     }
 

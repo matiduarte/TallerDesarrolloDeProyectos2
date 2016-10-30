@@ -228,11 +228,11 @@ public class CourseDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_chat:
-                //if(isSubscribed){
+                if(isSubscribed){
                     navigateToCourseChatActivity();
-                //} else {
-                    //Toast.makeText(getApplicationContext(), "Tenes que estar inscripto para poder acceder al foro del curso!", Toast.LENGTH_LONG).show();
-                //}
+                } else {
+                    Toast.makeText(getApplicationContext(), "Tenes que estar inscripto para poder acceder al foro del curso!", Toast.LENGTH_LONG).show();
+                }
                 return true;
             case R.id.action_settings:
                 return true;
@@ -280,6 +280,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("courseId", courseId);
+        intent.putExtra("studentId", studentId);
+        intent.putExtra("sessionId", sessionId);
         intent.putExtra("courseName", courseName);
         startActivity(intent);
     }
