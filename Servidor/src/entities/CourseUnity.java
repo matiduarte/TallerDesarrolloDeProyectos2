@@ -21,6 +21,7 @@ public class CourseUnity {
 	private int videoSize;
 	private Integer questionSize;
 	private boolean passExam;
+	private float examResult;
 	
 	public int getId() {
 		return id;
@@ -118,9 +119,16 @@ public class CourseUnity {
 		List<StudentExam> exams = (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
 		if(exams != null && !exams.isEmpty()){
 			this.setPassExamn(true);
+			this.setExamResult(exams.get(0).getResult());
 		}else{
 			this.setPassExamn(false);
 		}
 		
+	}
+	public float getExamResult() {
+		return examResult;
+	}
+	public void setExamResult(float examResult) {
+		this.examResult = examResult;
 	}
 }

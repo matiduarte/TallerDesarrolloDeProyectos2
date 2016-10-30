@@ -38,10 +38,12 @@ public class UnityService {
 	@Produces("application/json")
 	public ServiceResponse getUnity(@PathParam("id") int id, @DefaultValue("0") @QueryParam("studentId") int studentId){
 		CourseUnity unity = CourseUnity.getById(id);
-		if(studentId > 0){
-			unity.checkStudentExam(studentId);
-		}
+		
 		if (unity != null){
+			if(studentId > 0){
+				unity.checkStudentExam(studentId);
+			}
+			
 			ArrayList<String> subtitles = unity.getSubtitlesUrl();
 	    	JSONObject jo = new JSONObject();
 			try {
