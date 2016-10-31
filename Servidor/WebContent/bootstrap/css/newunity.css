@@ -13,12 +13,12 @@ body {
 }
 
 .unityFirstBlock{
-	width: 45%;
+	width: 48%;
 	float: left;
 }
 
 .unitySecondBlock{
-	width: 45%;
+	width: 48%;
 	float: right;
 }
 
@@ -30,7 +30,7 @@ body {
 .tg td{font-family:Arial, sans-serif;font-size:14px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
-.tg .tg-yw4l{vertical-align:top}
+.tg .tg-yw4l{vertical-align:center}
 
 table, th, td {
    border: 1px solid #009688;
@@ -67,6 +67,7 @@ table, th, td {
     left: 540px;
     top: 305px;
     display: none;
+    text-align: center;
 }
 
 
@@ -160,7 +161,7 @@ hr {
 }
 
 .popupButtonsContainer{
-	float: right;
+	float: none;
 }
 
 #subtitleNameContainer{
@@ -176,16 +177,62 @@ hr {
 .blocksContainer{
 	width: 100%;
     overflow: auto;
+    height:100%;
+    max-height: auto;  
 }
 
 .sin-margen{
 	margin: 0;
 }
 
-.sin-padding{
+.margen-chico{
+	margin: 20px !important;
+}
+
+.tabla-fija {
+	table-layout:fixed;
+}
+
+.contenido-tabla-preg {
+	min-height: 150px !important;
+	max-height: 0px !important;
+	overflow: visible;
+}
+
+.contenido-truncado {
+  	white-space: nowrap;
+  	overflow: visible;
+  	text-overflow: ellipsis;
+  	max-width: 1px;
+}
+
+.sin-padding {
 	padding: 0;
 }
 
-.trumbowyg-box, .trumbowyg-editor {
+.trumbowyg-editor {
 	margin: 0 !important;
+	max-height: 100%;
+	min-height: 250px !important;
+	overflow: visible;
 }
+.trumbowyg-box {
+	min-height: 250px !important;
+}
+
+.expand-height {
+    height: 100px;
+    min-height: 100px;	
+}
+
+#wrapper-tabla-preg {
+  overflow: hidden;
+  width: 100%;
+}
+
+.borde-fino {
+    border: cadetblue;
+    border-width: thin;
+    border-style: solid;
+}
+
