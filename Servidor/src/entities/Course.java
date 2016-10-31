@@ -303,4 +303,21 @@ public class Course {
 		
 		return null;
 	}
+	
+	
+	public CourseUnity getNewUnity() {
+		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), this.getActiveSession());
+		
+		for (int i = 0; i < unities.size(); i++) {
+			if(!unities.get(i).isActive() && i > 0){
+				return unities.get(i-1);
+			}
+		}
+		
+		if(!unities.isEmpty() && unities.get(unities.size() - 1).isActive()){
+			return unities.get(unities.size() - 1);
+		}
+		
+		return null;
+	}
 }

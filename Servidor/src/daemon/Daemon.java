@@ -69,6 +69,20 @@ public class Daemon implements Runnable {
     					System.out.println("Notificacion: Examen disponible");
     				}
     			}
+    			
+    			//If new unity is available
+    			CourseUnity newUnity = course.getNewUnity();
+    			if(newUnity != null){
+    				String key = "/course_" + course.getId() + "_" + session.getId() + "_new_unity_" + newUnity.getId();
+    				if(!notificationSent(key)){
+    					sendNotification("La unidad " + newUnity.getName() + " se encuentra disponible", "Nueva Unidad disponible", topic);
+    					NotificationSent ns = new NotificationSent();
+    					ns.setNotification(key);
+    					ns.save();
+    					
+    					System.out.println("Notificacion: Nueva unidad disponible");
+    				}
+    			}
     		}
 		}
     }
