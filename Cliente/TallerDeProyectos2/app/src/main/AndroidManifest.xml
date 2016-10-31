@@ -76,6 +76,10 @@
         <activity
             android:name=".Activities.ExamActivity"
             android:parentActivityName=".Activities.UnitDetailsActivity"/>
+        <activity
+            android:name=".Activities.CourseChatActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".Activities.CourseDetailsActivity" ></activity>
         <service android:name=".Notifications.RegistrationService"
             android:exported="false" />
         <service
@@ -112,7 +116,6 @@
             <meta-data android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorPrimary" />
         </service>
-
         <service android:name=".Notifications.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

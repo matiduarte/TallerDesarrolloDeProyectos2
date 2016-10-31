@@ -150,3 +150,10 @@ hr {
 	width: 100%;
 }
 
+#moderate-btn{
+	top: 70px;
+}
+
+#label-moderate{
+	color: rgba(0,0,0,.9);
+}

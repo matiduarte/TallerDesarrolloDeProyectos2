@@ -70,6 +70,18 @@
 			    	<label class="detail-label">Categorias:</label>
 			    	<label class="detail-value"><% out.print(request.getAttribute("categories")); %></label>
 				</div>
+				
+				<div id="moderate-btn" class="moderate input-group">
+   					<div class="togglebutton">
+          				<label id="label-moderate">
+            				<input type="checkbox" class="checkbox_check"> Moderar Foro
+          				</label>
+        			</div>
+					   <span class="input-group-btn">
+					        <button class="btn btn-raised btn-primary btn-block" onclick="getActiveSession();" type="button">Ver Foro</button>
+					   </span>
+					</div>
+        		
 		     </div>
 	    	<div class="col-md-6">
 				<input type="hidden" name="courseId" id="courseId" value="<% out.print(course.getId()); %>">
@@ -84,7 +96,18 @@
 	     </br>
 	     </br>
 	     
+	     
+	     
+	     
+	     
+	     
+	     
+	     
+	     
 	     <div class="row">
+	     
+	     
+	     
 	     	<div class="tableSessionContainer col-md-6">
 	     	<input id="hay_sesiones_activas" class="hide"></input>
 	     		<div class="alert alert-danger" id="sessionError" style="display:none;">
@@ -526,6 +549,42 @@
     		
 		}
     
+    	function getActiveSession(){
+    	
+    		var courseId = $('#courseId').val();
+    	
+    		$.ajax({
+    		    data: {courseId: courseId},
+    		    //Cambiar a type: POST si necesario
+    		    type: "POST",
+    		    // Formato de datos que se espera en la respuesta
+    		    dataType: "json",
+    		    // URL a la que se enviará la solicitud Ajax
+    		    url: "GetActiveSessionActionServlet",
+    		})
+    		 .done(function( data, textStatus, jqXHR ) {
+    			 showForum(data);
+    		 })
+    		 .fail(function( jqXHR, textStatus, errorThrown ) {
+    		     if ( console && console.log ) {
+    		         console.log( "La solicitud a fallado: " +  textStatus);
+    		     }
+    		});
+    	}
+    	
+    	function showForum(data){
+    		
+    		var moderate = null
+    		if ($('input.checkbox_check').is(':checked')) {
+    			moderate = 1;
+    		} else {
+    			moderate = 0;
+    		}
+    		
+    		window.location.href = "forummessage?id=" + data[0] + "&mod=" + moderate + "&courseId=" + data[1];
+    		
+    	}
+    	
     	$.urlParam = function(name){
     	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     	    if (results==null){

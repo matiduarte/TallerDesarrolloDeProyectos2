@@ -57,6 +57,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
     HashMap<String, String> user;
     ArrayList activeUnits = new ArrayList();
     Boolean showExam = false;
+    String courseName;
+    Boolean isSubscribed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         JSONObject courseData = new JSONObject(course.getCourseData());
                         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
                         collapsingToolbar.setTitle(courseData.getString("name"));
+                        courseName = courseData.getString("name");
                         TextView courseDesc = (TextView) findViewById(R.id.course_description);
                         if (courseDesc != null) {
                             courseDesc.setText(courseData.getString("description"));
@@ -114,7 +117,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
-                        final Boolean isSubscribed = courseData.getBoolean("isSubscribed");
+                        isSubscribed = courseData.getBoolean("isSubscribed");
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
                         TextView courseStartDate = (TextView) findViewById(R.id.start_date);
                         TextView courseInscriptionDates = (TextView) findViewById(R.id.inscription_dates);
@@ -241,14 +244,25 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.global, menu);
+        getMenuInflater().inflate(R.menu.activity_course_details, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_chat:
+                if(isSubscribed){
+                    navigateToCourseChatActivity();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Tenes que estar inscripto para poder acceder al foro del curso!", Toast.LENGTH_LONG).show();
+                }
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -283,6 +297,17 @@ public class CourseDetailsActivity extends AppCompatActivity {
         intent.putExtra("courseId", courseId);
         intent.putExtra("showExam", showExam);
         intent.putExtra("sessionId", sessionId);
+        startActivity(intent);
+    }
+
+    private void navigateToCourseChatActivity(){
+        Intent intent = new Intent(getApplicationContext(), CourseChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("courseId", courseId);
+        intent.putExtra("studentId", studentId);
+        intent.putExtra("sessionId", sessionId);
+        intent.putExtra("courseName", courseName);
         startActivity(intent);
     }
 

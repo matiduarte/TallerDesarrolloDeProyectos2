@@ -49,6 +49,7 @@ public class StoreData {
 			cfg.addResource("dataBase/studentSession.hbm.xml");
 			cfg.addResource("dataBase/answer.hbm.xml");
 			cfg.addResource("dataBase/studentExam.hbm.xml");
+			cfg.addResource("dataBase/courseMessage.hbm.xml");
 
 
 			//creating seession factory object  
