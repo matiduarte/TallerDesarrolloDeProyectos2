@@ -155,7 +155,7 @@
 		 </div>
 		 
 		 <div class="col-md-4">
-	     <label class="detail-label">Unidades:</label>
+	     <label class="detail-label unit-label">Unidades:</label>
 	     
 	     <table class="tg ocupar-espacio" id="tableUnity">
 			  <tr>

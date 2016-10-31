@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="bootstrap/img/icono.ico">
-
+<title>Unidad</title>
 <!-- Material Design fonts -->
 <link rel="stylesheet" type="text/css"
 	href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
@@ -137,7 +137,7 @@
 					<c:choose>
 						<c:when test="${questionSize != NULL}">
 							<input class="form-control" id="questions" name="questions"
-								type="text" value="${questionSize}" required>
+								type="text" value="${questionSize}">
 						</c:when>
 						<c:otherwise>
 							<input class="form-control" id="questions" name="questions"
@@ -245,7 +245,7 @@
 
 				<div class="blockQuestions">
 
-					<div class="row">
+					<div>
 						<label class="detail-label">Preguntas:</label>
 						<button class="btn btn-raised btn-primary pull-right"
 							onclick="showQuestionsPopUp();" name="addQuestion" type="button">Agregar
@@ -311,6 +311,8 @@
 	<div id="subtitlePopup">
 		<label class="labelPopup" id="popupSessionTitle">Agregar
 			subt&iacute;tulo</label> <br />
+		<button type="button" onclick="hideSubtitlePopup()" class="close close-btn"
+						data-dismiss="modal" aria-label="close">&times;</button>
 
 		<div class="form-group label-floating inputSessionDate">
 			<label class="control-label" id="labelLanguage" for="language">Idioma:</label>
@@ -321,13 +323,11 @@
 			</select>
 		</div>
 
-		<label class="btn btn-primary btn-raised btn-file">
+		<label class="btn-select-file btn-file">
 			Seleccionar<input type="file" id="subtitle" style="display: none"
 			name="subtitle" accept=".vtt" onchange="loadSubtitle();">
 		</label>
 		<div id="subtitleNameContainer"></div>
-		<hr>
-
 		<div class="popupButtonsContainer">
 			<button class="btn btnPopup" type="submit"
 				onclick="hideSubtitlePopup();">Cancelar</button>
@@ -339,15 +339,16 @@
 	<div id="addQuestionPopup" class="modal">
 		<div class="modal-dialog borde-fino">
 			<div class="modal-content">
-				<div class="modal-header" style="padding: 0;">
+				<div class="modal-header" style="padding: 10px;padding-bottom:0">
 					<button type="button" onclick="hideQuestionsPopup()" class="close"
 						data-dismiss="modal" aria-label="close">&times;</button>
-					<h4 class="modal-title" style="text-align: center;">Nueva Pregunta</h4>
+					<h4 class="modal-title" style="text-align: center;font-weight: bold;
+    color: #009688;">Nueva Pregunta</h4>
 				</div>
 
-				<div class="qmb modal-body" style="padding: 5px;">
+				<div class="qmb modal-body">
 					<input type="hidden" id="qId" name="qId" value="0">
-					<div class="form-group label-floating">
+					<div class="form-group label-floating" style="margin-top:0">
 						<label class="control-label" for="addQuestion">Ingrese una
 							pregunta</label> <input class="form-control" id="addQuestion"
 							name="addQuestion" type="text" required>
@@ -361,6 +362,8 @@
 					</span>
 				</div>
 				<div class="modal-footer" style="padding: 0;">
+					<button type="button" onclick="hideQuestionsPopup();"
+						class="btn btn-primary">Cancelar</button>
 					<button type="button" onclick="saveQuestion();"
 						class="btn btn-primary">Agregar</button>
 				</div>
@@ -834,8 +837,8 @@
 		$('.addAnswer').click(function(e){
 			
 			var newdiv = document.createElement('div');
-			newdiv.innerHTML ="<div id=ans"+count+" class=form-group label-floating style=\"margin: 0;padding: 0;\">"
-	    	+  "<label class='control-label' style='margin: 0'>Ingrese una respuesta</label>"
+			newdiv.innerHTML ="<div id=ans"+count+" class='form-group label-floating is-empty' style='margin-top: 15px'>"
+	    	+  "<label class='control-label'>Ingrese una respuesta</label>"
 	    	+  "<div class='input-group'>"
 	        +  "<input id=inp"+count+ " class='form-control' type='text' name='myInputs[]' required>"
 	        +  	"<span class='input-group-addon'>"
@@ -862,20 +865,11 @@
 		
 	});
 	
-	$( document ).ready(function() {
-		$("#label-questions").removeClass( "is-empty" );
-	      var valor_ingresado = $("#questions").val();
-	      if ( valor_ingresado == "" ) {
-	    	  $("#questions").val("0");
-	      }
-	});
 	
 	$("#questions").focusout(function(){
 	      var valor_ingresado = $("#questions").val();
 	      if ( valor_ingresado == "" ) {
-	    	  $("#label-questions").removeClass( "is-empty" );
-	    	  $("#label-questions").removeClass( "has-error" );
-	    	  $("#questions").val("0");	    	  
+	    	  $("#label-questions").removeClass( "has-error" );   	  
 	      }
 	    });
 	
