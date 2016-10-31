@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -43,6 +44,7 @@ import fiuba.tallerdeproyectos2.Adapters.UnitRecyclerViewAdapter;
 import fiuba.tallerdeproyectos2.Models.CourseData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.Models.UnitsCardViewData;
+import fiuba.tallerdeproyectos2.Notifications.Config;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
@@ -283,6 +285,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Boolean success =response.body().getSuccess();
                 if(success.equals(true)){
                     navigateToMainActivity();
+                    FirebaseMessaging.getInstance().subscribeToTopic("course_" + courseId + "_" + sessionId);
                     Toast.makeText(getApplicationContext(), R.string.inscription_success, Toast.LENGTH_LONG).show();
                 }
             }
@@ -303,6 +306,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
                 Boolean success =response.body().getSuccess();
                 if(success.equals(true)){
                     navigateToMainActivity();
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("course_" + courseId + "_" + sessionId);
                     Toast.makeText(getApplicationContext(), R.string.unsubscription_success, Toast.LENGTH_LONG).show();
                 }
             }
