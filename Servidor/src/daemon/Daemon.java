@@ -73,7 +73,7 @@ public class Daemon implements Runnable {
     			if(newUnity != null){
     				String key = "/course_" + course.getId() + "_" + session.getId() + "_new_unity_" + newUnity.getId();
     				if(!notificationSent(key)){
-    					sendNotification("La unidad " + newUnity.getName() + " se encuentra disponible", "FIUBA Cursos", topic);
+    					sendNotification("La unidad " + newUnity.getName() + " del curso " + course.getName() + " ya se encuentra disponible!", "FIUBA Cursos", topic);
     					NotificationSent ns = new NotificationSent();
     					ns.setNotification(key);
     					ns.save();
