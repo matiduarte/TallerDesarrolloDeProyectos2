@@ -25,7 +25,6 @@ public class Daemon implements Runnable {
 	
     public void run() {
     	while (true) {
-    		System.out.println("Pepe");
 			checkNotificationsToSend();
 			try {
 				Thread.sleep(10000);
@@ -47,7 +46,7 @@ public class Daemon implements Runnable {
     			if(session.startsToday()){
     				String key = "/course_" + course.getId() + "_" + session.getId() + "_begin";
     				if(!notificationSent(key)){
-    					sendNotification("El curso" + course.getName() + " ya comenzo!", "Comienzo de curso", topic);
+    					sendNotification("El curso " + course.getName() + " ha comenzado!", "FIUBA Cursos", topic);
     					NotificationSent ns = new NotificationSent();
     					ns.setNotification(key);
     					ns.save();
@@ -61,11 +60,10 @@ public class Daemon implements Runnable {
     			if(unity != null){
     				String key = "/course_" + course.getId() + "_" + session.getId() + "_examn_unity_" + unity.getId();
     				if(!notificationSent(key)){
-    					sendNotification("El Examen de la unidad" + unity.getName() + " se encuentra disponible", "Examen disponible", topic);
+    					sendNotification("El examen de la unidad " + unity.getName() + " del curso " + course.getName() + " ya se encuentra disponible! Recuerde que tiene una semana para realizarlo.", "FIUBA Cursos", topic);
     					NotificationSent ns = new NotificationSent();
     					ns.setNotification(key);
     					ns.save();
-    					
     					System.out.println("Notificacion: Examen disponible");
     				}
     			}
