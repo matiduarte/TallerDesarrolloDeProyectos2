@@ -107,7 +107,7 @@ public class NewUnityController extends HttpServlet {
 			}
 			ArrayList<Question> qList = (ArrayList<Question>) Question.getByUnityId(courseUnity.getId());
 			
-			if (Integer.valueOf(questionSize) * 4 <= qList.size()){
+			if (Integer.valueOf(questionSize) <= qList.size()){
 	   			courseUnity.setQuestionSize(Integer.valueOf(questionSize));
 	   			editQuestionSize = false;
 			} else {
