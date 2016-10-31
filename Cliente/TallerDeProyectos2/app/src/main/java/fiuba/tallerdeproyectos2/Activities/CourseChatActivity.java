@@ -109,6 +109,8 @@ public class CourseChatActivity extends AppCompatActivity implements SwipeRefres
 
                         adapter = new CourseChatRecyclerViewAdapter(chats);
                         recyclerView.setAdapter(adapter);
+                    } else {
+                        showProgress(false);
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, e.getLocalizedMessage());

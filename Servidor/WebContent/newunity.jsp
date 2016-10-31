@@ -141,7 +141,7 @@
 						</c:when>
 						<c:otherwise>
 							<input class="form-control" id="questions" name="questions"
-								type="text" required>
+								type="text">
 						</c:otherwise>
 					</c:choose>
 				</div>
