@@ -116,7 +116,12 @@ public class UnitDetailsActivity extends AppCompatActivity {
                         JSONObject unitData = new JSONObject(unit.getUnitData());
                         setTitle(unitData.getString("name"));
                         unitName = unitData.getString("name");
-                        html.setText(Html.fromHtml(unitData.getString("html")));
+                        String htmlText = unitData.getString("html");
+                        if(htmlText.contains("<li>")){
+                            htmlText = htmlText.replace("<li>", "&#8226");
+                            htmlText = htmlText.replace("</li>", "<br>");
+                        }
+                        html.setText(Html.fromHtml(htmlText));
 
                         JSONArray subsArray = new JSONArray(unit.getSubtitles());
 

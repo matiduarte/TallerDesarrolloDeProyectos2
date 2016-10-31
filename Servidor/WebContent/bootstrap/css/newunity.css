@@ -5,7 +5,6 @@ body {
 
 .register{
 	margin: 0 auto;
-	padding-top: 40px;
 	width: 80%;
 }
 
@@ -14,12 +13,12 @@ body {
 }
 
 .unityFirstBlock{
-	width: 45%;
+	width: 48%;
 	float: left;
 }
 
 .unitySecondBlock{
-	width: 45%;
+	width: 48%;
 	float: right;
 }
 
@@ -28,10 +27,10 @@ body {
 }
 
 .tg  {border-collapse:collapse;border-spacing:0; width: 100%; text-align: center;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;padding: 10px 5px;}
 .tg .tg-zyzu{font-weight:bold;background-color:#009688;color:#ffffff;vertical-align:top;text-align: center;}
-.tg .tg-yw4l{vertical-align:top}
+.tg .tg-yw4l{vertical-align:center}
 
 table, th, td {
    border: 1px solid #009688;
@@ -61,13 +60,14 @@ table, th, td {
 #subtitlePopup{
 	box-shadow: 1px 3px 11px 2px #999;
     z-index: 1000;
-    width: 300px;
-    height: 240px;
+    width: 240px;
+    height: 205px;
     position: absolute;
     background: white;
     left: 540px;
     top: 305px;
     display: none;
+    text-align: center;
 }
 
 
@@ -92,8 +92,8 @@ table, th, td {
 
 .labelPopup{
 	color: #009688;
-	margin-top: 5px;
-    margin-left: 10px;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 #addQuestionPopup{
@@ -151,22 +151,20 @@ table, th, td {
 }
 
 .inputSessionDate{
-	width: 60%;
-    float: left;
-    margin-left: 10px;
-}
-
-hr {
-    margin: 8px;
+	width: 70%;
+    margin-left: 30px;
 }
 
 .popupButtonsContainer{
-	float: right;
+    float: right;
+    padding-top: 10px;
 }
 
 #subtitleNameContainer{
-	height: 20px;
-    width: 100%;
+	margin-right: 35px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    display: inline-block;
 }
 
 .subtitleLabel{
@@ -176,5 +174,83 @@ hr {
 
 .blocksContainer{
 	width: 100%;
-    min-height: 650px;
+    overflow: auto;
+    height:100%;
+    max-height: auto;  
+}
+
+.sin-margen{
+	margin: 0;
+}
+
+.margen-chico{
+	margin: 20px !important;
+}
+
+.tabla-fija {
+	table-layout:fixed;
+}
+
+.contenido-tabla-preg {
+	min-height: 150px !important;
+	max-height: 0px !important;
+	overflow: visible;
+}
+
+.contenido-truncado {
+  	white-space: nowrap;
+  	overflow: visible;
+  	text-overflow: ellipsis;
+  	max-width: 1px;
+}
+
+.sin-padding {
+	padding: 0;
+}
+
+.trumbowyg-editor {
+	margin: 0 !important;
+	max-height: 100%;
+	min-height: 250px !important;
+	overflow: visible;
+}
+.trumbowyg-box {
+	min-height: 250px !important;
+}
+
+.expand-height {
+    height: 100px;
+    min-height: 100px;	
+}
+
+#wrapper-tabla-preg {
+  overflow: hidden;
+  width: 100%;
+}
+
+.borde-fino {
+    border: cadetblue;
+    border-width: thin;
+    border-style: solid;
+}
+
+.btn-select-file{
+	float: left;
+    margin-left: 28px;
+    color: #ffffff;
+    background: #009688;
+    border-radius: 2px;
+    padding: 5px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.btn-select-file:hover{
+	background-color: #00aa9a;
+	cursor:pointer;
+}
+
+.close-btn{
+	position: absolute;
+    top: 10px;
+    right: 10px;
 }

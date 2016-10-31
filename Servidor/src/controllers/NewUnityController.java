@@ -3,6 +3,8 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -51,17 +53,23 @@ public class NewUnityController extends HttpServlet {
 				if(courseUnity.getVideoUrl() != null && !(courseUnity.getVideoUrl().compareTo("") == 0)){
 					request.setAttribute("videUrl", courseUnity.getVideoUrl());
 					
-					 File file = new File("WebContent/" + courseUnity.getVideoUrl());
-					 DecimalFormat df = new DecimalFormat("#.##");
-					 df.setRoundingMode(RoundingMode.FLOOR);
+					Path p = Paths.get(courseUnity.getVideoUrl());
+					String filename = p.getFileName().toString();
+					
+					request.setAttribute("videoName", filename);
+					
+					
+					File file = new File("WebContent/" + courseUnity.getVideoUrl());
+					DecimalFormat df = new DecimalFormat("#.##");
+					df.setRoundingMode(RoundingMode.FLOOR);
 					 
-					 double videoSize = file.length();
-					 videoSize = (videoSize/1024)/1024;
+					double videoSize = file.length();
+					videoSize = (videoSize/1024)/1024;
 					 
-					 request.setAttribute("videoSize", df.format(videoSize));
+					request.setAttribute("videoSize", df.format(videoSize));
 					 
-					 ArrayList<String> subtitles = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + id + "/Subtitles");
-					 request.setAttribute("subtitles", subtitles);
+					ArrayList<String> subtitles = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + id + "/Subtitles");
+					request.setAttribute("subtitles", subtitles);
 				}
 				ArrayList<Question> questionList = (ArrayList<Question>) Question.getByUnityId(id);
 				if (questionList != null && questionList.size() > 0){
@@ -99,7 +107,7 @@ public class NewUnityController extends HttpServlet {
 			}
 			ArrayList<Question> qList = (ArrayList<Question>) Question.getByUnityId(courseUnity.getId());
 			
-			if (Integer.valueOf(questionSize) * 4 <= qList.size()){
+			if (Integer.valueOf(questionSize) <= qList.size()){
 	   			courseUnity.setQuestionSize(Integer.valueOf(questionSize));
 	   			editQuestionSize = false;
 			} else {
