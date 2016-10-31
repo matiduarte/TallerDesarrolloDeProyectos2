@@ -72,6 +72,7 @@ public class CourseSession {
 		}
 		return false;
 	}
+	
 	public boolean startsToday() {
 		String date = this.getDate();
 		if(date != null){
@@ -95,6 +96,40 @@ public class CourseSession {
 		    Date yesterdayDate = c.getTime();
 
 		    if (date1.compareTo(currenDate) <= 0 && date1.compareTo(yesterdayDate) >= 0) {
+		    	return true;
+		    }
+		}
+		return false;
+	}
+	
+	public boolean isFinalExamAvailable(int unitiesSize) {
+		String date = this.getDate();
+		if(date != null){
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+		    Date date1;
+			try {
+				date1 = format.parse(date);
+			} catch (ParseException e) {
+				return false;
+			}
+		    
+			Date currenDate = new Date();
+		    
+		    
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    Calendar c = Calendar.getInstance();
+		    
+		    c.setTime(date1);
+		    
+		    c.add(Calendar.DATE, 7*unitiesSize);  // number of days to add
+		    Date beginFinalExamDate = c.getTime();
+		    
+		    c.add(Calendar.DATE, 7);
+		    Date endFinalExamDate = c.getTime();
+		    
+		    
+		    if (currenDate.compareTo(beginFinalExamDate) >= 0 && currenDate.compareTo(endFinalExamDate) <= 0) {
 		    	return true;
 		    }
 		}

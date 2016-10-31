@@ -320,4 +320,17 @@ public class Course {
 		
 		return null;
 	}
+	
+	public boolean isFinalExamEvailable(CourseSession session){
+		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), this.getActiveSession());
+		
+		
+		for (int i = 0; i < unities.size(); i++) {
+			if(!unities.get(i).isActive()){
+				return false;
+			}
+		}
+		
+		return session.isFinalExamAvailable(unities.size());
+	}
 }

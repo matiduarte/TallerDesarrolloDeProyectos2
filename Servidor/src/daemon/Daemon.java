@@ -73,12 +73,25 @@ public class Daemon implements Runnable {
     			if(newUnity != null){
     				String key = "/course_" + course.getId() + "_" + session.getId() + "_new_unity_" + newUnity.getId();
     				if(!notificationSent(key)){
-    					sendNotification("La unidad " + newUnity.getName() + " se encuentra disponible", "Nueva Unidad disponible", topic);
+    					sendNotification("La unidad " + newUnity.getName() + " se encuentra disponible", "FIUBA Cursos", topic);
     					NotificationSent ns = new NotificationSent();
     					ns.setNotification(key);
     					ns.save();
     					
     					System.out.println("Notificacion: Nueva unidad disponible");
+    				}
+    			}
+    			
+    			//If final exam is available
+    			boolean finalExamAvailable = course.isFinalExamEvailable(session);
+    			if(finalExamAvailable){
+    				String key = "/course_" + course.getId() + "_" + session.getId() + "_final_exam";
+    				if(!notificationSent(key)){
+    					sendNotification("El examen final del curso " + course.getName() + " ya se encuentra disponible! Recuerde que tiene una semana para realizarlo.", "FIUBA Cursos", topic);
+    					NotificationSent ns = new NotificationSent();
+    					ns.setNotification(key);
+    					ns.save();
+    					System.out.println("Notificacion: Examen Final disponible");
     				}
     			}
     		}
