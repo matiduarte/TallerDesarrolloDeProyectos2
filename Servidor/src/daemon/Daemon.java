@@ -49,7 +49,7 @@ public class Daemon implements Runnable {
     				if(!notificationSent(key)){
     					sendNotification("El curso" + course.getName() + " ya comenzo!", "Comienzo de curso", topic);
     					NotificationSent ns = new NotificationSent();
-    					ns.setKey(key);
+    					ns.setNotification(key);
     					ns.save();
     					
     					System.out.println("Notificacion: Comienzo curso");
@@ -63,7 +63,7 @@ public class Daemon implements Runnable {
     				if(!notificationSent(key)){
     					sendNotification("El Examen de la unidad" + unity.getName() + " se encuentra disponible", "Examen disponible", topic);
     					NotificationSent ns = new NotificationSent();
-    					ns.setKey(key);
+    					ns.setNotification(key);
     					ns.save();
     					
     					System.out.println("Notificacion: Examen disponible");

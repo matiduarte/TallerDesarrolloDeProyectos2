@@ -91,10 +91,10 @@ public class CourseSession {
 		    
 		    c.setTime(currenDate);
 		    
-		    c.add(Calendar.DATE, 1);  // number of days to add
-		    Date tomorrowDate = c.getTime();
-		    
-		    if (date1.compareTo(currenDate) <= 0 && date1.compareTo(tomorrowDate) >= 0) {
+		    c.add(Calendar.DATE, -1);  // number of days to add
+		    Date yesterdayDate = c.getTime();
+
+		    if (date1.compareTo(currenDate) <= 0 && date1.compareTo(yesterdayDate) >= 0) {
 		    	return true;
 		    }
 		}

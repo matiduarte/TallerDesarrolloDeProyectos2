@@ -10,7 +10,7 @@
     </id>  
 
 
-    <property name="key"></property>
+    <property name="notification"></property>
     </class>  
             
  </hibernate-mapping>  

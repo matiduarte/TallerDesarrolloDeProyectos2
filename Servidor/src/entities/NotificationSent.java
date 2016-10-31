@@ -6,7 +6,7 @@ import dataBase.StoreData;
 
 public class NotificationSent {
 	private int id;
-	private String key;
+	private String notification;
 
 	
 	
@@ -23,20 +23,20 @@ public class NotificationSent {
 		StoreData.save(this);
 	}
 	
-	public static List<NotificationSent> getByKey(String key){
-		return (List<NotificationSent>)StoreData.getByField(NotificationSent.class, "key", key);
+	public static List<NotificationSent> getByKey(String notification){
+		return (List<NotificationSent>)StoreData.getByField(NotificationSent.class, "notification", notification);
 	}
 	
 	public void delete(){
 		StoreData.delete(this);
 	}
 
-	public String getKey() {
-		return key;
+	public String getNotification() {
+		return notification;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setNotification(String notification) {
+		this.notification = notification;
 	}
 	
 }

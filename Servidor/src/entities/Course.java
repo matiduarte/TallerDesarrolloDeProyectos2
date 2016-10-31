@@ -288,6 +288,13 @@ public class Course {
 	
 	public CourseUnity getUnityWithExam() {
 		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), this.getActiveSession());
+		
+		if(unities.size() == 2){
+			if(unities.get(0).isActive() && unities.get(1).isActive()){
+				return unities.get(0);
+			}
+		}
+		
 		for (int i = 0; i < unities.size(); i++) {
 			if(!unities.get(i).isActive() && i > 1){
 				return unities.get(i-2);
