@@ -36,9 +36,13 @@ public interface ApiInterface {
     Call<ServerResponse> getSubscriptions(@Path("studentId") Integer studentId);
 
     @GET("proyectos2/unity/{id}")
-    Call<ServerResponse> getUnitDataById(@Path("id") Integer id);
+    Call<ServerResponse> getUnitDataById(@Path("id") Integer id, @Query("studentId") Integer studentId);
 
     @GET("proyectos2/unity/test/{id}")
     Call<ServerResponse> getUnitExam(@Path("id") Integer id);
+
+    @FormUrlEncoded
+    @POST("proyectos2/exam")
+    Call<ServerResponse> postPassExam(@Field("studentId")Integer studentId, @Field("sessionId")Integer sessionId, @Field("unityId")Integer unityId, @Field("result")Float result);
 }
 

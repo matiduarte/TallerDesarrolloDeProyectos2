@@ -20,7 +20,8 @@ public class CourseUnity {
 	private String videoUrl;
 	private int videoSize;
 	private Integer questionSize;
-	
+	private boolean passExam;
+	private float examResult;
 	
 	public int getId() {
 		return id;
@@ -93,6 +94,13 @@ public class CourseUnity {
 	public void setQuestionSize(Integer questionSize) {
 		this.questionSize = questionSize;
 	}
+	public boolean getPassExam() {
+		return passExam;
+	}
+	public void setPassExamn(boolean passExam) {
+		this.passExam = passExam;
+	}
+	
 	public ArrayList<String> getSubtitlesUrl() {
 		ArrayList<String> subs = FileUtil.getFileNamesInDirectory("WebContent/Files/CourseUnity/" + this.getId() + "/Subtitles");
 		ArrayList<String> result = new ArrayList<String>();
@@ -102,5 +110,25 @@ public class CourseUnity {
 		}
 		
 		return result;
+	}
+	public void checkStudentExam(int studentId) {
+		Course course = Course.getById(this.getCourseId());
+		CourseSession currentSession = course.getCurrentSession();
+
+		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND unityId = " + this.getId();
+		List<StudentExam> exams = (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
+		if(exams != null && !exams.isEmpty()){
+			this.setPassExamn(true);
+			this.setExamResult(exams.get(0).getResult());
+		}else{
+			this.setPassExamn(false);
+		}
+		
+	}
+	public float getExamResult() {
+		return examResult;
+	}
+	public void setExamResult(float examResult) {
+		this.examResult = examResult;
 	}
 }

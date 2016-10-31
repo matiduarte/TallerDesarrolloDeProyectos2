@@ -65,12 +65,8 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 card_view:cardCornerRadius="2dp"
-                card_view:cardElevation="10dp"
+                card_view:cardElevation="6dp"
                 card_view:cardUseCompatPadding="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -86,7 +82,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
-                        android:paddingLeft="10dp"
                         android:layout_gravity="center_horizontal"
                         android:id="@+id/course_description"/>
 
@@ -97,10 +92,10 @@
                         android:background="@android:color/darker_gray"/>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
@@ -194,8 +189,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:id="@+id/top_line"
                 android:visibility="gone"
                 android:background="@android:color/darker_gray"/>
@@ -209,8 +202,6 @@
                 android:textStyle="bold|italic"
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/units_header"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:visibility="gone"
                 android:background="@color/background"
                 android:text="@string/units_title" />
@@ -218,8 +209,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:id="@+id/bottom_line"
                 android:visibility="gone"
                 android:background="@android:color/darker_gray"/>
@@ -252,7 +241,7 @@
             android:textStyle="bold"
             android:visibility="gone"
             android:onClick="onInscriptionButtonClick"
-            android:text="Inscribirse"/>
+            android:text="@string/inscription_text"/>
 
         <Button
             android:id="@+id/unsubscription_btn"
@@ -265,7 +254,7 @@
             android:visibility="gone"
             android:textStyle="bold"
             android:onClick="onUnsubsriptionButtonClick"
-            android:text="Desinscribirse"/>
+            android:text="@string/unsubscription_text"/>
 
     </LinearLayout>
 

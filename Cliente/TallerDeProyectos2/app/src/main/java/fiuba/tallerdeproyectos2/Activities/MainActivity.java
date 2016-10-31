@@ -38,7 +38,7 @@ import java.util.HashMap;
 
 import fiuba.tallerdeproyectos2.Fragments.CertificatesFragment;
 import fiuba.tallerdeproyectos2.Fragments.CoursesFragment;
-import fiuba.tallerdeproyectos2.Fragments.ExitFragment;
+import fiuba.tallerdeproyectos2.Fragments.ExitDialogFragment;
 import fiuba.tallerdeproyectos2.Fragments.HomeFragment;
 import fiuba.tallerdeproyectos2.Notifications.Config;
 import fiuba.tallerdeproyectos2.Notifications.NotificationUtils;
@@ -49,7 +49,7 @@ import fiuba.tallerdeproyectos2.Utilities.Utilities;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ExitFragment.ExitDialogListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ExitDialogFragment.ExitDialogListener {
 
     Fragment fragment;
     FragmentManager fragmentManager;
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showExitDialog() {
-        DialogFragment dialog = new ExitFragment();
+        DialogFragment dialog = new ExitDialogFragment();
         dialog.show(getFragmentManager(), "exit");
     }
 

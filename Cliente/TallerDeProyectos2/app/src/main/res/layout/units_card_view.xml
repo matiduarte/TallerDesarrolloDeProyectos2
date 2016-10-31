@@ -8,9 +8,9 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="6dp"
+        card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true" >
 
         <LinearLayout
@@ -53,14 +53,15 @@
                 android:gravity="center_vertical"
                 android:paddingBottom="5dp"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textSize="12sp"
                 android:text="VER CONTENIDO"
-                android:layout_gravity="end"
+                android:gravity="end"
+                android:textStyle="bold"
+                android:paddingBottom="5dp"
                 android:textColor="@color/colorPrimary"
-                android:background="#ffffff"
                 android:id="@+id/unit_content_btn"/>
 
             <TextView

@@ -9,7 +9,7 @@ import android.app.AlertDialog;
 
 import fiuba.tallerdeproyectos2.R;
 
-public class ExitFragment extends DialogFragment {
+public class ExitDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -17,12 +17,12 @@ public class ExitFragment extends DialogFragment {
         builder.setMessage(R.string.exit_dialog_txt)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        listener.onDialogPositiveClick(ExitFragment.this);
+                        listener.onDialogPositiveClick(ExitDialogFragment.this);
                     }
                 })
                 .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        listener.onDialogNegativeClick(ExitFragment.this);
+                        listener.onDialogNegativeClick(ExitDialogFragment.this);
                     }
                 });
         return builder.create();
@@ -41,7 +41,7 @@ public class ExitFragment extends DialogFragment {
         try {
             listener = (ExitDialogListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement LogOutDialogListener");
+            throw new ClassCastException(activity.toString() + " must implement ExitDialogListener");
         }
     }
 }
