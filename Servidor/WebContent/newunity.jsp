@@ -131,7 +131,7 @@
 						</c:otherwise>
 					</c:choose>
 				</div>
-				<div class="form-group label-floating margen-chico sin-padding">
+				<div class="form-group label-floating margen-chico sin-padding" id="label-questions">
 					<label class="control-label sin-padding" for="questions">Cantidad
 						de Preguntas</label>
 					<c:choose>
@@ -862,7 +862,22 @@
 		
 	});
 	
+	$( document ).ready(function() {
+		$("#label-questions").removeClass( "is-empty" );
+	      var valor_ingresado = $("#questions").val();
+	      if ( valor_ingresado == "" ) {
+	    	  $("#questions").val("0");
+	      }
+	});
 	
+	$("#questions").focusout(function(){
+	      var valor_ingresado = $("#questions").val();
+	      if ( valor_ingresado == "" ) {
+	    	  $("#label-questions").removeClass( "is-empty" );
+	    	  $("#label-questions").removeClass( "has-error" );
+	    	  $("#questions").val("0");	    	  
+	      }
+	    });
 	
 	</script>
 </body>
