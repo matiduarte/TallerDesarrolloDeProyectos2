@@ -98,7 +98,8 @@ public class CourseChatActivity extends AppCompatActivity implements SwipeRefres
                             String time = messageArray.getString("time");
                             String name = messageArray.getString("studentFirstName");
                             String surname = messageArray.getString("studentLastName");
-                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message);
+                            Boolean isModerate = messageArray.getBoolean("isModerate");
+                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, isModerate);
                             chats.add(i, obj);
                         }
 
@@ -217,7 +218,8 @@ public class CourseChatActivity extends AppCompatActivity implements SwipeRefres
                             String time = messageArray.getString("time");
                             String name = messageArray.getString("studentFirstName");
                             String surname = messageArray.getString("studentLastName");
-                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message);
+                            Boolean isModerate = messageArray.getBoolean("isModerate");
+                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, isModerate);
                             chats.add(i, obj);
                         }
 

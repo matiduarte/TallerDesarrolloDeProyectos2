@@ -6,12 +6,14 @@ public class CourseChatCardViewData {
     private String surname;
     private String time;
     private String message;
+    private Boolean isModerate;
 
-    public CourseChatCardViewData(String name, String surname, String time, String message){
+    public CourseChatCardViewData(String name, String surname, String time, String message, Boolean isModerate){
         this.name = name;
         this.surname = surname;
         this.time = time;
         this.message = message;
+        this.isModerate = isModerate;
     }
 
     public String getName() {
@@ -44,5 +46,13 @@ public class CourseChatCardViewData {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Boolean isModerate() {
+        return isModerate;
+    }
+
+    public void setIsModerate(Boolean isModerate) {
+        this.isModerate = isModerate;
     }
 }
