@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_certificates) {
             fragment = new CertificatesFragment();
         } else if (id == R.id.nav_exit) {
+
+
             fragment = new HomeFragment();
             showExitDialog();
         }

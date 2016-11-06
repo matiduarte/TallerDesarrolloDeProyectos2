@@ -12,8 +12,7 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission
-        android:name="fiuba.tallerdeproyectos2.permission.C2D_MESSAGE" />
+    <uses-permission android:name="fiuba.tallerdeproyectos2.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -69,18 +68,20 @@
         <activity
             android:name=".Activities.CourseDetailsActivity"
             android:parentActivityName=".Activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.UnitDetailsActivity"
-            android:parentActivityName=".Activities.CourseDetailsActivity"/>
+            android:parentActivityName=".Activities.CourseDetailsActivity" />
         <activity
             android:name=".Activities.ExamActivity"
-            android:parentActivityName=".Activities.UnitDetailsActivity"/>
+            android:parentActivityName=".Activities.UnitDetailsActivity" />
         <activity
             android:name=".Activities.CourseChatActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".Activities.CourseDetailsActivity" ></activity>
-        <service android:name=".Notifications.RegistrationService"
+            android:parentActivityName=".Activities.CourseDetailsActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <service
+            android:name=".Notifications.RegistrationService"
             android:exported="false" />
         <service
             android:name=".Notifications.TokenRefreshListenerService"
@@ -91,17 +92,19 @@
         </service>
         <service
             android:name=".Notifications.NotificationsListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="fiuba.tallerdeproyectos2" />
             </intent-filter>
         </receiver>
@@ -110,22 +113,28 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
+
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@drawable/ic_school" />
-            <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorPrimary" />
         </service>
         <service android:name=".Notifications.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
+
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@drawable/ic_school" />
-            <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorPrimary" />
         </service>
         <!-- ./Firebase Notifications -->
+        <activity android:name=".Activities.CourseOpinionActivity"></activity>
     </application>
+
 </manifest>
