@@ -1,4 +1,5 @@
 <%@ page import="java.lang.*"%>
+<%@ page import="java.util.ArrayList;"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
@@ -85,7 +86,13 @@
 		// var categorias = [ $.trim($('#nombres_categorias').text()) ];
 		//var categorias = ${nombres_categorias};
 		
-		var mySeries = [ <%  %>];
+		var nombres_categorias;
+<%-- 		<%
+		ArrayList<String> nombres_categorias = (ArrayList<String>) request.getAttribute("nombre_categorias");
+		for (int i=0; i < nombres_categorias.size(); i++) {
+		%>
+		nombres_categorias[<%= i %>] = "<%= nombres_categorias.get(i) %>"; 
+		<% } %>	 --%>	
 		
 		var aprobados = [ $.trim($('#lista_aprobados').text()) ];
 		var desaprobados = [ $.trim($('#lista_desaprobados').text()) ];
@@ -102,7 +109,7 @@
 								text : "Inscriptos / Categoria"
 							},
 							xAxis : {
-								categories : ${nombres_categorias}
+								categories : nombres_categorias
 							},
 							yAxis : {
 								min : 0,

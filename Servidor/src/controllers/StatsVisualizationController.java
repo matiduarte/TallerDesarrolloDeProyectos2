@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entities.Report;
 import entities.User;
 
 /**
@@ -43,35 +44,25 @@ public class StatsVisualizationController extends HttpServlet {
 		//        nombres_categorias[3] = COMPUTACION
 		//        cantidad_aprobados_por_categoria[3] = cant de aprobados en la categoria COMPUTACION
 		//        cantidad_desaprobados_por_categoria[3] = cant de desaprobados en la categoria COMPUTACION
-		//        cantidad_abandonaron_por_categoria[3] = cant de abandonos en la categoria COMPUTACION		
-
+		//        cantidad_abandonaron_por_categoria[3] = cant de abandonos en la categoria COMPUTACION
+		
+		ArrayList<String> nombres_cursos = new ArrayList<String>();
 		ArrayList<String> nombres_categorias = new ArrayList<String>();
 		ArrayList<Integer> cantidad_aprobados_por_categoria = new ArrayList<Integer>();
 		ArrayList<Integer> cantidad_desaprobados_por_categoria = new ArrayList<Integer>();
 		ArrayList<Integer> cantidad_abandonaron_por_categoria = new ArrayList<Integer>();
 		
-		// ...aca va la lógica para completar las listas... por ahora van hardcodeadas...
-		nombres_categorias.add("FISICA");
-		nombres_categorias.add("MATEMATICAS");
-		nombres_categorias.add("ELECTRONICA");
-		nombres_categorias.add("COMPUTACION");
+		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
-		cantidad_aprobados_por_categoria.add(7);
-		cantidad_aprobados_por_categoria.add(9);
-		cantidad_aprobados_por_categoria.add(8);
-		cantidad_aprobados_por_categoria.add(15);
-		
-		cantidad_desaprobados_por_categoria.add(7);
-		cantidad_desaprobados_por_categoria.add(6);
-		cantidad_desaprobados_por_categoria.add(6);
-		cantidad_desaprobados_por_categoria.add(4);
-		
-		cantidad_abandonaron_por_categoria.add(5);
-		cantidad_abandonaron_por_categoria.add(4);
-		cantidad_abandonaron_por_categoria.add(5);
-		cantidad_abandonaron_por_categoria.add(1);		
-		// ...
+		for( Report reporte : reportes_cursos ) {
+			nombres_cursos.add( reporte.getCourseName() );
+			nombres_categorias.add( reporte.getCategory() );
+			cantidad_aprobados_por_categoria.add( reporte.getPass() );
+			cantidad_desaprobados_por_categoria.add( reporte.getNoPass() );
+			cantidad_abandonaron_por_categoria.add( reporte.getGiveUp() );
+		}
 
+		request.setAttribute("nombres_cursos", nombres_cursos);
 		request.setAttribute("nombres_categorias", nombres_categorias);
 		request.setAttribute("cantidad_aprobados_por_categoria", cantidad_aprobados_por_categoria);
 		request.setAttribute("cantidad_desaprobados_por_categoria", cantidad_desaprobados_por_categoria);
