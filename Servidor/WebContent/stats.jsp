@@ -1,5 +1,5 @@
 <%@ page import="java.lang.*"%>
-<%@ page import="java.util.ArrayList;"%>
+<%@ page import="java.util.ArrayList"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
@@ -82,21 +82,12 @@
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script type="text/javascript">
 		var cat = '\'hola\', \'si\', \'chau\'';
-
-		// var categorias = [ $.trim($('#nombres_categorias').text()) ];
-		//var categorias = ${nombres_categorias};
 		
-		var nombres_categorias;
-<%-- 		<%
-		ArrayList<String> nombres_categorias = (ArrayList<String>) request.getAttribute("nombre_categorias");
-		for (int i=0; i < nombres_categorias.size(); i++) {
-		%>
-		nombres_categorias[<%= i %>] = "<%= nombres_categorias.get(i) %>"; 
-		<% } %>	 --%>	
-		
-		var aprobados = [ $.trim($('#lista_aprobados').text()) ];
-		var desaprobados = [ $.trim($('#lista_desaprobados').text()) ];
-		var abandonaron = [ $.trim($('#lista_abandonaron').text()) ];
+		var nombres_cursos = ${nombres_cursos};
+		var nombres_categorias = ${nombres_categorias};
+		var aprobados = ${cantidad_aprobados_por_curso};
+		var desaprobados = ${cantidad_desaprobados_por_curso};
+		var abandonaron = ${cantidad_abandonaron_por_curso};
 		var titulo = "Inscriptos / Categoria";
 
 		$('#container')
@@ -154,15 +145,12 @@
 							series : [ {
 								name : 'Abandonaron',
 								data : abandonaron
-							/* data : [ $('#lista_abandonaron').innerText ] */
 							}, {
 								name : 'Desaprobaron',
 								data : desaprobados
-							/* data : [ $('#lista_desaprobaron').innerText ] */
 							}, {
 								name : 'Aprobaron',
 								data : aprobados
-							/* data : [ $('#lista_aprobaron').innerText ] */
 							} ]
 						});
 	</script>
