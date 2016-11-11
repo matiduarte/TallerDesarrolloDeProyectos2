@@ -40,34 +40,7 @@
 
 	</div>
 	<!-- /container -->
-
-	<div id="nombres_categorias">
-		<c:forEach items="${nombres_categorias}" var="nombre_categoria"> '${nombre_categoria}',</c:forEach>
-		'holanda'
-	</div>
-
-
-	<div id="lista_abandonaron">
-		<c:forEach items="${cantidad_abandonaron_por_categoria}"
-			var="abandono"> ${abandono}, </c:forEach>
-		0
-	</div>
-
-	<div id="lista_desaprobados">
-		<c:forEach items="${cantidad_desaprobados_por_categoria}"
-			var="desaprobo"> ${desaprobo}, </c:forEach>
-		0
-	</div>
-
-	<div id="lista_aprobados">
-		<c:forEach items="${cantidad_aprobados_por_categoria}" var="aprobo"> ${aprobo}, </c:forEach>
-		0
-	</div>
-
-
-
-
-
+	
 	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="bootstrap/js/ripples.min.js"></script>
@@ -81,7 +54,6 @@
 		src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script type="text/javascript">
-		var cat = '\'hola\', \'si\', \'chau\'';
 		
 		var nombres_cursos = ${nombres_cursos};
 		var nombres_categorias = ${nombres_categorias};
@@ -100,7 +72,7 @@
 								text : "Inscriptos / Categoria"
 							},
 							xAxis : {
-								categories : nombres_categorias
+								categories : nombres_cursos
 							},
 							yAxis : {
 								min : 0,

@@ -39,36 +39,30 @@ public class StatsVisualizationController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		// el número de posición en los arrays corresponde a una misma
-		// categoria.
-		// por ej:
-		//        nombres_categorias[3] = COMPUTACION
-		//        cantidad_aprobados_por_categoria[3] = cant de aprobados en la categoria COMPUTACION
-		//        cantidad_desaprobados_por_categoria[3] = cant de desaprobados en la categoria COMPUTACION
-		//        cantidad_abandonaron_por_categoria[3] = cant de abandonos en la categoria COMPUTACION
 		
-		ArrayList<String> nombres_cursos = new ArrayList<String>();
-		ArrayList<String> nombres_categorias = new ArrayList<String>();
-		ArrayList<Integer> cantidad_aprobados_por_curso = new ArrayList<Integer>();
-		ArrayList<Integer> cantidad_desaprobados_por_curso = new ArrayList<Integer>();
-		ArrayList<Integer> cantidad_abandonaron_por_curso = new ArrayList<Integer>();
+		JSONArray nombres_categorias_json = new JSONArray();
+		JSONArray nombres_cursos_json = new JSONArray();
+		JSONArray cantidad_aprobados_por_categoria_json = new JSONArray();
+		JSONArray cantidad_desaprobados_por_categoria_json = new JSONArray();
+		JSONArray cantidad_abandonaron_por_categoria_json = new JSONArray();		
+		
+		// el número de posición en los arrays corresponde a un mismo curso.
+		// por ej:
+		//		  nombres_curso[3] = Algoritmos y Programacion I
+		//        nombres_categorias[3] = COMPUTACION
+		//        cantidad_aprobados_por_categoria[3] = cant de aprobados en el curso
+		//        cantidad_desaprobados_por_categoria[3] = cant de desaprobados en el curso
+		//        cantidad_abandonaron_por_categoria[3] = cant de abandonos en el curso
 		
 		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
 		for( Report reporte : reportes_cursos ) {
-			nombres_cursos.add( reporte.getCourseName() );
-			nombres_categorias.add( reporte.getCategory() );
-			cantidad_aprobados_por_curso.add( reporte.getPass() );
-			cantidad_desaprobados_por_curso.add( reporte.getNoPass() );
-			cantidad_abandonaron_por_curso.add( reporte.getGiveUp() );
+			nombres_categorias_json.put( reporte.getCategory() );
+			nombres_cursos_json.put( reporte.getCourseName() );
+			cantidad_aprobados_por_categoria_json.put( reporte.getPass() );
+			cantidad_desaprobados_por_categoria_json.put( reporte.getNoPass() );
+			cantidad_abandonaron_por_categoria_json.put( reporte.getGiveUp() );
 		}
-
-		JSONArray nombres_categorias_json = new JSONArray(nombres_cursos);
-		JSONArray nombres_cursos_json = new JSONArray(nombres_categorias);
-		JSONArray cantidad_aprobados_por_categoria_json = new JSONArray(cantidad_aprobados_por_curso);
-		JSONArray cantidad_desaprobados_por_categoria_json = new JSONArray(cantidad_desaprobados_por_curso);
-		JSONArray cantidad_abandonaron_por_categoria_json = new JSONArray(cantidad_abandonaron_por_curso);
 		
 		request.setAttribute("nombres_cursos", nombres_cursos_json.toString());
 		request.setAttribute("nombres_categorias", nombres_categorias_json.toString());
