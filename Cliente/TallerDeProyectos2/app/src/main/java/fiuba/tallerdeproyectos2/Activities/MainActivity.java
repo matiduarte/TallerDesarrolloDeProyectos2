@@ -51,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ExitDialogFragment.ExitDialogListener {
 
-    Fragment fragment;
+    Fragment certificateFragment, homeFragment;
     FragmentManager fragmentManager;
     boolean doubleBackToExitPressedOnce = false;
     SessionManagerActivity session;
@@ -75,10 +75,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fragment = new HomeFragment();
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-        setTitle(R.string.title_activity_main);
+        Intent intent = getIntent();
+        Boolean showCertificateFragment = intent.getBooleanExtra("showCertificateFragment", false);
+
+        if(showCertificateFragment){
+            certificateFragment = new CertificatesFragment();
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, certificateFragment).commit();
+            setTitle("Certificados");
+        } else {
+            homeFragment = new HomeFragment();
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, homeFragment).commit();
+            setTitle(R.string.title_activity_main);
+        }
+
 
         session = new SessionManagerActivity(getApplicationContext());
 

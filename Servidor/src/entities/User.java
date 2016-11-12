@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -152,5 +153,20 @@ public class User {
 		}
 		
 		return user;
+	}
+
+	public List<Certification> getCertificacions() {
+		// TODO When is defined how a course end this can be completed
+		Certification certification = new Certification();
+		certification.setCourseName("Course Mock");
+		certification.setStudentName("Student Mock");
+		certification.setTeachertName("Teacher Mock");
+		certification.setResult((float)7.5);
+		
+		ArrayList<Certification> result = new ArrayList<Certification>();
+		result.add(certification);
+		result.add(certification);
+		
+		return result;
 	}
 }  

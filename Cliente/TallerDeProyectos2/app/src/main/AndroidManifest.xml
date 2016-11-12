@@ -134,7 +134,10 @@
                 android:resource="@color/colorPrimary" />
         </service>
         <!-- ./Firebase Notifications -->
+
         <activity android:name=".Activities.CourseOpinionActivity"></activity>
+        <activity android:name=".Activities.CertificateTemplateActivity"></activity>
+
     </application>
 
 </manifest>
