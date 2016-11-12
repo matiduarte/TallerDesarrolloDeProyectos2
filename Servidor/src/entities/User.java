@@ -160,6 +160,7 @@ public class User {
 		Certification certification = new Certification();
 		certification.setCourseName("Course Mock");
 		certification.setStudentName("Student Mock");
+		certification.setTeachertName("Teacher Mock");
 		certification.setResult((float)7.5);
 		
 		ArrayList<Certification> result = new ArrayList<Certification>();

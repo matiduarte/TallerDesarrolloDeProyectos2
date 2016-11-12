@@ -7,6 +7,7 @@ import dataBase.StoreData;
 public class Certification {
 	private String studentName;
 	private String courseName;
+	private String teachertName;
 	private float result;
 	
 	public String getStudentName() {
@@ -26,6 +27,12 @@ public class Certification {
 	}
 	public void setResult(float result) {
 		this.result = result;
+	}
+	public String getTeachertName() {
+		return teachertName;
+	}
+	public void setTeachertName(String teachertName) {
+		this.teachertName = teachertName;
 	}
 	
 }
