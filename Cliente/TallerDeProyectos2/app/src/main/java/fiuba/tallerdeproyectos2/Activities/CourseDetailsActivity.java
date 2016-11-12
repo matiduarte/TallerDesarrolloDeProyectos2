@@ -5,6 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,8 +38,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import fiuba.tallerdeproyectos2.Adapters.UnitRecyclerViewAdapter;
+import fiuba.tallerdeproyectos2.Fragments.CourseCommentsFragment;
+import fiuba.tallerdeproyectos2.Fragments.CourseInformationFragment;
+import fiuba.tallerdeproyectos2.Fragments.CourseUnitiesFragment;
 import fiuba.tallerdeproyectos2.Models.CourseData;
 import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.Models.UnitsCardViewData;
@@ -50,15 +59,13 @@ public class CourseDetailsActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbar;
     private static final String TAG = CourseDetailsActivity.class.getSimpleName();
-    private RecyclerView.Adapter adapter;
-    ArrayList units = new ArrayList<>();
-    Integer sessionId, studentId, unitId, courseId;
+    Integer sessionId, studentId, courseId;
     SessionManagerActivity session;
     HashMap<String, String> user;
-    ArrayList activeUnits = new ArrayList();
-    Boolean showExam = false;
-    String courseName;
+    String courseName, teacherName, description, date, courseUnities;
     Boolean isSubscribed;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,133 +112,33 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
                         collapsingToolbar.setTitle(courseData.getString("name"));
                         courseName = courseData.getString("name");
-                        TextView courseDesc = (TextView) findViewById(R.id.course_description);
-                        if (courseDesc != null) {
-                            courseDesc.setText(courseData.getString("description"));
-                        }
-                        TextView teacherName = (TextView) findViewById(R.id.course_teacher_name);
-                        if (teacherName != null) {
-                            teacherName.setText(courseData.getString("teacherName"));
-                        }
+                        teacherName = courseData.getString("teacherName");
+                        description = courseData.getString("description");
                         ImageView header = (ImageView) findViewById(R.id.header);
                         if(courseData.has("pictureUrl")) {
                             new DownloadImageTask(header).execute(ApiClient.BASE_URL + courseData.getString("pictureUrl"));
                         }
                         isSubscribed = courseData.getBoolean("isSubscribed");
                         JSONArray courseSessionsData = new JSONArray(courseData.getString("courseSessions"));
-                        TextView courseStartDate = (TextView) findViewById(R.id.start_date);
-                        TextView courseInscriptionDates = (TextView) findViewById(R.id.inscription_dates);
                         if(courseSessionsData.length() > 0){
                             JSONObject courseSessionsArray = new JSONObject(courseSessionsData.getString(0));
-                            String startDateString = courseSessionsArray.getString("date");
+                            date = courseSessionsArray.getString("date");
                             sessionId = Integer.valueOf(courseSessionsArray.getString("id"));
-                            if (courseStartDate != null) {
-                                courseStartDate.setText(startDateString);
-                            }
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                            Date startDate = dateFormat.parse(startDateString);
-                            Calendar calendar = Calendar.getInstance();
-                            Date today = calendar.getTime();
-                            calendar.setTime(startDate);
-                            calendar.add(Calendar.DAY_OF_YEAR, -7);
-                            Date startInscriptionDate = calendar.getTime();
-                            String startInscriptionDateString = dateFormat.format(startInscriptionDate);
-                            calendar.add(Calendar.DAY_OF_YEAR, +9);
-                            Date finishInscriptionDate = calendar.getTime();
-                            String finishInscriptionDateString = dateFormat.format(finishInscriptionDate);
-                            if (courseInscriptionDates != null) {
-                                courseInscriptionDates.setText(startInscriptionDateString + " - " + finishInscriptionDateString);
-                            }
-
-                            if(startInscriptionDate.compareTo(today) <= 0 && finishInscriptionDate.compareTo(today) >= 0
-                                &&!isSubscribed){
-                                Button inscriptionButton = (Button)findViewById(R.id.inscription_btn);
-                                if (inscriptionButton != null) {
-                                    inscriptionButton.setVisibility(View.VISIBLE);
-                                }
-                            } else if(isSubscribed){
-                                Button unsubscriptionButton = (Button)findViewById(R.id.unsubscription_btn);
-                                if (unsubscriptionButton != null) {
-                                    unsubscriptionButton.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        } else {
-                            TextView courseStartDateTxt = (TextView) findViewById(R.id.start_date_txt);
-                            TextView courseInscriptionDatesTxt = (TextView) findViewById(R.id.inscription_label);
-                            if (courseStartDateTxt != null) {
-                                courseStartDateTxt.setVisibility(View.GONE);
-                            }
-                            if (courseStartDate != null) {
-                                courseStartDate.setVisibility(View.GONE);
-                            }
-                            if (courseInscriptionDatesTxt != null) {
-                                courseInscriptionDatesTxt.setVisibility(View.GONE);
-                            }
-                            if (courseInscriptionDates != null) {
-                                courseInscriptionDates.setVisibility(View.GONE);
-                            }
                         }
 
-                        JSONArray courseUnitiesData = new JSONArray(courseData.getString("courseUnities"));
+                        courseUnities = courseData.getString("courseUnities");
 
-                        if(courseUnitiesData.length() > 0){
-                            TextView unitsHeader = (TextView) findViewById(R.id.units_header);
-                            if (unitsHeader != null) {
-                                unitsHeader.setVisibility(View.VISIBLE);
-                            }
-                            View topLine = findViewById(R.id.top_line);
-                            if (topLine != null) {
-                                topLine.setVisibility(View.VISIBLE);
-                            }
-                            View bottomLine = findViewById(R.id.bottom_line);
-                            if (bottomLine != null) {
-                                bottomLine.setVisibility(View.VISIBLE);
-                            }
-                            for (int i=0; i<courseUnitiesData.length(); i++) {
-                                JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(i));
-                                Boolean isActive = courseUnitiesArray.getBoolean("isActive");
-                                if(isActive){
-                                    activeUnits.add(i);
-                                }
-                                if(!isSubscribed || isActive){
-                                    UnitsCardViewData obj = new UnitsCardViewData(courseUnitiesArray.getString("name"), courseUnitiesArray.getString("description"), courseUnitiesArray.getString("id"));
-                                    units.add(i, obj);
-                                }
-                            }
-                        }
-                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-                        if (recyclerView != null) {
-                            recyclerView.setHasFixedSize(true);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                            recyclerView.setLayoutManager(layoutManager);
-                            adapter = new UnitRecyclerViewAdapter(units);
-                            recyclerView.setAdapter(adapter);
-                        }
+                        viewPager = (ViewPager) findViewById(R.id.viewpager);
+                        setupViewPager(viewPager);
 
-
-                        ((UnitRecyclerViewAdapter) adapter).setOnItemClickListener(new UnitRecyclerViewAdapter.MyClickListener() {
-                            @Override
-                            public void onItemClick(int position, View v) {
-                                TextView tv = (TextView) v.findViewById(R.id.unit_id);
-                                unitId = Integer.valueOf(tv.getText().toString());
-                                if(activeUnits.contains(position+1)){
-                                    showExam = true;
-                                }
-                                if(isSubscribed){
-                                    navigateToUnitDetailsActivity();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), R.string.unit_detail_alert, Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+                        tabLayout = (TabLayout) findViewById(R.id.tabs);
+                        tabLayout.setupWithViewPager(viewPager);
 
                     } else {
                         Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, e.getLocalizedMessage());
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -289,17 +196,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
             }
     }
 
-    private void navigateToUnitDetailsActivity(){
-        Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("unitId", unitId);
-        intent.putExtra("courseId", courseId);
-        intent.putExtra("showExam", showExam);
-        intent.putExtra("sessionId", sessionId);
-        startActivity(intent);
-    }
-
     private void navigateToCourseChatActivity(){
         Intent intent = new Intent(getApplicationContext(), CourseChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -316,48 +212,6 @@ public class CourseDetailsActivity extends AppCompatActivity {
         navigateToMainActivity();
     }
 
-    public void onInscriptionButtonClick(View view){
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.postStudentSubscribe(studentId, sessionId);
-        call.enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
-                Boolean success =response.body().getSuccess();
-                if(success.equals(true)){
-                    FirebaseMessaging.getInstance().subscribeToTopic("course_" + courseId + "_" + sessionId);
-                    refreshActivity();
-                    Toast.makeText(getApplicationContext(), R.string.inscription_success, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResponse>call, Throwable t) {
-                Log.e(TAG, t.toString());
-            }
-        });
-    }
-
-    public void onUnsubsriptionButtonClick(View view){
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ServerResponse> call = apiService.postStudentUnsubscribe(studentId, sessionId);
-        call.enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse>call, Response<ServerResponse> response) {
-                Boolean success =response.body().getSuccess();
-                if(success.equals(true)){
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic("course_" + courseId + "_" + sessionId);
-                    refreshActivity();
-                    Toast.makeText(getApplicationContext(), R.string.unsubscription_success, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResponse>call, Throwable t) {
-                Log.e(TAG, t.toString());
-            }
-        });
-    }
-
     private void navigateToMainActivity(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -365,11 +219,41 @@ public class CourseDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void refreshActivity(){
-        Intent intent = new Intent(getApplicationContext(), CourseDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(CourseInformationFragment.newInstance(courseId, sessionId, description, teacherName, isSubscribed, date), "Informacion");
+        adapter.addFragment(CourseUnitiesFragment.newInstance(courseId, sessionId, isSubscribed, courseUnities), "Contenido");
+        adapter.addFragment(new CourseCommentsFragment(), "Opiniones");
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
 }

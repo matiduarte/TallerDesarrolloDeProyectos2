@@ -10,6 +10,7 @@ public class StudentExam {
 	private int unityId;
 	private int sessionId;
 	private float result;
+	private boolean isFinal;
 	
 	public int getId() {
 		return id;
@@ -57,6 +58,19 @@ public class StudentExam {
 
 	public void setResult(float result) {
 		this.result = result;
+	}
+
+	public boolean getIsFinal() {
+		return isFinal;
+	}
+
+	public void setIsFinal(boolean isFinal) {
+		this.isFinal = isFinal;
+	}
+	
+	public static List<StudentExam> getApprovedFinalsByStudentId(int studentId) {
+		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND isFinal = 1 AND result >= 7";
+		return (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
 	}
 	
 }

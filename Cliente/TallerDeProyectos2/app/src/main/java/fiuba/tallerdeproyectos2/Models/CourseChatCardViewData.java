@@ -6,12 +6,14 @@ public class CourseChatCardViewData {
     private String surname;
     private String time;
     private String message;
+    private String date;
 
-    public CourseChatCardViewData(String name, String surname, String time, String message){
+    public CourseChatCardViewData(String name, String surname, String time, String message, String date){
         this.name = name;
         this.surname = surname;
         this.time = time;
         this.message = message;
+        this.date = date;
     }
 
     public String getName() {
@@ -44,5 +46,13 @@ public class CourseChatCardViewData {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

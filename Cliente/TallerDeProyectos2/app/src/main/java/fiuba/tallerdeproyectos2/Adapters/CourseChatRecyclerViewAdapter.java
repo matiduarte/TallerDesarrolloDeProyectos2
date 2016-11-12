@@ -21,6 +21,7 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
         TextView surname;
         TextView message;
         TextView time;
+        TextView date;
 
         CourseChatCardViewDataHolder(View itemView) {
             super(itemView);
@@ -28,6 +29,7 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
             surname = (TextView) itemView.findViewById(R.id.surname);
             message = (TextView) itemView.findViewById(R.id.message);
             time = (TextView) itemView.findViewById(R.id.time);
+            date = (TextView) itemView.findViewById(R.id.date);
             itemView.setOnClickListener(this);
         }
 
@@ -57,6 +59,7 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
         holder.surname.setText(dataset.get(position).getSurname());
         holder.message.setText(dataset.get(position).getMessage());
         holder.time.setText(dataset.get(position).getTime());
+        holder.date.setText(dataset.get(position).getDate());
     }
 
     public void addItem(CourseChatCardViewData courseChatCardViewData, int index) {

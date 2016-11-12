@@ -4,16 +4,15 @@
  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  
   
  <hibernate-mapping>  
-  <class name="entities.StudentExam" table="StudentExam">  
+  <class name="entities.CourseCalification" table="CourseCalification">  
     <id name="id">  
     	<generator class="increment"></generator>  
     </id>  
-
-    <property name="studentId" type="int"></property>
-    <property name="unityId" type="int"></property>
-    <property name="sessionId" type="int"></property>
-    <property name="result" ></property>
-    <property name="isFinal" ></property>
-    </class>  
+ 	
+   	<property name="courseId" type="int"></property>
+	<property name="studentId" type="int"></property>
+	<property name="time" type="time"></property>
+	<property name="calification" type="int"></property>
+   </class>  
             
  </hibernate-mapping>  

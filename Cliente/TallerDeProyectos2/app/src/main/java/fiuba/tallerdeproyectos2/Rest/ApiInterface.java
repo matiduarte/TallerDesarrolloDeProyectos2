@@ -51,5 +51,8 @@ public interface ApiInterface {
 
     @GET("proyectos2/forum/{sessionId}")
     Call<ServerResponse> getForum(@Path("sessionId") Integer sessionId);
+
+    @GET("proyectos2/certification/{userId}")
+    Call<ServerResponse> getCertificatesByUser(@Path("userId") Integer userId);
 }
 

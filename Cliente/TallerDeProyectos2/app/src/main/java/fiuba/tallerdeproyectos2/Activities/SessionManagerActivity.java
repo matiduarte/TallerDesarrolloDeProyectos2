@@ -15,10 +15,10 @@ public class SessionManagerActivity {
 
     private static final String PREF_NAME = "SessionData";
     private static final String IS_LOGIN = "IsLoggedIn";
-    static final String KEY_NAME = "name";
-    static final String KEY_SURNAME = "surname";
-    static final String KEY_EMAIL = "email";
-    static final String KEY_IMAGE = "image";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_SURNAME = "surname";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_IMAGE = "image";
     public static final String KEY_ID = "id";
 
     public SessionManagerActivity(Context context) {

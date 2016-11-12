@@ -25,7 +25,10 @@ public class Course {
 	
 	private ArrayList<CourseSession> courseSessions;
 	private ArrayList<CourseUnity> courseUnities;
+	private ArrayList<CourseCalification> califications;
+	private ArrayList<CourseComment> comments;
 	
+	private boolean isFinalExamAvailable;
 	
 	public Integer getTeacherId() {
 		return teacherId;
@@ -69,6 +72,18 @@ public class Course {
 	public void setCourseUnities(ArrayList<CourseUnity> courseUnities) {
 		this.courseUnities = courseUnities;
 	}
+	public ArrayList<CourseComment> getCourseComments() {
+		return comments;
+	}
+	public void setCourseComments(ArrayList<CourseComment> comments) {
+		this.comments = comments;
+	}
+	public ArrayList<CourseCalification> getCourseCalifications() {
+		return califications;
+	}
+	public void setCourseCalifications(ArrayList<CourseCalification> califications) {
+		this.califications = califications;
+	}
 	
 	
 	public static Course getById(int id){
@@ -91,6 +106,12 @@ public class Course {
 					c.setTeacherName(teacher.getFirstName() + " " + teacher.getLastName());
 				}
 			}
+			
+			c.setCourseCalifications((ArrayList<CourseCalification>) CourseCalification.getByCourseId(c.getId()));
+			
+			c.setCourseComments((ArrayList<CourseComment>) CourseComment.getByCourseId(c.getId()));
+			
+			c.setIsFinalExamAvailable(c.isFinalExamEvailable(c.getActiveSession()));
 		}
 		return c;
 	}
@@ -345,5 +366,12 @@ public class Course {
 		}
 		
 		return session.isFinalExamAvailable(unities.size());
+	}
+	
+	public boolean getIsFinalExamAvailable() {
+		return isFinalExamAvailable;
+	}
+	public void setIsFinalExamAvailable(boolean isFinalExamAvailable) {
+		this.isFinalExamAvailable = isFinalExamAvailable;
 	}
 }
