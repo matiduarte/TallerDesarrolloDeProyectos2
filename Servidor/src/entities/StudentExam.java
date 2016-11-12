@@ -68,4 +68,9 @@ public class StudentExam {
 		this.isFinal = isFinal;
 	}
 	
+	public static List<StudentExam> getApprovedFinalsByStudentId(int studentId) {
+		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND isFinal = 1 AND result >= 7";
+		return (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
+	}
+	
 }

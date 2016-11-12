@@ -156,16 +156,32 @@ public class User {
 	}
 
 	public List<Certification> getCertificacions() {
-		// TODO When is defined how a course end this can be completed
-		Certification certification = new Certification();
-		certification.setCourseName("Course Mock");
-		certification.setStudentName("Student Mock");
-		certification.setTeachertName("Teacher Mock");
-		certification.setResult((float)7.5);
+		List<StudentExam> approvedFinals = StudentExam.getApprovedFinalsByStudentId(this.getId());
 		
 		ArrayList<Certification> result = new ArrayList<Certification>();
-		result.add(certification);
-		result.add(certification);
+		if(approvedFinals != null){
+			for (StudentExam approvedFinal : approvedFinals) {
+				CourseSession session = CourseSession.getById(approvedFinal.getSessionId());
+				if(session != null){
+					Course course = Course.getById(session.getCourseId());
+					
+					if(course != null){
+						Certification certification = new Certification();
+						certification.setCourseName(course.getName());
+						certification.setStudentName(this.getFirstName() + " " + this.getLastName());
+						certification.setResult(approvedFinal.getResult());
+						
+						User teacher = User.getById(course.getTeacherId());
+						if(teacher != null){
+							certification.setTeachertName(teacher.getFirstName() + " " + teacher.getLastName());
+						}
+						
+						result.add(certification);
+					}
+				}
+				
+			}
+		}
 		
 		return result;
 	}
