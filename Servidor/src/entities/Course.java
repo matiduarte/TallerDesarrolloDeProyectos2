@@ -28,6 +28,7 @@ public class Course {
 	private ArrayList<CourseCalification> califications;
 	private ArrayList<CourseComment> comments;
 	
+	private boolean isFinalExamAvailable;
 	
 	public Integer getTeacherId() {
 		return teacherId;
@@ -109,6 +110,8 @@ public class Course {
 			c.setCourseCalifications((ArrayList<CourseCalification>) CourseCalification.getByCourseId(c.getId()));
 			
 			c.setCourseComments((ArrayList<CourseComment>) CourseComment.getByCourseId(c.getId()));
+			
+			c.setIsFinalExamAvailable(c.isFinalExamEvailable(c.getActiveSession()));
 		}
 		return c;
 	}
@@ -363,5 +366,12 @@ public class Course {
 		}
 		
 		return session.isFinalExamAvailable(unities.size());
+	}
+	
+	public boolean getIsFinalExamAvailable() {
+		return isFinalExamAvailable;
+	}
+	public void setIsFinalExamAvailable(boolean isFinalExamAvailable) {
+		this.isFinalExamAvailable = isFinalExamAvailable;
 	}
 }
