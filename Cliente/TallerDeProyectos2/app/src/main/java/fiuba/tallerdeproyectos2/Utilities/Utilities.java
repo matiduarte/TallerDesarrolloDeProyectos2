@@ -6,6 +6,10 @@ import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -132,5 +136,22 @@ public class Utilities {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Float getAverageCalification(JSONArray courseCalificationsData) throws JSONException {
+        Float aCal = 0f;
+        Float totalCalifications = Float.valueOf(courseCalificationsData.length());
+        if(courseCalificationsData.length() > 0){
+            Float califications = 0f;
+            for (int j = 0; j < courseCalificationsData.length() ; j++) {
+                JSONObject courseCalificationsArray = new JSONObject(courseCalificationsData.getString(j));
+                Float calification = Float.valueOf(courseCalificationsArray.getInt("calification"));
+                califications += calification;
+            }
+            aCal = califications / totalCalifications;
+        } else {
+            aCal = 0f;
+        }
+        return aCal;
     }
 }

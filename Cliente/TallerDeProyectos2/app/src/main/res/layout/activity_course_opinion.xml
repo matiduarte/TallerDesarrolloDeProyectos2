@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Deja tu opinion:"/>
+        android:text="Deja tu comentario:"/>
 
     <EditText
         android:id="@+id/opinion"

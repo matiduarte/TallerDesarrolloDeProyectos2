@@ -28,19 +28,31 @@
             android:padding="10dp"
             android:layout_gravity="bottom"
             android:background="#CC009688"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:text="Taller de Desarrollo de Proyectos II"
+            android:textSize="16sp"
             android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="4,5"
+            android:layout_marginRight="40dp"
+            android:id="@+id/course_calification"
+            android:layout_gravity="end|bottom"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"/>
 
         <ImageView
             android:layout_width="30dp"
-            android:id="@+id/course_icon_inscripted"
-            android:layout_height="45dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
+            android:id="@+id/course_calification_image"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_marginRight="5dp"
             android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_bookmark_white"
-            android:visibility="gone"
+            android:src="@drawable/ic_star_white"
             android:contentDescription="@string/identification_for_inscripted_courses"/>
 
         <TextView

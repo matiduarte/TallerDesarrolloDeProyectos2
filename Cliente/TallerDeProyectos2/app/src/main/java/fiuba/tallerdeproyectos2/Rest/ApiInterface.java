@@ -51,5 +51,13 @@ public interface ApiInterface {
 
     @GET("proyectos2/forum/{sessionId}")
     Call<ServerResponse> getForum(@Path("sessionId") Integer sessionId);
+
+    @FormUrlEncoded
+    @POST("proyectos2/comment")
+    Call<ServerResponse> postCourseComments(@Field("studentId")Integer studentId, @Field("courseId")Integer courseId, @Field("message")String message);
+
+    @FormUrlEncoded
+    @POST("proyectos2/calification")
+    Call<ServerResponse> postCourseCalifications(@Field("studentId")Integer studentId, @Field("courseId")Integer courseId, @Field("calification")Integer calification);
 }
 
