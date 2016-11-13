@@ -52,14 +52,9 @@ public class StatsVisualizationController extends HttpServlet {
 		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
 		if ( false == this.esAdmin( request.getParameter("viewer") ) ) {
-			// si no es admin, entonces es docente, entonces filtro para que me queden solo sus cursos.
+			// si no es admin, entonces es docente, entonces filtro para que me queden solo los reportes de sus cursos.
 			Integer id_docente = Integer.parseInt( request.getParameter("id") );
-			System.out.println("NO ES ADMIN");
-			this.filtrarReportes( reportes_cursos, id_docente );
-		}
-		else
-		{
-			System.out.println("SI ES ADMIN");
+			reportes_cursos = this.filtrarPorIdReportesPertenecientesADocente( reportes_cursos, id_docente );
 		}
 		
 		// paso los reportes asi nomas para armar la tabla html, el resto lo hace el plugin "DataTable".
@@ -139,28 +134,46 @@ public class StatsVisualizationController extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 	}
+	
+	private ArrayList<Report> filtrarPorNombreReportesPertenecientesADocente( ArrayList<Report> reportes_cursos, Integer teacher_id ) {
+		
+		List<Course> cursos_profesor = (ArrayList<Course>) Course.getByTeacherId( teacher_id );
 
-	private void filtrarReportes( ArrayList<Report> reportes_cursos, Integer teacher_id ) {
+		ArrayList<Report> filtro = new ArrayList<Report>();
 		
-		List<Course> cursos_a_filtrar = (ArrayList<Course>) Course.getByTeacherId( teacher_id );
-		
-		for (Course curso : cursos_a_filtrar ) {
+		for ( Report reporte_curso : reportes_cursos ) {
 			
-			for (Iterator<Report> iterator = reportes_cursos.iterator(); iterator.hasNext();) {
+			for ( Course curso_profesor : cursos_profesor ) {
 				
-			    Report reporte = iterator.next();
-			    System.out.println( reporte.getCourseName() );
-			    System.out.println( curso.getName() );
-			    if ( 0 != reporte.getCourseName().compareTo( curso.getName() ) ) {
-			        // si NO matchea el nombre del curso con el nombre del reporte, entonces el teacher NO tiene a ese curso.
-			    	// entonces elimino reporte.
-			        iterator.remove();
-			        System.out.println( "BORRANDO: " + curso.getName() );
-			    }
+				if ( 0 == reporte_curso.getCourseName().compareTo( curso_profesor.getName() ) ) {
+					// si matchean, entonces lo agrego al array que voy a devolver.
+					filtro.add( reporte_curso );
+				}
 			}
-			
 		}
+		
+		return filtro;		
 	}
+	
+	private ArrayList<Report> filtrarPorIdReportesPertenecientesADocente( ArrayList<Report> reportes_cursos, Integer teacher_id ) {
+		
+		List<Course> cursos_profesor = (ArrayList<Course>) Course.getByTeacherId( teacher_id );
+
+		ArrayList<Report> filtro = new ArrayList<Report>();
+		
+		for ( Report reporte_curso : reportes_cursos ) {
+			
+			for ( Course curso_profesor : cursos_profesor ) {
+				
+				if ( reporte_curso.getCourseId() == curso_profesor.getId() ) {
+					// si matchean, entonces lo agrego al array que voy a devolver.
+					filtro.add( reporte_curso );
+				}
+			}
+		}
+		
+		return filtro;		
+	}	
 	
 	private boolean esAdmin( String viewer ) {
 		if ( 0 == viewer.compareTo( "admin" ) ) {
