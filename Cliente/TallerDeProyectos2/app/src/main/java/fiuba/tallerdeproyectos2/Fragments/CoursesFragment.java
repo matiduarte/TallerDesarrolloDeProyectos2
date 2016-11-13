@@ -31,6 +31,7 @@ import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
+import fiuba.tallerdeproyectos2.Utilities.Utilities;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,10 +44,10 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
     Integer studentId;
     private static final String TAG = CoursesFragment.class.getSimpleName();
     ArrayList myCourses = new ArrayList<>();
-    ImageView courseIconInscripted;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     TextView noCourses;
+    Float averageCalification;
 
     public CoursesFragment() {}
 
@@ -55,7 +56,6 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
         View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
-        courseIconInscripted = (ImageView) rootView.findViewById(R.id.course_icon_inscripted);
         noCourses = (TextView) rootView.findViewById(R.id.no_courses);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
@@ -88,10 +88,9 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             if(courseDataArray.has("pictureUrl")){
                                 pictureUrl = courseDataArray.getString("pictureUrl");
                             }
-                            if(courseDataArray.getBoolean("isSubscribed")){
-                                //courseIconInscripted.setVisibility(View.VISIBLE);
-                            }
-                            CoursesCardViewData obj = new CoursesCardViewData(courseDataArray.getString("name"), pictureUrl, courseDataArray.getString("id"));
+                            JSONArray courseCalificationsData = new JSONArray(courseDataArray.getString("califications"));
+                            averageCalification = Utilities.getAverageCalification(courseCalificationsData);
+                            CoursesCardViewData obj = new CoursesCardViewData(courseDataArray.getString("name"), pictureUrl, courseDataArray.getString("id"), averageCalification.toString());
                             myCourses.add(i, obj);
                         }
                     }
@@ -167,10 +166,9 @@ public class CoursesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             if(courseDataArray.has("pictureUrl")){
                                 pictureUrl = courseDataArray.getString("pictureUrl");
                             }
-                            if(courseDataArray.getBoolean("isSubscribed")){
-                                //courseIconInscripted.setVisibility(View.VISIBLE);
-                            }
-                            CoursesCardViewData obj = new CoursesCardViewData(courseDataArray.getString("name"), pictureUrl, courseDataArray.getString("id"));
+                            JSONArray courseCalificationsData = new JSONArray(courseDataArray.getString("califications"));
+                            averageCalification = Utilities.getAverageCalification(courseCalificationsData);
+                            CoursesCardViewData obj = new CoursesCardViewData(courseDataArray.getString("name"), pictureUrl, courseDataArray.getString("id"), averageCalification.toString());
                             myCourses.add(i, obj);
                         }
                     }
