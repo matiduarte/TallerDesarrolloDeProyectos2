@@ -56,7 +56,7 @@ public class ExamService {
 	@GET
 	@Produces("application/json")
 	public ServiceResponse getTest(@PathParam("courseId") int courseId){
-		Course course = Course.getById(courseId);	 
+		Course course = Course.getById(courseId, 0);	 
 		if (course != null){
 			ArrayList<CourseUnity> unities = (ArrayList<CourseUnity>) CourseUnity.getByCourseId(course.getId());
 			ArrayList<Question> allQuestions = new ArrayList<Question>();

@@ -88,7 +88,7 @@ public class Course {
 	}
 	
 	
-	public static Course getById(int id){
+	public static Course getById(int id, int studentId){
 		Course c = (Course)StoreData.getById(Course.class, id);
 		if(c != null){
 			ArrayList<CourseSession> sessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId());
@@ -114,6 +114,11 @@ public class Course {
 			c.setCourseComments((ArrayList<CourseComment>) CourseComment.getByCourseId(c.getId()));
 			
 			c.setIsFinalExamAvailable(c.isFinalExamEvailable(c.getActiveSession()));
+			
+			if(studentId > 0){
+				c.checkIfStudentIsSuscribed(studentId);
+				c.checkIfStudentPassFinalExam(studentId);
+			}
 		}
 		return c;
 	}
@@ -176,12 +181,12 @@ public class Course {
 	}
 	
 	
-	public static List<Course> getByCategoryId(int categoryId){
+	public static List<Course> getByCategoryId(int categoryId, int studentId){
 		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCategoryId(categoryId);	 
 		List<Course> listOfCourses = new ArrayList<Course>();
 		
 		for (CourseCategory courseCategory : listOfCouseCategory) {
-			Course course = Course.getById(courseCategory.getCourseId());
+			Course course = Course.getById(courseCategory.getCourseId(), studentId);
 			if(course != null && course.getTeacherId() != null){
 				listOfCourses.add(course);
 			}
@@ -227,7 +232,7 @@ public class Course {
 		
 		List<Category> cateogries = Category.search(search);
 		for (Category category : cateogries) {
-			List<Course> categoryCourses = Course.getByCategoryId(category.getId());
+			List<Course> categoryCourses = Course.getByCategoryId(category.getId(), 0);
 			//TODO: Validar si ya esta el curso en la lista
 			coursesFixed.addAll(categoryCourses);
 		}

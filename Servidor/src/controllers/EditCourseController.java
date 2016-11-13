@@ -57,7 +57,7 @@ public class EditCourseController extends HttpServlet {
         
         if(request.getParameter("id") != null){
         	 int courseId = Integer.valueOf(request.getParameter("id")); 
-             Course course = Course.getById(courseId);
+             Course course = Course.getById(courseId, 0);
              ArrayList<Category> currentCategories = (ArrayList<Category>) course.getCategories();
              
              String currentTeacherName = "";
@@ -104,7 +104,7 @@ public class EditCourseController extends HttpServlet {
     	
     	if(request.getParameter("id") != null){
     		int courseId = Integer.valueOf(request.getParameter("id"));
-	    	Course course = Course.getById(courseId);
+	    	Course course = Course.getById(courseId, 0);
 	    	course.setName(name);
 	    	course.setDescription(description);
 	    	boolean error = false;

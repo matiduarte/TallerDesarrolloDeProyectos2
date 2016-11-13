@@ -53,9 +53,7 @@ public class CourseService {
 	@GET
 	@Produces("application/json")
 	public ServiceResponse getCourse(@PathParam("id") int id, @DefaultValue("0") @QueryParam("studentId") int studentId){
-		Course course = Course.getById(id);	
-		course.checkIfStudentIsSuscribed(studentId);
-		course.checkIfStudentPassFinalExam(studentId);
+		Course course = Course.getById(id,studentId);	
 		if (course != null){
 	    	JSONObject jo = new JSONObject();
 			try {

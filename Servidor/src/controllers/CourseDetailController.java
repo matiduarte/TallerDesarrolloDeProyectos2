@@ -53,7 +53,7 @@ public class CourseDetailController extends HttpServlet {
         
         if(request.getParameter("id") != null){
         	 int courseId = Integer.valueOf(request.getParameter("id")); 
-             Course course = Course.getById(courseId);
+             Course course = Course.getById(courseId, 0);
              
              if(course != null){
             	 request.setAttribute("course", course);

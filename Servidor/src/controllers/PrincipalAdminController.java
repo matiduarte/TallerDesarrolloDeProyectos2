@@ -67,7 +67,7 @@ public class PrincipalAdminController extends HttpServlet {
     	  	
     	Integer id_curso = Integer.parseInt( request.getParameter("id") );
     	    	
-    	Course curso_a_eliminar = Course.getById( id_curso );
+    	Course curso_a_eliminar = Course.getById( id_curso , 0);
     	
     	if ( false == curso_a_eliminar.hasStudents() && false == curso_a_eliminar.hasStarted() ) {
     		request.setAttribute("borrado", "true");

@@ -113,7 +113,7 @@ public class CourseUnity {
 		return result;
 	}
 	public void checkStudentExam(int studentId) {
-		Course course = Course.getById(this.getCourseId());
+		Course course = Course.getById(this.getCourseId(), studentId);
 		CourseSession currentSession = course.getCurrentSession();
 
 		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND unityId = " + this.getId();
