@@ -2,6 +2,11 @@ package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.jettison.json.JSONArray;
 
+import utils.ComparadorPorTotalInscriptosMapaInscriptos;
+import utils.ComparadorReportePorInscriptos;
 import entities.Report;
 import entities.User;
 
@@ -38,33 +45,74 @@ public class StatsVisualizationController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		
-		JSONArray nombres_categorias_json = new JSONArray();
-		JSONArray nombres_cursos_json = new JSONArray();
-		JSONArray cantidad_aprobados_por_categoria_json = new JSONArray();
-		JSONArray cantidad_desaprobados_por_categoria_json = new JSONArray();
-		JSONArray cantidad_abandonaron_por_categoria_json = new JSONArray();		
-		
-		// el número de posición en los arrays corresponde a un mismo curso.
-		// por ej:
-		//		  nombres_curso[3] = Algoritmos y Programacion I
-		//        nombres_categorias[3] = COMPUTACION
-		//        cantidad_aprobados_por_categoria[3] = cant de aprobados en el curso
-		//        cantidad_desaprobados_por_categoria[3] = cant de desaprobados en el curso
-		//        cantidad_abandonaron_por_categoria[3] = cant de abandonos en el curso
+			HttpServletResponse response) throws ServletException, IOException {	
 		
 		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
+		// paso los reportes asi nomas para armar la tabla html, el resto lo hace el plugin "DataTable".
+		request.setAttribute("reportes_cursos", reportes_cursos );
+		
+		// ahora viene la logica para armar las listas que va a usar el plugin "highcharts".
+		
+		// creo un mapa que va a tener: clave=categoria, valor=array con: [0]=aprobados, [1]=desaprobados y [2]=abandonaron.
+		Map<String, ArrayList<Integer>> inscriptos_por_categoria = new HashMap<String, ArrayList<Integer>>();
+		
 		for( Report reporte : reportes_cursos ) {
-			nombres_categorias_json.put( reporte.getCategory() );
-			nombres_cursos_json.put( reporte.getCourseName() );
-			cantidad_aprobados_por_categoria_json.put( reporte.getPass() );
-			cantidad_desaprobados_por_categoria_json.put( reporte.getNoPass() );
-			cantidad_abandonaron_por_categoria_json.put( reporte.getGiveUp() );
+			
+			String categoria = reporte.getCategory();
+			
+			if ( false == inscriptos_por_categoria.containsKey( categoria ) ) {
+				// si no tiene la categoria agregada como key del mapa, entonces la agrego
+				// esto lo hago primero para dsp operar sabiendo que ya esta creada la entrada
+				// en el map para esa categoria.
+				
+				// creo el nuevo array:
+				// 					 nuevo_array[0] = suma parcial de aprobados
+				// 					 nuevo_array[1] = suma parcial de desaprobados
+				// 					 nuevo_array[2] = suma parcial de abandonaron
+				ArrayList<Integer> nuevo_array = new ArrayList<Integer>(3);
+				nuevo_array.add(0);
+				nuevo_array.add(0);
+				nuevo_array.add(0);
+				inscriptos_por_categoria.put( categoria, nuevo_array );
+			}
+			
+			Integer suma_parcial_aprobados_actualizada = inscriptos_por_categoria.get( categoria ).get(0) + reporte.getPass();
+			inscriptos_por_categoria.get( categoria ).set(0, suma_parcial_aprobados_actualizada);
+
+			Integer suma_parcial_desaprobados_actualizada = inscriptos_por_categoria.get( categoria ).get(1) + reporte.getNoPass();
+			inscriptos_por_categoria.get( categoria ).set(1, suma_parcial_desaprobados_actualizada);			
+
+			Integer suma_parcial_abandonaron_actualizada = inscriptos_por_categoria.get( categoria ).get(2) + reporte.getGiveUp();
+			inscriptos_por_categoria.get( categoria ).set(2, suma_parcial_abandonaron_actualizada);
 		}
 		
-		request.setAttribute("nombres_cursos", nombres_cursos_json.toString());
+		// el número de posición en los arrays corresponde a una misma categoria.
+		// por ej:
+		//        nombres_categorias_json[3] = COMPUTACION
+		//        cantidad_aprobados_por_categoria_json[3] = cant de aprobados en la categoria.
+		//        cantidad_desaprobados_por_categoria_json[3] = cant de desaprobados en la categoria.
+		//        cantidad_abandonaron_por_categoria_json[3] = cant de abandonos en la categoria.		
+		
+		JSONArray nombres_categorias_json = new JSONArray();
+		JSONArray cantidad_aprobados_por_categoria_json = new JSONArray();
+		JSONArray cantidad_desaprobados_por_categoria_json = new JSONArray();
+		JSONArray cantidad_abandonaron_por_categoria_json = new JSONArray();
+		
+		List<Map.Entry<String, ArrayList<Integer>>> ordenado = new LinkedList<Map.Entry<String, ArrayList<Integer>>>(inscriptos_por_categoria.entrySet());
+		
+		Collections.sort(ordenado, new ComparadorPorTotalInscriptosMapaInscriptos() );
+		
+		for (Map.Entry<String, ArrayList<Integer>> entry : ordenado) {
+		    String categoria = entry.getKey();
+		    ArrayList<Integer> cantidad_aprobados_desaprobados_abandonaron = entry.getValue();
+		    
+			nombres_categorias_json.put( categoria );
+			cantidad_aprobados_por_categoria_json.put( cantidad_aprobados_desaprobados_abandonaron.get(0) );
+			cantidad_desaprobados_por_categoria_json.put( cantidad_aprobados_desaprobados_abandonaron.get(1) );
+			cantidad_abandonaron_por_categoria_json.put( cantidad_aprobados_desaprobados_abandonaron.get(2) );
+		}
+		
 		request.setAttribute("nombres_categorias", nombres_categorias_json.toString());
 		request.setAttribute("cantidad_aprobados_por_curso", cantidad_aprobados_por_categoria_json.toString());
 		request.setAttribute("cantidad_desaprobados_por_curso", cantidad_desaprobados_por_categoria_json.toString());

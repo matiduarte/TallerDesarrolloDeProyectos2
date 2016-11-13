@@ -37,11 +37,15 @@ public class Report {
 		this.giveUp = giveUp;
 	}
 	public String getCategory() {
-		return courseName;
+		return courseCategory;
 	}
 	public void setCategory(String category) {
 		this.courseCategory = category;
-	}	
+	}
+	
+	public Integer getTotalPupils() {
+		return this.getPass() + this.getNoPass() + this.getGiveUp();
+	}
 	
 	public static ArrayList<Report> getReportList(){
 		
