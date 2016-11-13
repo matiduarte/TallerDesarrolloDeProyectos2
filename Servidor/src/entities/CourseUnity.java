@@ -22,6 +22,7 @@ public class CourseUnity {
 	private Integer questionSize;
 	private boolean passExam;
 	private float examResult;
+	private boolean examTimeFinished;
 	
 	public int getId() {
 		return id;
@@ -130,5 +131,11 @@ public class CourseUnity {
 	}
 	public void setExamResult(float examResult) {
 		this.examResult = examResult;
+	}
+	public boolean isExamTimeFinished() {
+		return examTimeFinished;
+	}
+	public void setExamTimeFinished(boolean examTimeFinished) {
+		this.examTimeFinished = examTimeFinished;
 	}
 }

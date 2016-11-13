@@ -68,7 +68,13 @@ public class ExamService {
 			ArrayList<Question> questions = new ArrayList<Question>();
 			
 			Random generator = new Random();
-			for (int i = 0; i < 10; i++) {
+			
+			int finalSize = 10;
+			if(allQuestions.size() < 10){
+				finalSize = allQuestions.size();
+			}
+			
+			for (int i = 0; i < finalSize; i++) {
 				int randomIndex = generator.nextInt(allQuestions.size());
 				Question q = allQuestions.get(randomIndex);
 				q.setAnswers(Answer.getByQuestionId(q.getId()));

@@ -29,6 +29,8 @@ public class Course {
 	private ArrayList<CourseComment> comments;
 	
 	private boolean isFinalExamAvailable;
+	private boolean passFinalExam;
+	private float finalExamResult;
 	
 	public Integer getTeacherId() {
 		return teacherId;
@@ -137,6 +139,12 @@ public class Course {
 				if(i <= activeUnity){
 					current.setActive(true);
 				}
+				
+				current.setExamTimeFinished(true);
+				if(i == activeUnity - 1){
+					current.setExamTimeFinished(false);
+				}
+				
 				fixed.add(current);
 			}
 			
@@ -307,6 +315,20 @@ public class Course {
 		}
 	}
 	
+	public void checkIfStudentPassFinalExam(int studentId) {
+		CourseSession currentSession = this.getCurrentSession();
+
+		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND isFinal = true";
+		List<StudentExam> exams = (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
+		if(exams != null && !exams.isEmpty()){
+			this.setPassFinalExam(true);
+			this.setFinalExamResult(exams.get(0).getResult());
+		}else{
+			this.setPassFinalExam(false);
+		}
+		
+	}
+	
 	public static List<Course> getSoon() {
 		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		
@@ -373,5 +395,17 @@ public class Course {
 	}
 	public void setIsFinalExamAvailable(boolean isFinalExamAvailable) {
 		this.isFinalExamAvailable = isFinalExamAvailable;
+	}
+	public boolean isPassFinalExam() {
+		return passFinalExam;
+	}
+	public void setPassFinalExam(boolean passFinalExam) {
+		this.passFinalExam = passFinalExam;
+	}
+	public float getFinalExamResult() {
+		return finalExamResult;
+	}
+	public void setFinalExamResult(float finalExamResult) {
+		this.finalExamResult = finalExamResult;
 	}
 }
