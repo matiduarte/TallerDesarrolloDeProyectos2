@@ -33,6 +33,9 @@
       <img class="navbar-brand" src="bootstrap/img/icono.ico" alt="Logo" style="width:60px;height:60px;">
      
       <a class="navbar-brand">FIUBA Cursos</a>
+      
+      <button class="btn btn-raised pull-right" onclick="goToStats();" >Ver estadísticas</button>
+      
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse"> 
     </div>
@@ -98,6 +101,10 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 	<script src="bootstrap/js/floating-label.js"></script>
 	<script type="text/javascript">
+	
+		function goToStats(){
+			window.location.href = '/Servidor/stats';
+		}
 	
 	
 		function getCourseId(id){

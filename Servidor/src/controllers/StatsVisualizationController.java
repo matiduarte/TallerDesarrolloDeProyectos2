@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.codehaus.jettison.json.JSONArray;
 
 import utils.ComparadorPorTotalInscriptosMapaInscriptos;
 import utils.ComparadorReportePorInscriptos;
+import entities.Course;
 import entities.Report;
 import entities.User;
 
@@ -49,6 +51,14 @@ public class StatsVisualizationController extends HttpServlet {
 		
 		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
+		HttpSession session = request.getSession(true);
+		User user = (User) session.getAttribute("user");
+		
+		if ( false == user.getIsAdmin() ) {
+			// si no es admin, entonces es docente, entonces filtro para que me queden solo sus cursos.
+			this.filtrarReportes( reportes_cursos, user.getId() );
+		}
+		
 		// paso los reportes asi nomas para armar la tabla html, el resto lo hace el plugin "DataTable".
 		request.setAttribute("reportes_cursos", reportes_cursos );
 		
@@ -57,7 +67,7 @@ public class StatsVisualizationController extends HttpServlet {
 		// creo un mapa que va a tener: clave=categoria, valor=array con: [0]=aprobados, [1]=desaprobados y [2]=abandonaron.
 		Map<String, ArrayList<Integer>> inscriptos_por_categoria = new HashMap<String, ArrayList<Integer>>();
 		
-		for( Report reporte : reportes_cursos ) {
+		for ( Report reporte : reportes_cursos ) {
 			
 			String categoria = reporte.getCategory();
 			
@@ -127,4 +137,23 @@ public class StatsVisualizationController extends HttpServlet {
 
 	}
 
+	private void filtrarReportes( ArrayList<Report> reportes_cursos, Integer teacher_id ) {
+		
+		List<Course> cursos_a_filtrar = (ArrayList<Course>) Course.getByTeacherId( teacher_id );
+		
+		for (Course curso : cursos_a_filtrar ) {
+			
+			for (Iterator<Report> iterator = reportes_cursos.iterator(); iterator.hasNext();) {
+				
+			    Report reporte = iterator.next();
+			    if ( 0 != reporte.getCourseName().compareTo( curso.getName() ) ) {
+			        // si NO matchea el nombre del curso con el nombre del reporte, entonces el teacher NO tiene a ese curso.
+			    	// entonces elimino reporte.
+			        iterator.remove();
+			    }
+			}
+			
+		}
+	}
+	
 }
