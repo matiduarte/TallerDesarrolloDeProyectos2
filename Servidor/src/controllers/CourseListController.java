@@ -40,6 +40,8 @@ public class CourseListController extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		User user = (User) session.getAttribute("user");
 		
+		request.setAttribute( "teacher_id", user.getId() );
+		
 		if (user != null){
 			List<Course> list = (ArrayList<Course>) Course.getByTeacherId(user.getId());
 			Collections.sort(list, new Comparator<Course>() {

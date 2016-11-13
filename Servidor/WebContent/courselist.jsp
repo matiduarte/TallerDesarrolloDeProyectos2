@@ -34,10 +34,9 @@
      
       <a class="navbar-brand">FIUBA Cursos</a>
       
-      <button class="btn btn-raised pull-right" onclick="goToStats();" >Ver estadísticas</button>
-      
     </div>
-    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
+    <div class="navbar-collapse collapse navbar-inverse-collapse">
+    	<button class="btn btn-raised pull-right" onclick="goToStats();" >Ver estadísticas</button> 
     </div>
   </div>
 </div>
@@ -103,7 +102,7 @@
 	<script type="text/javascript">
 	
 		function goToStats(){
-			window.location.href = '/Servidor/stats';
+			window.location.href = '/Servidor/stats?viewer=teacher&id=' + ${teacher_id};
 		}
 	
 	

@@ -51,12 +51,15 @@ public class StatsVisualizationController extends HttpServlet {
 		
 		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
-		HttpSession session = request.getSession(true);
-		User user = (User) session.getAttribute("user");
-		
-		if ( false == user.getIsAdmin() ) {
+		if ( false == this.esAdmin( request.getParameter("viewer") ) ) {
 			// si no es admin, entonces es docente, entonces filtro para que me queden solo sus cursos.
-			this.filtrarReportes( reportes_cursos, user.getId() );
+			Integer id_docente = Integer.parseInt( request.getParameter("id") );
+			System.out.println("NO ES ADMIN");
+			this.filtrarReportes( reportes_cursos, id_docente );
+		}
+		else
+		{
+			System.out.println("SI ES ADMIN");
 		}
 		
 		// paso los reportes asi nomas para armar la tabla html, el resto lo hace el plugin "DataTable".
@@ -146,14 +149,26 @@ public class StatsVisualizationController extends HttpServlet {
 			for (Iterator<Report> iterator = reportes_cursos.iterator(); iterator.hasNext();) {
 				
 			    Report reporte = iterator.next();
+			    System.out.println( reporte.getCourseName() );
+			    System.out.println( curso.getName() );
 			    if ( 0 != reporte.getCourseName().compareTo( curso.getName() ) ) {
 			        // si NO matchea el nombre del curso con el nombre del reporte, entonces el teacher NO tiene a ese curso.
 			    	// entonces elimino reporte.
 			        iterator.remove();
+			        System.out.println( "BORRANDO: " + curso.getName() );
 			    }
 			}
 			
 		}
+	}
+	
+	private boolean esAdmin( String viewer ) {
+		if ( 0 == viewer.compareTo( "admin" ) ) {
+			return true;
+		}
+		else {
+			return false;
+		}	
 	}
 	
 }
