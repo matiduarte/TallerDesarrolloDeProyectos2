@@ -325,15 +325,20 @@ public class Course {
 	
 	public void checkIfStudentPassFinalExam(int studentId) {
 		CourseSession currentSession = this.getCurrentSession();
-
-		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND isFinal = true";
-		List<StudentExam> exams = (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
-		if(exams != null && !exams.isEmpty()){
-			this.setPassFinalExam(true);
-			this.setFinalExamResult(exams.get(0).getResult());
+		
+		if(currentSession != null){
+			String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND isFinal = true";
+			List<StudentExam> exams = (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
+			if(exams != null && !exams.isEmpty()){
+				this.setPassFinalExam(true);
+				this.setFinalExamResult(exams.get(0).getResult());
+			}else{
+				this.setPassFinalExam(false);
+			}
 		}else{
 			this.setPassFinalExam(false);
 		}
+		
 		
 	}
 	
