@@ -86,7 +86,7 @@ public class CourseCommentsFragment extends Fragment {
             JSONArray courseCalificationsData = new JSONArray(califications);
             if(courseCalificationsData.length() > 0) {
                 averageCalification = Utilities.getAverageCalification(courseCalificationsData);
-                //calificationTV.setText(averageCalification.intValue());
+                calificationTV.setText(averageCalification.toString());
                 totalCalifications = courseCalificationsData.length();
                 totalOneStarCalification = 0;
                 totalTwoStarCalification = 0;
