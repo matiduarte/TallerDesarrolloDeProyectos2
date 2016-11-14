@@ -3,12 +3,24 @@ package dataBase;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;  
 import org.hibernate.SessionFactory;  
 import org.hibernate.Transaction;  
 import org.hibernate.cfg.Configuration;
+import org.hibernate.transform.Transformers;
+
+import entities.Course;
+import entities.CourseApproved;
+import entities.CourseDisapproved;
+import entities.CourseSession;
+import entities.Report;
+import entities.StudentExam;
+import entities.User;
 
 
 public class StoreData {  
@@ -121,8 +133,13 @@ public class StoreData {
     //t.commit();//transaction is committed  
     //session.close();  
 
-    System.out.println("successfully saved");  
+    System.out.println("successfully saved");
+ 
+	List<CourseDisapproved> caList = CourseDisapproved.getCourseDisapproved();
 
+  
+   
+    
 	}  
 
 	public static Object getById(Class<?> objectClass, int id){ 
@@ -303,4 +320,25 @@ public class StoreData {
 		return obj;
 	}
 
+	
+	public static List<?> customQuery(String query){
+		
+		Session session = StoreData.getInstance().factory.openSession();  
+
+		List<Object> obj = null;
+		try{
+			 obj = session.createQuery(query)
+		              .list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		
+		return obj;
+		
+	}
+	
 }  

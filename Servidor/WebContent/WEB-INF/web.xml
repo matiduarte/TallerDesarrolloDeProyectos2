@@ -212,4 +212,12 @@
     <servlet-name>GetActiveSessionActionServlet</servlet-name>
     <url-pattern>/GetActiveSessionActionServlet/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>StatsVisualization</servlet-name>
+    <servlet-class>controllers.StatsVisualizationController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StatsVisualization</servlet-name>
+    <url-pattern>/stats/*</url-pattern>
+  </servlet-mapping>  
 </web-app>
