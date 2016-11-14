@@ -12,18 +12,34 @@
     tools:context="fiuba.tallerdeproyectos2.Activities.ExamActivity">
 
     <LinearLayout
-        android:id="@+id/exam"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:textColor="#ffffff"
-        android:layout_gravity="bottom|right"
-        android:id="@+id/finishExam"
-        android:text="@string/finish_exam"/>
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
+
+            <LinearLayout
+                android:id="@+id/exam"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:layout_gravity="bottom|right"
+            android:id="@+id/finishExam"
+            android:text="@string/finish_exam"/>
+
+    </LinearLayout>
 
 </LinearLayout>

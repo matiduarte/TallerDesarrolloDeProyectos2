@@ -205,6 +205,34 @@ public class StoreData {
 		return obj;
 	}
 	
+	public static List<?> getByFieldLike(Class<?> objectClass, String field, String value){ 
+		//creating session object  
+		Session session = StoreData.getInstance().factory.openSession();  
+
+		List<Object> obj = null;
+		String tableName = objectClass.getSimpleName();
+
+		//hack para heroku
+		if(System.getenv("DATABASE_URL") != null && tableName.compareTo("User") == 0){
+			tableName = '"' + tableName + '"';
+		}
+
+		String query = "SELECT * FROM " + tableName + " WHERE " + field + " LIKE '%" + value + "%'";
+		System.out.println(query);
+		try{
+			return session.createSQLQuery(query).addEntity(objectClass).list();
+		} catch (Exception e) {
+			System.out.println(query);
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+
+		return obj;
+	}
+	
 	public static List<?> getByTwoFields(Class<?> objectClass, String fieldOne, 
 										String valueOne,String fieldTwo, String valueTwo){ 
 		//creating session object  

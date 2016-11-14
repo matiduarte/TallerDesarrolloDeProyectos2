@@ -176,14 +176,14 @@ public class ExamActivity extends AppCompatActivity implements ExamInfoDialogFra
                     nota = calcularNota();
 
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                    Call<ServerResponse> call = apiService.postPassExam(studentId, sessionId, unitId, nota);
+                    Call<ServerResponse> call = apiService.postPassExam(studentId, sessionId, unitId, nota, false);
                     call.enqueue(new Callback<ServerResponse>() {
 
                         @Override
                         public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                             Boolean success = response.body().getSuccess();
                             if (success.equals(true)) {
-                                navigateToUnitDetailsActivity(false, nota);
+                                navigateToUnitDetailsActivity(false);
                             }
                         }
 
@@ -220,17 +220,16 @@ public class ExamActivity extends AppCompatActivity implements ExamInfoDialogFra
 
     @Override
     public void onBackPressed() {
-        navigateToUnitDetailsActivity(!isPractice, nota);
+        navigateToUnitDetailsActivity(!isPractice);
     }
 
-    private void navigateToUnitDetailsActivity(Boolean showExam, Float nota){
+    private void navigateToUnitDetailsActivity(Boolean showExam){
         Intent intent = new Intent(getApplicationContext(), UnitDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("unitId", unitId);
         intent.putExtra("courseId", courseId);
         intent.putExtra("showExam", showExam);
-        intent.putExtra("nota", nota);
         startActivity(intent);
     }
 

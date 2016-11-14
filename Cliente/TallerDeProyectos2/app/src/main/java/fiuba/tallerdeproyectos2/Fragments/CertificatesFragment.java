@@ -92,7 +92,7 @@ public class CertificatesFragment extends Fragment implements SwipeRefreshLayout
                         for (int i=0; i < certifications.length(); i++) {
                             JSONObject certificateArray = new JSONObject(certifications.getString(i));
                             courseName = certificateArray.getString("courseName");
-                            teacherName = "Quimey Funes Clapier";
+                            teacherName = certificateArray.getString("teachertName");
                             result = certificateArray.getString("result");
                             CertificateCardViewData obj = new CertificateCardViewData(courseName + ".pdf");
                             certificates.add(i, obj);

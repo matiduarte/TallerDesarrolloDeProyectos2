@@ -34,7 +34,7 @@
 
     <EditText
         android:id="@+id/opinion"
-        android:layout_width="350dp"
+        android:layout_width="328dp"
         android:background="@drawable/edittextdrawable"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

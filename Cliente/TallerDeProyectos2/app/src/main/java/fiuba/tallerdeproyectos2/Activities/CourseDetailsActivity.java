@@ -66,6 +66,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
     Boolean isSubscribed;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    Boolean isFinalExamAvailable, passFinalExam, finalExamTimeFinished;
+    Float finalExamResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +129,15 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
 
                         courseUnities = courseData.getString("courseUnities");
+                        JSONArray courseUnitiesData = new JSONArray(courseUnities);
+                        JSONObject courseUnitiesArray = new JSONObject(courseUnitiesData.getString(courseUnitiesData.length()-1));
+                        finalExamTimeFinished = courseUnitiesArray.getBoolean("examTimeFinished");
                         comments = courseData.getString("comments");
                         califications = courseData.getString("califications");
+
+                        passFinalExam = courseData.getBoolean("passFinalExam");
+                        finalExamResult = Float.valueOf(courseData.getString("finalExamResult"));
+                        isFinalExamAvailable = courseData.getBoolean("isFinalExamAvailable");
 
                         viewPager = (ViewPager) findViewById(R.id.viewpager);
                         setupViewPager(viewPager);
@@ -224,7 +233,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(CourseInformationFragment.newInstance(courseId, sessionId, description, teacherName, isSubscribed, date), "Informacion");
-        adapter.addFragment(CourseUnitiesFragment.newInstance(courseId, sessionId, isSubscribed, courseUnities), "Contenido");
+        adapter.addFragment(CourseUnitiesFragment.newInstance(courseId, sessionId, isSubscribed, courseUnities, passFinalExam, finalExamResult, isFinalExamAvailable, finalExamTimeFinished, courseName), "Contenido");
         adapter.addFragment(CourseCommentsFragment.newInstance(comments, califications), "Opiniones");
         viewPager.setAdapter(adapter);
     }

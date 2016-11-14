@@ -73,7 +73,8 @@ public class CourseCommentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_course_comments, container, false);
-        calificationTV = (TextView) rootView.findViewById(R.id.calification_average_number);
+
+        calificationTV = (TextView) rootView.findViewById(R.id.calification_number);
         opinionTV = (TextView) rootView.findViewById(R.id.opinion_text);
         calificationLayout = (LinearLayout) rootView.findViewById(R.id.calification_layout);
 
@@ -98,19 +99,19 @@ public class CourseCommentsFragment extends Fragment {
                     Integer calification = courseCalificationArray.getInt("calification");
                     switch(calification) {
                         case 1:
-                            totalOneStarCalification += calification;
+                            totalOneStarCalification++;
                             break;
                         case 2:
-                            totalTwoStarCalification += calification;
+                            totalTwoStarCalification++;
                             break;
                         case 3:
-                            totalThreeStarCalification += calification;
+                            totalThreeStarCalification++;
                             break;
                         case 4:
-                            totalFourStarCalification += calification;
+                            totalFourStarCalification++;
                             break;
                         case 5:
-                            totalFiveStarCalification += calification;
+                            totalFiveStarCalification++;
                             break;
                     }
                 }
@@ -130,10 +131,10 @@ public class CourseCommentsFragment extends Fragment {
                 for (int i = 0; i < courseCommentsData.length() ; i++) {
                     JSONObject courseCommentsArray = new JSONObject(courseCommentsData.getString(i));
                     String message = courseCommentsArray.getString("message");
-                    String time = courseCommentsArray.getString("time");
+                    String time = "a las " + courseCommentsArray.getString("time");
                     String name = courseCommentsArray.getString("studentFirstName");
                     String surname = courseCommentsArray.getString("studentLastName") + " - " + averageCalification.intValue() + " *";
-                    String date = "15/10/16";
+                    String date = "";
                     CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, date);
                     courseComments.add(i, obj);
                 }

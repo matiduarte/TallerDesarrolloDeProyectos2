@@ -91,14 +91,13 @@ public class CourseChatActivity extends AppCompatActivity implements SwipeRefres
                         Gson gson = new Gson();
                         Forum forumData = gson.fromJson(data, Forum.class);
                         JSONArray messages = new JSONArray(forumData.getMessages());
-                        Log.d("messages", messages.toString());
                         for (int i = 0; i < messages.length(); i++) {
                             JSONObject messageArray = new JSONObject(messages.getString(i));
                             String message = messageArray.getString("message");
-                            String time = messageArray.getString("time");
+                            String time = "a las " + messageArray.getString("time");
                             String name = messageArray.getString("studentFirstName");
                             String surname = messageArray.getString("studentLastName");
-                            String date = "15/10/16";
+                            String date = "";
                             CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, date);
                             chats.add(i, obj);
                         }

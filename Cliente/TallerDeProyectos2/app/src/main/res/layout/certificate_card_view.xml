@@ -40,16 +40,6 @@
                     android:text="certificado_BaseDeDatos.pdf"
                     android:textSize="15sp"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="70dp"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:tint="@color/background"
-                    android:src="@drawable/ic_download"/>
-
             </LinearLayout>
 
             <View

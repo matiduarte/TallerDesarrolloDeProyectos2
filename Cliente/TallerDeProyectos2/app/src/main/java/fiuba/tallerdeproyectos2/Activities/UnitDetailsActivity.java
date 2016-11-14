@@ -48,12 +48,13 @@ public class UnitDetailsActivity extends AppCompatActivity {
     VideoView videoView;
     MediaController mediaController;
     TextView html;
+
     Integer unitId, courseId, studentId, sessionId;
     String unitName;
-    Boolean showExam, passExam, isPractice;
+    Boolean passExam, isPractice, examTimeFinished, showExam;
     HashMap<String, String> subtitles;
     Spinner subtitlesSpinner;
-    Float nota;
+    Float examResult;
     SessionManagerActivity session;
     HashMap<String, String> user;
 
@@ -95,7 +96,7 @@ public class UnitDetailsActivity extends AppCompatActivity {
         courseId = intent.getIntExtra("courseId", 0);
         sessionId = intent.getIntExtra("sessionId", 0);
         showExam = intent.getBooleanExtra("showExam", false);
-        //nota = intent.getFloatExtra("nota", 0);
+        examTimeFinished = intent.getBooleanExtra("examTimeFinished", false);
 
         session = new SessionManagerActivity(getApplicationContext());
         session.checkLogin();
@@ -161,23 +162,30 @@ public class UnitDetailsActivity extends AppCompatActivity {
                             videoView.start();
                         }
                         passExam = unitData.getBoolean("passExam");
-                        nota = Float.valueOf(unitData.getString("examResult"));
+                        examResult = Float.valueOf(unitData.getString("examResult"));
                         if(passExam){
                             Button passExamButton = (Button)findViewById(R.id.exam_pass_btn);
                             if (passExamButton != null) {
-                                if(nota >= 6){
+                                if(examResult >= 6){
                                     passExamButton.setBackgroundColor(getResources().getColor(R.color.approveExam));
+                                } else {
+                                    passExamButton.setBackgroundColor(getResources().getColor(R.color.disapproveExam));
                                 }
-                                passExamButton.setText(getString(R.string.pass_exam) + nota);
+                                passExamButton.setText(getString(R.string.pass_exam) + examResult);
                                 passExamButton.setVisibility(View.VISIBLE);
                             }
-                        } else if(showExam){
-                            Button examButton = (Button)findViewById(R.id.exam_btn);
+                        } else if(showExam && !examTimeFinished) {
+                            Button examButton = (Button) findViewById(R.id.exam_btn);
                             if (examButton != null) {
                                 examButton.setVisibility(View.VISIBLE);
                                 isPractice = false;
                             }
-                        } else {
+                        } else if (examTimeFinished){
+                            Button passExamButton = (Button)findViewById(R.id.exam_pass_btn);
+                            passExamButton.setBackgroundColor(getResources().getColor(R.color.disapproveExam));
+                            passExamButton.setText("Examen No Rendido");
+                            passExamButton.setVisibility(View.VISIBLE);
+                        } else{
                             Button practiceExamButton = (Button)findViewById(R.id.practice_exam_btn);
                             if (practiceExamButton != null) {
                                 practiceExamButton.setVisibility(View.VISIBLE);

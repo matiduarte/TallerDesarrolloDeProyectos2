@@ -69,6 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         holder.courseId.setText(dataset.get(position).getCourseId());
         if(dataset.get(position).getCourseCalification() != "0.0"){
+            holder.courseCalification.setText(dataset.get(position).getCourseCalification());
             holder.courseCalification.setVisibility(View.VISIBLE);
             holder.courseCalificationImage.setVisibility(View.VISIBLE);
         } else {
