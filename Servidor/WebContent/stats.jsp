@@ -36,16 +36,27 @@
 </head>
 
 <body>
-
+	
+	<div class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+	      </button>
+	      <a class="navbar-brand" href="javascript:void(0)">Estadísticas</a>
+	    </div>
+	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
+	    	<button class="btn btn-raised pull-right" onclick="goBack();" >Volver</button> 
+	    </div>
+	  </div>
+	</div>
+	
 	<div class="container">
-
-		<h1>Estadísticas</h1>
 
 		<table id="tabla" class="display" cellspacing="0" width="100%">
 			<thead>
 				<tr>
 					<th>Categoria</th>
-					<th>Curso por categoría</th>
+					<th>Cursos por categoría</th>
 					<th>Inscriptos</th>
 					<th>Abandonaron</th>
 					<th>Desaprobaron</th>
@@ -67,7 +78,12 @@
 		</table>
 		
 		<div id="container"></div>
+		
+		
 	</div>
+	
+	
+	
 	<!-- /container -->
 
 	<!-- <script src="//code.jquery.com/jquery-1.10.2.min.js"></script> -->
@@ -99,7 +115,7 @@
 								type : 'column'
 							},
 							title : {
-								text : "Inscriptos / Categoria"
+								text : "Alumnos Inscriptos por Categoria"
 							},
 							xAxis : {
 								categories : nombres_categorias
@@ -146,12 +162,15 @@
 							},
 							series : [ {
 								name : 'Abandonaron',
+								color: 'gray',
 								data : abandonaron
 							}, {
 								name : 'Desaprobaron',
+								color: '#ff1919',
 								data : desaprobados
 							}, {
 								name : 'Aprobaron',
+								color: '#74d600',
 								data : aprobados
 							} ]
 						});
@@ -174,14 +193,25 @@
 	            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
 	                if ( last !== group ) {
 	                    $(rows).eq( i ).before(
-	                        '<tr class="group" style="background-color:#E6E6FA"><td colspan="5">'+group+'</td></tr>'
+	                        '<tr class="group" style="background-color:lightgray;font-weight:bold"><td colspan="5">'+group+'</td></tr>'
 	                    );
 	 
 	                    last = group;
 	                }
 	            } );
+	        },
+		    "language": {
+		        "lengthMenu": "Mostrar _MENU_ filas por página",
+		        "search": "Buscar",
+		        "zeroRecords": "No se encontro registros",
+		        "info": "Mostrando página _PAGE_ de _PAGES_",
+		        "infoEmpty": "No hay registros disponibles",
+		        "infoFiltered": "(filtrado de _MAX_ registros totales)"
 	        }
 	    } );
+	    
+	    $("#tabla_previous").html("Anterior");
+	    $("#tabla_next").html("Siguiente");
 	 
 	    // Order by the grouping
 	    $('#tabla tbody').on( 'click', 'tr.group', function () {
@@ -193,7 +223,12 @@
 	            table.order( [ 0, 'asc' ] ).draw();
 	        }
 	    } );
+	   
 	} );
+	
+    function goBack(){
+		window.location.href = '/Servidor/courselist';
+	}
 	
 	</script>
 </body>

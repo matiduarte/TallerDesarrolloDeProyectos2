@@ -1,3 +1,24 @@
 body {
-	
+	background-color: #fff;
+}
+
+#tabla{
+	background-color: #009688;
+	border: 1px solid;
+}
+
+#tabla thead{
+	color: white;
+}
+
+.highcharts-credits{
+	display: none;
+}
+
+.container #container{
+	margin-top: 15px;
+}
+
+.pull-right {
+	right: 50px;
 }
