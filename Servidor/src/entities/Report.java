@@ -15,6 +15,7 @@ public class Report {
 	private Integer noPass;
 	private Integer giveUp;
 	private Long all;
+	private Long allSession;
 	
 	public String getCourseName() {
 		return courseName;
@@ -64,13 +65,20 @@ public class Report {
 	public void setAll(Long all) {
 		this.all = all;
 	}
+	
+	
+	public Long getAllSession() {
+		return allSession;
+	}
+	public void setAllSession(Long allSession) {
+		this.allSession = allSession;
+	}
 	public static ArrayList<Report> getReportList(){
 		
 		ArrayList<Report> reportList = new ArrayList<Report>();
 		List<CourseApproved> caList = CourseApproved.getCourseApproved();
-		List<CourseDisapproved> cdList = CourseDisapproved.getCourseDisapproved();
-		List<CourseLeave> clList = CourseLeave.getCourseLeave();
 		List<Report> allList = Report.getAllStudentWithExams();
+		List<Report> allSessionList = Report.getAllStudentWithSession();
 		
 		//List<CourseReport> cReport = new ArrayList<CourseReport>();
 		
@@ -81,9 +89,10 @@ public class Report {
 			r.setCategory(caList.get(i).getCategory());
 			r.setCourseName(caList.get(i).getCourseName());
 			r.setPass((int) (long)caList.get(i).getApproved());
-			r.setGiveUp((int) (long)clList.get(i).getLeave());
 			Integer noPass = ((int)(long)allList.get(i).getAll()) - (int) (long)caList.get(i).getApproved();
 			r.setNoPass(noPass);
+			Integer giveUp = ((int)(long) allSessionList.get(i).getAllSession()  - ((int) (long)caList.get(i).getApproved() + noPass)  );
+			r.setGiveUp(giveUp);
 			reportList.add(r);
 		}
 		
@@ -185,6 +194,34 @@ public class Report {
 			  cl.setCourseId((Integer) result[1]);
 			  cl.setCourseName((String) result[2]);
 			  cl.setAll((Long) result[3]);
+			  clList.add(cl);
+			}
+
+			return clList;
+	}
+	
+public static List<Report> getAllStudentWithSession(){
+		
+		String query = "SELECT cat.name, c.id, c.name, count(*) FROM StudentSession ss, CourseSession cs, Course c,"
+				+ " Category cat, CourseCategory cc"
+				+ " WHERE ss.sessionId = cs.id"
+				+ " AND cs.courseId = c.id"
+				+ " AND cc.courseId = c.id"
+				+ " AND cc.categoryId = cat.id"
+				+ " GROUP BY cat.name, c.id, c.name";
+
+			List<Object> obj = (List<Object>) StoreData.customQuery(query);
+			
+			
+			List<Report> clList = new ArrayList<Report>();
+			
+			for (Object object : obj) {
+			  Object[] result = (Object[]) object;
+			  Report cl = new Report();
+			  cl.setCategory((String) result[0]);
+			  cl.setCourseId((Integer) result[1]);
+			  cl.setCourseName((String) result[2]);
+			  cl.setAllSession((Long) result[3]);
 			  clList.add(cl);
 			}
 
