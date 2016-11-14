@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.codehaus.jettison.json.JSONArray;
 
 import utils.ComparadorPorTotalInscriptosMapaInscriptos;
 import utils.ComparadorReportePorInscriptos;
+import entities.Course;
 import entities.Report;
 import entities.User;
 
@@ -49,6 +51,12 @@ public class StatsVisualizationController extends HttpServlet {
 		
 		ArrayList<Report> reportes_cursos = Report.getReportList();
 		
+		if ( false == this.esAdmin( request.getParameter("viewer") ) ) {
+			// si no es admin, entonces es docente, entonces filtro para que me queden solo los reportes de sus cursos.
+			Integer id_docente = Integer.parseInt( request.getParameter("id") );
+			reportes_cursos = this.filtrarPorIdReportesPertenecientesADocente( reportes_cursos, id_docente );
+		}
+		
 		// paso los reportes asi nomas para armar la tabla html, el resto lo hace el plugin "DataTable".
 		request.setAttribute("reportes_cursos", reportes_cursos );
 		
@@ -57,7 +65,7 @@ public class StatsVisualizationController extends HttpServlet {
 		// creo un mapa que va a tener: clave=categoria, valor=array con: [0]=aprobados, [1]=desaprobados y [2]=abandonaron.
 		Map<String, ArrayList<Integer>> inscriptos_por_categoria = new HashMap<String, ArrayList<Integer>>();
 		
-		for( Report reporte : reportes_cursos ) {
+		for ( Report reporte : reportes_cursos ) {
 			
 			String categoria = reporte.getCategory();
 			
@@ -126,5 +134,54 @@ public class StatsVisualizationController extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 	}
+	
+	private ArrayList<Report> filtrarPorNombreReportesPertenecientesADocente( ArrayList<Report> reportes_cursos, Integer teacher_id ) {
+		
+		List<Course> cursos_profesor = (ArrayList<Course>) Course.getByTeacherId( teacher_id );
 
+		ArrayList<Report> filtro = new ArrayList<Report>();
+		
+		for ( Report reporte_curso : reportes_cursos ) {
+			
+			for ( Course curso_profesor : cursos_profesor ) {
+				
+				if ( 0 == reporte_curso.getCourseName().compareTo( curso_profesor.getName() ) ) {
+					// si matchean, entonces lo agrego al array que voy a devolver.
+					filtro.add( reporte_curso );
+				}
+			}
+		}
+		
+		return filtro;		
+	}
+	
+	private ArrayList<Report> filtrarPorIdReportesPertenecientesADocente( ArrayList<Report> reportes_cursos, Integer teacher_id ) {
+		
+		List<Course> cursos_profesor = (ArrayList<Course>) Course.getByTeacherId( teacher_id );
+
+		ArrayList<Report> filtro = new ArrayList<Report>();
+		
+		for ( Report reporte_curso : reportes_cursos ) {
+			
+			for ( Course curso_profesor : cursos_profesor ) {
+				
+				if ( reporte_curso.getCourseId() == curso_profesor.getId() ) {
+					// si matchean, entonces lo agrego al array que voy a devolver.
+					filtro.add( reporte_curso );
+				}
+			}
+		}
+		
+		return filtro;		
+	}	
+	
+	private boolean esAdmin( String viewer ) {
+		if ( 0 == viewer.compareTo( "admin" ) ) {
+			return true;
+		}
+		else {
+			return false;
+		}	
+	}
+	
 }
