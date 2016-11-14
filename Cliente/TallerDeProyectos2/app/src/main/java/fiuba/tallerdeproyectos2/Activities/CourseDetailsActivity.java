@@ -62,7 +62,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
     Integer sessionId, studentId, courseId;
     SessionManagerActivity session;
     HashMap<String, String> user;
-    String courseName, teacherName, description, date, courseUnities;
+    String courseName, teacherName, description, date, courseUnities, comments, califications;
     Boolean isSubscribed;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -127,6 +127,8 @@ public class CourseDetailsActivity extends AppCompatActivity {
                         }
 
                         courseUnities = courseData.getString("courseUnities");
+                        comments = courseData.getString("comments");
+                        califications = courseData.getString("califications");
 
                         viewPager = (ViewPager) findViewById(R.id.viewpager);
                         setupViewPager(viewPager);
@@ -223,7 +225,7 @@ public class CourseDetailsActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(CourseInformationFragment.newInstance(courseId, sessionId, description, teacherName, isSubscribed, date), "Informacion");
         adapter.addFragment(CourseUnitiesFragment.newInstance(courseId, sessionId, isSubscribed, courseUnities), "Contenido");
-        adapter.addFragment(new CourseCommentsFragment(), "Opiniones");
+        adapter.addFragment(CourseCommentsFragment.newInstance(comments, califications), "Opiniones");
         viewPager.setAdapter(adapter);
     }
 

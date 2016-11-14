@@ -22,6 +22,7 @@ public class CourseUnity {
 	private Integer questionSize;
 	private boolean passExam;
 	private float examResult;
+	private boolean examTimeFinished;
 	
 	public int getId() {
 		return id;
@@ -112,7 +113,7 @@ public class CourseUnity {
 		return result;
 	}
 	public void checkStudentExam(int studentId) {
-		Course course = Course.getById(this.getCourseId());
+		Course course = Course.getById(this.getCourseId(), studentId);
 		CourseSession currentSession = course.getCurrentSession();
 
 		String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND unityId = " + this.getId();
@@ -130,5 +131,11 @@ public class CourseUnity {
 	}
 	public void setExamResult(float examResult) {
 		this.examResult = examResult;
+	}
+	public boolean isExamTimeFinished() {
+		return examTimeFinished;
+	}
+	public void setExamTimeFinished(boolean examTimeFinished) {
+		this.examTimeFinished = examTimeFinished;
 	}
 }

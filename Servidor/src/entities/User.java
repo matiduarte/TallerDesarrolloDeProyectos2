@@ -163,7 +163,7 @@ public class User {
 			for (StudentExam approvedFinal : approvedFinals) {
 				CourseSession session = CourseSession.getById(approvedFinal.getSessionId());
 				if(session != null){
-					Course course = Course.getById(session.getCourseId());
+					Course course = Course.getById(session.getCourseId(), this.getId());
 					
 					if(course != null){
 						Certification certification = new Certification();

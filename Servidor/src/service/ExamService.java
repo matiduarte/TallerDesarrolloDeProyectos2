@@ -56,7 +56,7 @@ public class ExamService {
 	@GET
 	@Produces("application/json")
 	public ServiceResponse getTest(@PathParam("courseId") int courseId){
-		Course course = Course.getById(courseId);	 
+		Course course = Course.getById(courseId, 0);	 
 		if (course != null){
 			ArrayList<CourseUnity> unities = (ArrayList<CourseUnity>) CourseUnity.getByCourseId(course.getId());
 			ArrayList<Question> allQuestions = new ArrayList<Question>();
@@ -68,7 +68,13 @@ public class ExamService {
 			ArrayList<Question> questions = new ArrayList<Question>();
 			
 			Random generator = new Random();
-			for (int i = 0; i < 10; i++) {
+			
+			int finalSize = 10;
+			if(allQuestions.size() < 10){
+				finalSize = allQuestions.size();
+			}
+			
+			for (int i = 0; i < finalSize; i++) {
 				int randomIndex = generator.nextInt(allQuestions.size());
 				Question q = allQuestions.get(randomIndex);
 				q.setAnswers(Answer.getByQuestionId(q.getId()));
