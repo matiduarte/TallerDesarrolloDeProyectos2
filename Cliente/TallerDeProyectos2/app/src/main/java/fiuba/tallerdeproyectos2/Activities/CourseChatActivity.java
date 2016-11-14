@@ -98,7 +98,8 @@ public class CourseChatActivity extends AppCompatActivity implements SwipeRefres
                             String name = messageArray.getString("studentFirstName");
                             String surname = messageArray.getString("studentLastName");
                             String date = "";
-                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, date);
+                            Boolean isModerate = messageArray.getBoolean("isModerate");
+                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, isModerate, date);
                             chats.add(i, obj);
                         }
 
@@ -214,11 +215,12 @@ public class CourseChatActivity extends AppCompatActivity implements SwipeRefres
                         for (int i = 0; i < messages.length(); i++) {
                             JSONObject messageArray = new JSONObject(messages.getString(i));
                             String message = messageArray.getString("message");
-                            String time = messageArray.getString("time");
+                            String time = "a las " + messageArray.getString("time");
                             String name = messageArray.getString("studentFirstName");
                             String surname = messageArray.getString("studentLastName");
-                            String date = "15/10/16";
-                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, date);
+                            String date = "";
+                            Boolean isModerate = messageArray.getBoolean("isModerate");
+                            CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, isModerate, date);
                             chats.add(i, obj);
                         }
 

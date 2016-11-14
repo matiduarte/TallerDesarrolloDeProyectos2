@@ -88,6 +88,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
+                android:autoLink="web"
                 android:text="Hola a todos! Alguno quiere juntarse a practicar para el examen final?"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
