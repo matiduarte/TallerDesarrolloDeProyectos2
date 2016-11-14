@@ -113,7 +113,10 @@ public class Course {
 			
 			c.setCourseComments((ArrayList<CourseComment>) CourseComment.getByCourseId(c.getId()));
 			
-			c.setIsFinalExamAvailable(c.isFinalExamEvailable(c.getActiveSession()));
+			if(activeSession != null){
+				c.setIsFinalExamAvailable(c.isFinalExamEvailable(activeSession));
+			}
+			
 			
 			if(studentId > 0){
 				c.checkIfStudentIsSuscribed(studentId);
@@ -383,7 +386,7 @@ public class Course {
 	}
 	
 	public boolean isFinalExamEvailable(CourseSession session){
-		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), this.getActiveSession());
+		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), session);
 		
 		
 		for (int i = 0; i < unities.size(); i++) {
