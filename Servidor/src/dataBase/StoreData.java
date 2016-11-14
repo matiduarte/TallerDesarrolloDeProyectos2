@@ -137,10 +137,7 @@ public class StoreData {
  
 	List<CourseDisapproved> caList = CourseDisapproved.getCourseDisapproved();
 
-    for (CourseDisapproved c : caList){
-    	System.out.println("Curso " + c.getCourseName());
-    	System.out.println("Desaprobados " + c.getDissaproved());
-    }
+  
    
     
 	}  

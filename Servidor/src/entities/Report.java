@@ -52,12 +52,17 @@ public class Report {
 		ArrayList<Report> reportList = new ArrayList<Report>();
 		List<CourseApproved> caList = CourseApproved.getCourseApproved();
 		List<CourseDisapproved> cdList = CourseDisapproved.getCourseDisapproved();
+	
+		//List<CourseReport> cReport = new ArrayList<CourseReport>();
 		
+		//TODO: Mergear listas porque rompe
 		for (int i = 0; i < caList.size(); i++){
 			Report r = new Report();
+			r.setCategory(caList.get(i).getCategory());
 			r.setCourseName(caList.get(i).getCourseName());
 			r.setPass((int) (long)caList.get(i).getApproved());
 			r.setNoPass((int) (long)cdList.get(i).getDissaproved());
+			r.setGiveUp(0);
 			reportList.add(r);
 		}
 		
