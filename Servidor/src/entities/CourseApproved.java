@@ -21,7 +21,7 @@ public class CourseApproved extends CourseReport {
 	public static List<CourseApproved> getCourseApproved(){
 		
 		
-		String query = "SELECT cat.name, c.name , count(*)"
+		String query = "SELECT cat.name, c.id, c.name , count(*)"
 				+ " FROM Course c, User u, CourseSession cs, StudentExam se, Category cat, CourseCategory cc"
 				+ " WHERE cs.courseId = c.id"
 				+ " AND u.isStudent = 1"
@@ -31,7 +31,7 @@ public class CourseApproved extends CourseReport {
 				+ " AND se.studentId = u.id"
 				+ " AND cc.courseId = c.id"
 				+ " AND cc.categoryId = cat.id" 
-				+ " GROUP BY cat.name, c.name"; 
+				+ " GROUP BY cat.name, c.id, c.name"; 
 
 			List<Object> obj = (List<Object>) StoreData.customQuery(query);
 			
@@ -42,8 +42,9 @@ public class CourseApproved extends CourseReport {
 			  Object[] result = (Object[]) object;
 			  CourseApproved ca = new CourseApproved();
 			  ca.setCategory((String) result[0]);
-			  ca.setCourseName((String) result[1]);
-			  ca.setApproved((Long) result[2]);
+			  ca.setCourseId((Integer) result[1]);
+			  ca.setCourseName((String) result[2]);
+			  ca.setApproved((Long) result[3]);
 			  caList.add(ca);
 			}
 

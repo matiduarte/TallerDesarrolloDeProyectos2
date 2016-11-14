@@ -19,7 +19,7 @@ public class CourseDisapproved extends CourseReport {
 	public static List<CourseDisapproved> getCourseDisapproved(){
 		
 		
-		String query = "SELECT cat.name, c.name , count(*)"
+		String query = "SELECT cat.name, c.id, c.name , count(*)"
 				+ " FROM Course c, User u, CourseSession cs, StudentExam se, Category cat, CourseCategory cc"
 				+ " WHERE cs.courseId = c.id"
 				+ " AND u.isStudent = 1"
@@ -29,7 +29,7 @@ public class CourseDisapproved extends CourseReport {
 				+ " AND se.studentId = u.id"
 				+ " AND cc.courseId = c.id"
 				+ " AND cc.categoryId = cat.id" 
-				+ " GROUP BY cat.name, c.name"; 
+				+ " GROUP BY cat.name, c.id, c.name"; 
 
 			List<Object> obj = (List<Object>) StoreData.customQuery(query);
 			
@@ -40,8 +40,9 @@ public class CourseDisapproved extends CourseReport {
 			  Object[] result = (Object[]) object;
 			  CourseDisapproved cd = new CourseDisapproved();
 			  cd.setCategory((String) result[0]);
-			  cd.setCourseName((String) result[1]);
-			  cd.setDissaproved((Long) result[2]);
+			  cd.setCourseId((Integer) result[1]);
+			  cd.setCourseName((String) result[2]);
+			  cd.setDissaproved((Long) result[3]);
 			  cdList.add(cd);
 			}
 

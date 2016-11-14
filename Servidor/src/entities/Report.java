@@ -3,6 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataBase.StoreData;
+
 
 public class Report {
 
@@ -12,6 +14,7 @@ public class Report {
 	private Integer pass;
 	private Integer noPass;
 	private Integer giveUp;
+	private Long all;
 	
 	public String getCourseName() {
 		return courseName;
@@ -55,22 +58,32 @@ public class Report {
 		return this.getPass() + this.getNoPass() + this.getGiveUp();
 	}
 	
+	public Long getAll() {
+		return all;
+	}
+	public void setAll(Long all) {
+		this.all = all;
+	}
 	public static ArrayList<Report> getReportList(){
 		
 		ArrayList<Report> reportList = new ArrayList<Report>();
 		List<CourseApproved> caList = CourseApproved.getCourseApproved();
 		List<CourseDisapproved> cdList = CourseDisapproved.getCourseDisapproved();
-	
+		List<CourseLeave> clList = CourseLeave.getCourseLeave();
+		List<Report> allList = Report.getAllStudentWithExams();
+		
 		//List<CourseReport> cReport = new ArrayList<CourseReport>();
 		
 		//TODO: Mergear listas porque rompe
 		for (int i = 0; i < caList.size(); i++){
 			Report r = new Report();
+			r.setCourseId(caList.get(i).getCourseId());
 			r.setCategory(caList.get(i).getCategory());
 			r.setCourseName(caList.get(i).getCourseName());
 			r.setPass((int) (long)caList.get(i).getApproved());
-			r.setNoPass((int) (long)cdList.get(i).getDissaproved());
-			r.setGiveUp(0);
+			r.setGiveUp((int) (long)clList.get(i).getLeave());
+			Integer noPass = ((int)(long)allList.get(i).getAll()) - (int) (long)caList.get(i).getApproved();
+			r.setNoPass(noPass);
 			reportList.add(r);
 		}
 		
@@ -146,5 +159,36 @@ public class Report {
 		reportList.add(r7);
 		
 		return reportList;
-	}	
+	}
+	
+	public static List<Report> getAllStudentWithExams(){
+		
+		String query = "SELECT cat.name, c.id, c.name, count(*) FROM StudentSession ss, CourseSession cs, Course c,"
+				+ " Category cat, CourseCategory cc"
+				+ " WHERE ss.studentId IN (SELECT se.studentId FROM StudentExam se"
+				+ " WHERE se.sessionId = ss.sessionId)"
+				+ " AND ss.sessionId = cs.id"
+				+ " AND cs.courseId = c.id"
+				+ " AND cc.courseId = c.id"
+				+ " AND cc.categoryId = cat.id"
+				+ " GROUP BY cat.name, c.id, c.name";
+
+			List<Object> obj = (List<Object>) StoreData.customQuery(query);
+			
+			
+			List<Report> clList = new ArrayList<Report>();
+			
+			for (Object object : obj) {
+			  Object[] result = (Object[]) object;
+			  Report cl = new Report();
+			  cl.setCategory((String) result[0]);
+			  cl.setCourseId((Integer) result[1]);
+			  cl.setCourseName((String) result[2]);
+			  cl.setAll((Long) result[3]);
+			  clList.add(cl);
+			}
+
+			return clList;
+	}
+	
 }

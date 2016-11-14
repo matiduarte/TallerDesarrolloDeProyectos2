@@ -4,7 +4,7 @@ public class CourseReport {
 
 	private String category;
 	private String courseName;
-	
+	private Integer courseId;
 	public String getCategory() {
 		return category;
 	}
@@ -16,6 +16,12 @@ public class CourseReport {
 	}
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+	public Integer getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(Integer courseId) {
+		this.courseId = courseId;
 	}
 	
 	
