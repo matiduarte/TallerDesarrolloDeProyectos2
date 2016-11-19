@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fiuba.tallerdeproyectos2.Activities.CertificateTemplateActivity;
 import fiuba.tallerdeproyectos2.Activities.MainActivity;
@@ -51,6 +52,18 @@ public class CertificatesFragment extends Fragment implements SwipeRefreshLayout
     HashMap<String, String> user;
     Integer studentId;
     String studentName, teacherName, courseName, result;
+    List<CertificatesFragment.CertificatesInfo> certificatesInfos = new ArrayList<>();
+
+
+    public class CertificatesInfo{
+        public Integer id;
+        public String courseName;
+
+        CertificatesInfo(Integer id, String courseName){
+            this.id = id;
+            this.courseName = courseName;
+        }
+    }
 
     public CertificatesFragment() {}
 
@@ -89,12 +102,13 @@ public class CertificatesFragment extends Fragment implements SwipeRefreshLayout
                         Gson gson = new Gson();
                         Certificate certificateData = gson.fromJson(data, Certificate.class);
                         JSONArray certifications = new JSONArray(certificateData.getCertifications());
+                        certificatesInfos.clear();
                         for (int i=0; i < certifications.length(); i++) {
                             JSONObject certificateArray = new JSONObject(certifications.getString(i));
-                            courseName = certificateArray.getString("courseName");
                             teacherName = certificateArray.getString("teachertName");
                             result = certificateArray.getString("result");
-                            CertificateCardViewData obj = new CertificateCardViewData(courseName + ".pdf");
+                            certificatesInfos.add(new CertificatesFragment.CertificatesInfo(i,certificateArray.getString("courseName")));
+                            CertificateCardViewData obj = new CertificateCardViewData(certificateArray.getString("courseName"));
                             certificates.add(i, obj);
                         }
                     }
@@ -112,6 +126,8 @@ public class CertificatesFragment extends Fragment implements SwipeRefreshLayout
                     ((CertificateRecyclerViewAdapter) adapter).setOnItemClickListener(new CertificateRecyclerViewAdapter.MyClickListener() {
                         @Override
                         public void onItemClick(int position, View v) {
+                            TextView tv = (TextView) v.findViewById(R.id.filename);
+                            courseName = tv.getText().toString();
                             navigateToCertificateTemplateActivity();
                         }
                     });
@@ -148,7 +164,7 @@ public class CertificatesFragment extends Fragment implements SwipeRefreshLayout
                         JSONArray certifications = new JSONArray(certificateData.getCertifications());
                         for (int i=0; i < certifications.length(); i++) {
                             JSONObject certificateArray = new JSONObject(certifications.getString(i));
-                            CertificateCardViewData obj = new CertificateCardViewData(certificateArray.getString("courseName") + ".pdf");
+                            CertificateCardViewData obj = new CertificateCardViewData(certificateArray.getString("courseName"));
                             certificates.add(i, obj);
                         }
                     }

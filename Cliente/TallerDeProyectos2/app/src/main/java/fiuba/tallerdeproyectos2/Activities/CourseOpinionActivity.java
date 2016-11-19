@@ -82,6 +82,10 @@ public class CourseOpinionActivity extends AppCompatActivity {
         });
     }
 
+    public void noOpinion(View view){
+        navigateToMainActivity();
+    }
+
     private void navigateToMainActivity(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

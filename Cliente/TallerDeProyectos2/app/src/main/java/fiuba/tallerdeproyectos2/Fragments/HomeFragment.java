@@ -121,8 +121,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             if(soonCoursesArray.has("pictureUrl")){
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
-                            JSONArray courseCalificationsData = new JSONArray(soonCoursesArray.getString("califications"));
-                            averageCalification = Utilities.getAverageCalification(courseCalificationsData);
+                            //JSONArray courseCalificationsData = new JSONArray(soonCoursesArray.getString("califications"));
+                            averageCalification = 0f;
 
                             CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"), averageCalification.toString());
                             soonCourses.add(i, obj);
@@ -201,8 +201,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             if(soonCoursesArray.has("pictureUrl")){
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
-                            JSONArray courseCalificationsData = new JSONArray(soonCoursesArray.getString("califications"));
-                            averageCalification = Utilities.getAverageCalification(courseCalificationsData);
+                            //JSONArray courseCalificationsData = new JSONArray(soonCoursesArray.getString("califications"));
+                            averageCalification = 0f;
                             CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"), averageCalification.toString());
                             soonCourses.add(i, obj);
                         }

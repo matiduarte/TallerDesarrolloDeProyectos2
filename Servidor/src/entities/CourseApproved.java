@@ -27,7 +27,7 @@ public class CourseApproved extends CourseReport {
 				+ " AND u.isStudent = 1"
 				+ " AND se.sessionId = cs.id"
 				+ " AND se.isFinal = 1"
-				+ " AND se.result >= 4"
+				+ " AND se.result >= 6"
 				+ " AND se.studentId = u.id"
 				+ " AND cc.courseId = c.id"
 				+ " AND cc.categoryId = cat.id" 

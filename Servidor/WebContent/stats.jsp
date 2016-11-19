@@ -3,6 +3,7 @@
 <%@ page import="entities.Report"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +46,6 @@
 	      <a class="navbar-brand" href="javascript:void(0)">Estadísticas</a>
 	    </div>
 	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
-	    	<button class="btn btn-raised pull-right" onclick="goBack();" >Volver</button> 
 	    </div>
 	  </div>
 	</div>
@@ -227,6 +227,7 @@
 	} );
 	
     function goBack(){
+
 		window.location.href = '/Servidor/courselist';
 	}
 	

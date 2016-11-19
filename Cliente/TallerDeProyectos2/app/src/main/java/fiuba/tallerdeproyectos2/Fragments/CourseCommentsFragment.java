@@ -118,7 +118,7 @@ public class CourseCommentsFragment extends Fragment {
 
                 addLabelsToChart();
                 addValuesToChart(totalOneStarCalification, totalTwoStarCalification, totalThreeStarCalification, totalFourStarCalification, totalFiveStarCalification);
-                Bardataset = new BarDataSet(BARENTRY, averageCalification.intValue() + " de 5 estrellas de " + totalCalifications + " calificaciones");
+                Bardataset = new BarDataSet(BARENTRY, averageCalification.toString() + " de 5 estrellas de " + totalCalifications + " calificaciones");
                 BARDATA = new BarData(BarEntryLabels, Bardataset);
                 Bardataset.setColors(ColorTemplate.createColors(new int[]{red, orange, yellow, ligthGreen, green}));
                 chart.setData(BARDATA);
@@ -133,9 +133,9 @@ public class CourseCommentsFragment extends Fragment {
                     String message = courseCommentsArray.getString("message");
                     String time = "a las " + courseCommentsArray.getString("time");
                     String name = courseCommentsArray.getString("studentFirstName");
-                    String surname = courseCommentsArray.getString("studentLastName") + " - " + averageCalification.intValue() + " *";
+                    String surname = courseCommentsArray.getString("studentLastName");
                     String date = "";
-                    CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, date);
+                    CourseChatCardViewData obj = new CourseChatCardViewData(name, surname, time, message, false, date);
                     courseComments.add(i, obj);
                 }
 
