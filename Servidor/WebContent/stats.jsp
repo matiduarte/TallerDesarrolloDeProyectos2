@@ -235,8 +235,11 @@
 	function search() {
 		var url = window.location.href;
 		
-		var new_href = url.replace("/(from=).*?(&)/,'$1'" + $("#from").val().toLowerCase() + "'$2'");
-		var new_href = new_href.replace("/(until=).*?(&)/,'$1'" + $("#until").val().toLowerCase() + "'$2'");
+		var from = $("#from").val().toLowerCase();
+		var until = $("#until").val().toLowerCase();
+		
+		var new_href = url.replace(/(from=).*?(&)/, '$1' + $("#from").val().toLowerCase() + '$2');
+		new_href = new_href.replace(/(until=).*/, '$1' + $("#until").val().toLowerCase());
 		
 		window.location.href = new_href;
 	}
