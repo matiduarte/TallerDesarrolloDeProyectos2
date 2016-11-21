@@ -1,6 +1,9 @@
 package entities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dataBase.StoreData;
@@ -227,5 +230,98 @@ public static List<Report> getAllStudentWithSession(){
 
 			return clList;
 	}
+
+public static ArrayList<Report> getReportList(Date desde, Date hasta) {
 	
+	ArrayList<Report> reportList = new ArrayList<Report>();
+	List<CourseApproved> caList = CourseApproved.getCourseApproved( desde, hasta );
+	List<Report> allList = Report.getAllStudentWithExams( desde, hasta );
+	List<Report> allSessionList = Report.getAllStudentWithSession( desde, hasta );
+	
+	//List<CourseReport> cReport = new ArrayList<CourseReport>();
+	
+	//TODO: Mergear listas porque rompe
+	for (int i = 0; i < caList.size(); i++){
+		Report r = new Report();
+		r.setCourseId(caList.get(i).getCourseId());
+		r.setCategory(caList.get(i).getCategory());
+		r.setCourseName(caList.get(i).getCourseName());
+		r.setPass((int) (long)caList.get(i).getApproved());
+		Integer noPass = ((int)(long)allList.get(i).getAll()) - (int) (long)caList.get(i).getApproved();
+		r.setNoPass(noPass);
+		Integer giveUp = ((int)(long) allSessionList.get(i).getAllSession()  - ((int) (long)caList.get(i).getApproved() + noPass)  );
+		r.setGiveUp(giveUp);
+		reportList.add(r);
+	}
+	
+	
+	return reportList;
+	}
+
+public static List<Report> getAllStudentWithExams(Date desde, Date hasta){
+	
+	DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+	
+	String query = "SELECT cat.name, c.id, c.name, count(*) FROM StudentSession ss, CourseSession cs, Course c,"
+			+ " Category cat, CourseCategory cc"
+			+ " WHERE ss.studentId IN (SELECT se.studentId FROM StudentExam se"
+			+ " WHERE se.sessionId = ss.sessionId)"
+			+ " AND ss.sessionId = cs.id"
+			+ " AND cs.courseId = c.id"
+			+ " AND cc.courseId = c.id"
+			+ " AND cc.categoryId = cat.id"
+			+ " AND cs.date >= '" + formato.format(desde) + "'"
+			+ " AND cs.date <= '" + formato.format(hasta) + "'"
+			+ " GROUP BY cat.name, c.id, c.name";
+
+		List<Object> obj = (List<Object>) StoreData.customQuery(query);
+		
+		
+		List<Report> clList = new ArrayList<Report>();
+		
+		for (Object object : obj) {
+		  Object[] result = (Object[]) object;
+		  Report cl = new Report();
+		  cl.setCategory((String) result[0]);
+		  cl.setCourseId((Integer) result[1]);
+		  cl.setCourseName((String) result[2]);
+		  cl.setAll((Long) result[3]);
+		  clList.add(cl);
+		}
+
+		return clList;
+}
+
+public static List<Report> getAllStudentWithSession(Date desde, Date hasta){
+	
+	DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+	
+	String query = "SELECT cat.name, c.id, c.name, count(*) FROM StudentSession ss, CourseSession cs, Course c,"
+			+ " Category cat, CourseCategory cc"
+			+ " WHERE ss.sessionId = cs.id"
+			+ " AND cs.courseId = c.id"
+			+ " AND cc.courseId = c.id"
+			+ " AND cc.categoryId = cat.id"
+			+ " AND cs.date >= '" + formato.format(desde) + "'"
+			+ " AND cs.date <= '" + formato.format(hasta) + "'"
+			+ " GROUP BY cat.name, c.id, c.name";
+
+		List<Object> obj = (List<Object>) StoreData.customQuery(query);
+		
+		
+		List<Report> clList = new ArrayList<Report>();
+		
+		for (Object object : obj) {
+		  Object[] result = (Object[]) object;
+		  Report cl = new Report();
+		  cl.setCategory((String) result[0]);
+		  cl.setCourseId((Integer) result[1]);
+		  cl.setCourseName((String) result[2]);
+		  cl.setAllSession((Long) result[3]);
+		  clList.add(cl);
+		}
+
+		return clList;
+}
+
 }

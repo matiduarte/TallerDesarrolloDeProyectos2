@@ -51,7 +51,13 @@
 	</div>
 	
 	<div class="container">
-
+		
+		<input type="text" id="from" class="fechaInput" placeholder="Desde"/>
+		<input type="text" id="until" class="fechaInput" placeholder="Hasta"/>		
+    	<button class="btn btn-raised btn-primary searchButton btnNew" onclick="search();"> 
+    		<img  src="images/search_icon.png" class="searchButtonImage" alt="Buscar" >
+		</button>		
+		
 		<table id="tabla" class="display" cellspacing="0" width="100%">
 			<thead>
 				<tr>
@@ -225,6 +231,18 @@
 	    } );
 	   
 	} );
+	
+	function search() {
+		var url = window.location.href;
+		
+		var from = $("#from").val().toLowerCase();
+		var until = $("#until").val().toLowerCase();
+		
+		var new_href = url.replace(/(from=).*?(&)/, '$1' + $("#from").val().toLowerCase() + '$2');
+		new_href = new_href.replace(/(until=).*/, '$1' + $("#until").val().toLowerCase());
+		
+		window.location.href = new_href;
+	}
 	
     function goBack(){
 
