@@ -9,6 +9,8 @@ public class Certification {
 	private String courseName;
 	private String teachertName;
 	private float result;
+	private int studentId;
+	private int id;
 	
 	public String getStudentName() {
 		return studentName;
@@ -35,4 +37,23 @@ public class Certification {
 		this.teachertName = teachertName;
 	}
 	
+	public void save(){
+		StoreData.save(this);
+	}
+	public int getStudentId() {
+		return studentId;
+	}
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
+	
+	public static List<Certification> getByStudentId(int studentId){
+		return (List<Certification>)StoreData.getByField(Certification.class, "studentId", String.valueOf(studentId));
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 }

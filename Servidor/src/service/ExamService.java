@@ -21,7 +21,9 @@ import org.codehaus.jettison.json.JSONObject;
 import com.google.gson.Gson;
 
 import entities.Answer;
+import entities.Certification;
 import entities.Course;
+import entities.CourseSession;
 import entities.CourseUnity;
 import entities.Question;
 import entities.StudentExam;
@@ -45,6 +47,33 @@ public class ExamService {
 			studentExam.setIsFinal(isFinal);
 			
 			studentExam.save();
+			
+			if(studentExam.getIsFinal() && studentExam.getResult() >= 7){
+				Certification certification = new Certification();
+				certification.setResult(studentExam.getResult());
+				certification.setStudentId(studentId);
+				
+				CourseSession session = CourseSession.getById(sessionId);
+				if(session != null){
+					Course course = Course.getById(session.getCourseId(), studentId);
+					if(course != null){
+						certification.setCourseName(course.getName());
+						
+						User teacher = User.getById(course.getTeacherId());
+						if(teacher != null){
+							certification.setTeachertName(teacher.getFirstName() + " " + teacher.getLastName());
+						}
+					}
+				}
+				
+				User student = User.getById(studentId);
+				if(student != null){
+					certification.setStudentName(student.getFirstName() + " " + student.getLastName());
+				}
+				
+				certification.save();
+				
+			}
 			
 			return new ServiceResponse(true, "", String.valueOf(studentExam.getId()));
 		}

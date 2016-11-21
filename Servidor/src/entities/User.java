@@ -156,33 +156,34 @@ public class User {
 	}
 
 	public List<Certification> getCertificacions() {
-		List<StudentExam> approvedFinals = StudentExam.getApprovedFinalsByStudentId(this.getId());
-		
-		ArrayList<Certification> result = new ArrayList<Certification>();
-		if(approvedFinals != null){
-			for (StudentExam approvedFinal : approvedFinals) {
-				CourseSession session = CourseSession.getById(approvedFinal.getSessionId());
-				if(session != null){
-					Course course = Course.getById(session.getCourseId(), this.getId());
-					
-					if(course != null){
-						Certification certification = new Certification();
-						certification.setCourseName(course.getName());
-						certification.setStudentName(this.getFirstName() + " " + this.getLastName());
-						certification.setResult(approvedFinal.getResult());
-						
-						User teacher = User.getById(course.getTeacherId());
-						if(teacher != null){
-							certification.setTeachertName(teacher.getFirstName() + " " + teacher.getLastName());
-						}
-						
-						result.add(certification);
-					}
-				}
-				
-			}
-		}
-		
-		return result;
+		return Certification.getByStudentId(this.getId());
+//		List<StudentExam> approvedFinals = StudentExam.getApprovedFinalsByStudentId(this.getId());
+//		
+//		ArrayList<Certification> result = new ArrayList<Certification>();
+//		if(approvedFinals != null){
+//			for (StudentExam approvedFinal : approvedFinals) {
+//				CourseSession session = CourseSession.getById(approvedFinal.getSessionId());
+//				if(session != null){
+//					Course course = Course.getById(session.getCourseId(), this.getId());
+//					
+//					if(course != null){
+//						Certification certification = new Certification();
+//						certification.setCourseName(course.getName());
+//						certification.setStudentName(this.getFirstName() + " " + this.getLastName());
+//						certification.setResult(approvedFinal.getResult());
+//						
+//						User teacher = User.getById(course.getTeacherId());
+//						if(teacher != null){
+//							certification.setTeachertName(teacher.getFirstName() + " " + teacher.getLastName());
+//						}
+//						
+//						result.add(certification);
+//					}
+//				}
+//				
+//			}
+//		}
+//		
+//		return result;
 	}
 }  

@@ -13,6 +13,7 @@
 	<property name="courseName" ></property>
 	<property name="teachertName" ></property>
     <property name="result" ></property>
+    <property name="studentId" type="int"></property>
     </class>  
             
  </hibernate-mapping>  
