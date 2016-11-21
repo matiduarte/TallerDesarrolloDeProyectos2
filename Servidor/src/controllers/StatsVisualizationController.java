@@ -56,22 +56,32 @@ public class StatsVisualizationController extends HttpServlet {
 		System.out.println( "until: " + request.getParameter("until") );
 		
 		// ****** PROBAR ESTO
+		boolean con_rango = true;
 		Date from = new Date();
 		Date until = new Date();
 		try {
-			from = new SimpleDateFormat("dd/MM/yyyy").parse( request.getParameter("from") );
-			until = new SimpleDateFormat("dd/MM/yyyy").parse( request.getParameter("until") );
+			from = new SimpleDateFormat("yyyy/MM/dd").parse( request.getParameter("from") );
+			until = new SimpleDateFormat("yyyy/MM/dd").parse( request.getParameter("until") );
 		} catch(Exception e) {
 			System.out.println( "rango de fechas no valido: " + e );
+			con_rango = false;
 		}
 		
 		// ****** PROBAR ESTO
-		DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 		
 		System.out.println( "Desde: " + formato.format(from) );
 		System.out.println( "Hasta: " + formato.format(until) );
 		
 		ArrayList<Report> reportes_cursos = Report.getReportList( from, until );
+		
+		if ( con_rango ) {
+			System.out.println( "CON rango de fechas" );
+			reportes_cursos = Report.getReportList( from, until );
+		} else {
+			System.out.println( "SIN rango de fechas" );
+			reportes_cursos = Report.getReportList();
+		}
 		
 		if ( false == this.esAdmin( request.getParameter("viewer") ) ) {
 			// si no es admin, entonces es docente, entonces filtro para que me queden solo los reportes de sus cursos.

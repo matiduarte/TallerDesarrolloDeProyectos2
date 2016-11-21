@@ -56,7 +56,7 @@ public class CourseApproved extends CourseReport {
 	
 	public static List<CourseApproved> getCourseApproved(Date desde, Date hasta){
 		
-		DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 		
 		String query = "SELECT cat.name, c.id, c.name , count(*)"
 				+ " FROM Course c, User u, CourseSession cs, StudentExam se, Category cat, CourseCategory cc"
@@ -64,12 +64,12 @@ public class CourseApproved extends CourseReport {
 				+ " AND u.isStudent = 1"
 				+ " AND se.sessionId = cs.id"
 				+ " AND se.isFinal = 1"
-				+ " AND se.result >= 4"
+				+ " AND se.result >= 6"
 				+ " AND se.studentId = u.id"
 				+ " AND cc.courseId = c.id"
 				+ " AND cc.categoryId = cat.id"
-				+ " AND cs.date >= " + formato.format(desde)
-				+ " AND cs.date <= " + formato.format(hasta)			
+				+ " AND cs.date >= '" + formato.format(desde) + "'"
+				+ " AND cs.date <= '" + formato.format(hasta) + "'"		
 				+ " GROUP BY cat.name, c.id, c.name"; 
 
 			List<Object> obj = (List<Object>) StoreData.customQuery(query);

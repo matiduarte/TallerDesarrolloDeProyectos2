@@ -260,7 +260,7 @@ public static ArrayList<Report> getReportList(Date desde, Date hasta) {
 
 public static List<Report> getAllStudentWithExams(Date desde, Date hasta){
 	
-	DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+	DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 	
 	String query = "SELECT cat.name, c.id, c.name, count(*) FROM StudentSession ss, CourseSession cs, Course c,"
 			+ " Category cat, CourseCategory cc"
@@ -270,8 +270,8 @@ public static List<Report> getAllStudentWithExams(Date desde, Date hasta){
 			+ " AND cs.courseId = c.id"
 			+ " AND cc.courseId = c.id"
 			+ " AND cc.categoryId = cat.id"
-			+ " AND cs.date >= " + formato.format(desde)
-			+ " AND cs.date <= " + formato.format(hasta)
+			+ " AND cs.date >= '" + formato.format(desde) + "'"
+			+ " AND cs.date <= '" + formato.format(hasta) + "'"
 			+ " GROUP BY cat.name, c.id, c.name";
 
 		List<Object> obj = (List<Object>) StoreData.customQuery(query);
@@ -294,7 +294,7 @@ public static List<Report> getAllStudentWithExams(Date desde, Date hasta){
 
 public static List<Report> getAllStudentWithSession(Date desde, Date hasta){
 	
-	DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+	DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 	
 	String query = "SELECT cat.name, c.id, c.name, count(*) FROM StudentSession ss, CourseSession cs, Course c,"
 			+ " Category cat, CourseCategory cc"
@@ -302,8 +302,8 @@ public static List<Report> getAllStudentWithSession(Date desde, Date hasta){
 			+ " AND cs.courseId = c.id"
 			+ " AND cc.courseId = c.id"
 			+ " AND cc.categoryId = cat.id"
-			+ " AND cs.date >= " + formato.format(desde)
-			+ " AND cs.date <= " + formato.format(hasta)
+			+ " AND cs.date >= '" + formato.format(desde) + "'"
+			+ " AND cs.date <= '" + formato.format(hasta) + "'"
 			+ " GROUP BY cat.name, c.id, c.name";
 
 		List<Object> obj = (List<Object>) StoreData.customQuery(query);

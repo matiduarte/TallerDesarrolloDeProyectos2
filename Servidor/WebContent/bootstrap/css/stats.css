@@ -35,3 +35,8 @@ body {
     padding: 0px;
     border: 1px solid #009688;
 }
+
+.searchButtonImage{
+    height: 36px;
+    width: 36px;
+}

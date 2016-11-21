@@ -55,7 +55,7 @@
 		<input type="text" id="from" class="fechaInput" placeholder="Desde"/>
 		<input type="text" id="until" class="fechaInput" placeholder="Hasta"/>		
     	<button class="btn btn-raised btn-primary searchButton btnNew" onclick="search();"> 
-    		<img  src="../images/search_icon.png" class="searchButtonImage" alt="Buscar" >
+    		<img  src="images/search_icon.png" class="searchButtonImage" alt="Buscar" >
 		</button>		
 		
 		<table id="tabla" class="display" cellspacing="0" width="100%">

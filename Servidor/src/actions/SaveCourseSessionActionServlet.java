@@ -1,6 +1,10 @@
 package actions;
 
 import java.io.IOException;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,7 +57,17 @@ public class SaveCourseSessionActionServlet extends HttpServlet {
     	if(!isActive){
     		CourseSession courseSession = new CourseSession();
         	courseSession.setCourseId(courseId);
-        	courseSession.setDate(sessionDate);
+        	
+        	DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+        	Date fecha_formateada = new Date();
+        	try {
+				fecha_formateada = formato.parse( sessionDate );
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	courseSession.setDate( formato.format( fecha_formateada ));
         	
         	if(sessionId != null && !sessionId.equals("")){
         		//Edit
