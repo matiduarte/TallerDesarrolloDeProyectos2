@@ -55,9 +55,8 @@
 	      <img class="navbar-logo" src="../bootstrap/img/icono.ico">
 	      <a class="navbar-brand" href="javascript:void(0)">FIUBA Cursos</a>
 	    </div>
-	    <div class="navbar-collapse collapse navbar-inverse-collapse"> 
-	      <a class="navbar-brand navbar-userName">Administrador</a>
-	      <button class="btn btn-primary logoutButton btnNew" onclick="logout();">Cerrar Sesión</button>
+	    <div class="navbar-collapse collapse navbar-inverse-collapse">
+	      <button class="btn btn-raised pull-right" onclick="goToStats();" >Ver estadísticas</button>
 	    </div>
 	  </div>
 	</div>
@@ -240,6 +239,10 @@
     	}).appendTo(tbody);
 	} 	
 	
+	
+	function goToStats(){
+		window.location.href = '/Servidor/stats?viewer=admin';
+	}
 	</script>
 
   </body>

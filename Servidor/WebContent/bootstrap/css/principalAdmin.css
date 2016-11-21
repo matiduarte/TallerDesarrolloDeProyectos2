@@ -136,3 +136,7 @@ hr {
 .contenido-medio {
 	width: 15%;
 }
+
+.pull-right {
+	right: 116px;
+}

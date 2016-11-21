@@ -43,7 +43,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("proyectos2/exam")
-    Call<ServerResponse> postPassExam(@Field("studentId")Integer studentId, @Field("sessionId")Integer sessionId, @Field("unityId")Integer unityId, @Field("result")Float result);
+    Call<ServerResponse> postPassExam(@Field("studentId")Integer studentId, @Field("sessionId")Integer sessionId, @Field("unityId")Integer unityId, @Field("result")Float result, @Field("isFinal")Boolean isFinal);
 
     @FormUrlEncoded
     @POST("proyectos2/forum")
@@ -51,5 +51,19 @@ public interface ApiInterface {
 
     @GET("proyectos2/forum/{sessionId}")
     Call<ServerResponse> getForum(@Path("sessionId") Integer sessionId);
+
+    @FormUrlEncoded
+    @POST("proyectos2/comment")
+    Call<ServerResponse> postCourseComments(@Field("studentId")Integer studentId, @Field("courseId")Integer courseId, @Field("message")String message);
+
+    @FormUrlEncoded
+    @POST("proyectos2/calification")
+    Call<ServerResponse> postCourseCalifications(@Field("studentId")Integer studentId, @Field("courseId")Integer courseId, @Field("calification")Integer calification);
+
+    @GET("proyectos2/certification/{userId}")
+    Call<ServerResponse> getCertificatesByUser(@Path("userId") Integer userId);
+
+    @GET("proyectos2/exam/{courseId}")
+    Call<ServerResponse> getFinalExam(@Path("courseId") Integer courseId);
 }
 

@@ -41,7 +41,7 @@ public class StudentSession {
 		for (StudentSession studentSession : studentSessions) {
 			CourseSession courseSession = CourseSession.getById(studentSession.getSessionId());
 			if(courseSession != null){
-				Course course = Course.getById(courseSession.getCourseId());
+				Course course = Course.getById(courseSession.getCourseId(), studentId);
 				if(course != null){
 					courses.add(course);
 				}

@@ -26,12 +26,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView courseTitle;
         ImageView courseImage;
         TextView courseId;
+        TextView courseCalification;
+        ImageView courseCalificationImage;
 
         CoursesCardViewDataHolder(View itemView) {
             super(itemView);
             courseTitle = (TextView) itemView.findViewById(R.id.course_title);
             courseImage = (ImageView) itemView.findViewById(R.id.course_image);
             courseId = (TextView) itemView.findViewById(R.id.course_id);
+            courseCalification = (TextView) itemView.findViewById(R.id.course_calification);
+            courseCalificationImage = (ImageView) itemView.findViewById(R.id.course_calification_image);
             itemView.setOnClickListener(this);
         }
 
@@ -64,6 +68,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.courseImage.setImageResource(R.drawable.default_image);
         }
         holder.courseId.setText(dataset.get(position).getCourseId());
+        if(dataset.get(position).getCourseCalification() != "0.0"){
+            holder.courseCalification.setText(dataset.get(position).getCourseCalification());
+            holder.courseCalification.setVisibility(View.VISIBLE);
+            holder.courseCalificationImage.setVisibility(View.VISIBLE);
+        } else {
+            holder.courseCalification.setVisibility(View.GONE);
+            holder.courseCalificationImage.setVisibility(View.GONE);
+        }
     }
 
     public void addItem(CoursesCardViewData coursesCardViewData, int index) {

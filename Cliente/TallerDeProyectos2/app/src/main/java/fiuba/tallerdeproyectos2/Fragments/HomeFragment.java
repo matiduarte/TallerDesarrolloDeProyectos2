@@ -34,6 +34,7 @@ import fiuba.tallerdeproyectos2.Models.ServerResponse;
 import fiuba.tallerdeproyectos2.R;
 import fiuba.tallerdeproyectos2.Rest.ApiClient;
 import fiuba.tallerdeproyectos2.Rest.ApiInterface;
+import fiuba.tallerdeproyectos2.Utilities.Utilities;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,9 +59,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SessionManagerActivity session;
     HashMap<String, String> user;
     Integer studentId;
-    ImageView subscribeMark, courseIconInscripted;
     RecyclerView recyclerView;
     TextView noSoonCourses;
+    Float averageCalification;
 
     public HomeFragment() {}
 
@@ -107,9 +108,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 for (int j=0; j<coursesInCategoryData.length(); j++) {
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
-                                    if(coursesInCategoryArray.getBoolean("isSubscribed")){
-                                       // subscribeMark.setVisibility(View.VISIBLE);
-                                    }
                                     courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                                 }
                                 childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
@@ -123,10 +121,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             if(soonCoursesArray.has("pictureUrl")){
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
-                            if(soonCoursesArray.getBoolean("isSubscribed")){
-                               // courseIconInscripted.setVisibility(View.VISIBLE);
-                            }
-                            CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
+                            //JSONArray courseCalificationsData = new JSONArray(soonCoursesArray.getString("califications"));
+                            averageCalification = 0f;
+
+                            CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"), averageCalification.toString());
                             soonCourses.add(i, obj);
                         }
                     }
@@ -185,9 +183,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 for (int j=0; j<coursesInCategoryData.length(); j++) {
                                     JSONObject coursesInCategoryArray = new JSONObject(coursesInCategoryData.getString(j));
                                     categoryCoursesList.add(coursesInCategoryArray.getString("name"));
-                                    if(coursesInCategoryArray.getBoolean("isSubscribed")){
-                                        //subscribeMark.setVisibility(View.VISIBLE);
-                                    }
                                     courseInfo.add(new CourseInfo(coursesInCategoryArray.getString("id"),coursesInCategoryArray.getString("name")));
                                 }
                                 childContent.put(parentHeaderInformation.get(i), categoryCoursesList);
@@ -206,10 +201,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             if(soonCoursesArray.has("pictureUrl")){
                                 pictureUrl = soonCoursesArray.getString("pictureUrl");
                             }
-                            if(soonCoursesArray.getBoolean("isSubscribed")){
-                                //courseIconInscripted.setVisibility(View.VISIBLE);
-                            }
-                            CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"));
+                            //JSONArray courseCalificationsData = new JSONArray(soonCoursesArray.getString("califications"));
+                            averageCalification = 0f;
+                            CoursesCardViewData obj = new CoursesCardViewData(soonCoursesArray.getString("name"), pictureUrl, soonCoursesArray.getString("id"), averageCalification.toString());
                             soonCourses.add(i, obj);
                         }
 

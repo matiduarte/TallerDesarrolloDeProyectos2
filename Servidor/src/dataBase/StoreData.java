@@ -3,12 +3,24 @@ package dataBase;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;  
 import org.hibernate.SessionFactory;  
 import org.hibernate.Transaction;  
 import org.hibernate.cfg.Configuration;
+import org.hibernate.transform.Transformers;
+
+import entities.Course;
+import entities.CourseApproved;
+import entities.CourseDisapproved;
+import entities.CourseSession;
+import entities.Report;
+import entities.StudentExam;
+import entities.User;
 
 
 public class StoreData {  
@@ -51,6 +63,8 @@ public class StoreData {
 			cfg.addResource("dataBase/studentExam.hbm.xml");
 			cfg.addResource("dataBase/courseMessage.hbm.xml");
 			cfg.addResource("dataBase/notificationSent.hbm.xml");
+			cfg.addResource("dataBase/courseComment.hbm.xml");
+			cfg.addResource("dataBase/courseCalification.hbm.xml");
 			cfg.addResource("dataBase/certification.hbm.xml");
 
 
@@ -121,8 +135,13 @@ public class StoreData {
     //t.commit();//transaction is committed  
     //session.close();  
 
-    System.out.println("successfully saved");  
+    System.out.println("successfully saved");
+ 
+	List<CourseDisapproved> caList = CourseDisapproved.getCourseDisapproved();
 
+  
+   
+    
 	}  
 
 	public static Object getById(Class<?> objectClass, int id){ 
@@ -191,6 +210,34 @@ public class StoreData {
 		}
 
 		String query = "SELECT * FROM " + tableName + " WHERE " + field + " = '" + value + "'";
+		try{
+			return session.createSQLQuery(query).addEntity(objectClass).list();
+		} catch (Exception e) {
+			System.out.println(query);
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+
+		return obj;
+	}
+	
+	public static List<?> getByFieldLike(Class<?> objectClass, String field, String value){ 
+		//creating session object  
+		Session session = StoreData.getInstance().factory.openSession();  
+
+		List<Object> obj = null;
+		String tableName = objectClass.getSimpleName();
+
+		//hack para heroku
+		if(System.getenv("DATABASE_URL") != null && tableName.compareTo("User") == 0){
+			tableName = '"' + tableName + '"';
+		}
+
+		String query = "SELECT * FROM " + tableName + " WHERE " + field + " LIKE '%" + value + "%'";
+		System.out.println(query);
 		try{
 			return session.createSQLQuery(query).addEntity(objectClass).list();
 		} catch (Exception e) {
@@ -275,4 +322,25 @@ public class StoreData {
 		return obj;
 	}
 
+	
+	public static List<?> customQuery(String query){
+		
+		Session session = StoreData.getInstance().factory.openSession();  
+
+		List<Object> obj = null;
+		try{
+			 obj = session.createQuery(query)
+		              .list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		
+		return obj;
+		
+	}
+	
 }  

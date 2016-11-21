@@ -1,5 +1,7 @@
 package fiuba.tallerdeproyectos2.Adapters;
 
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
         TextView surname;
         TextView message;
         TextView time;
+        TextView date;
 
         CourseChatCardViewDataHolder(View itemView) {
             super(itemView);
@@ -28,6 +31,7 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
             surname = (TextView) itemView.findViewById(R.id.surname);
             message = (TextView) itemView.findViewById(R.id.message);
             time = (TextView) itemView.findViewById(R.id.time);
+            date = (TextView) itemView.findViewById(R.id.date);
             itemView.setOnClickListener(this);
         }
 
@@ -56,7 +60,11 @@ public class CourseChatRecyclerViewAdapter extends RecyclerView.Adapter<CourseCh
         holder.name.setText(dataset.get(position).getName());
         holder.surname.setText(dataset.get(position).getSurname());
         holder.message.setText(dataset.get(position).getMessage());
+        if(dataset.get(position).isModerate()){
+            holder.message.setTextColor(Color.parseColor("#B71C1C"));
+        }
         holder.time.setText(dataset.get(position).getTime());
+        holder.date.setText(dataset.get(position).getDate());
     }
 
     public void addItem(CourseChatCardViewData courseChatCardViewData, int index) {

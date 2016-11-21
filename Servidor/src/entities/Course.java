@@ -25,7 +25,12 @@ public class Course {
 	
 	private ArrayList<CourseSession> courseSessions;
 	private ArrayList<CourseUnity> courseUnities;
+	private ArrayList<CourseCalification> califications;
+	private ArrayList<CourseComment> comments;
 	
+	private boolean isFinalExamAvailable;
+	private boolean passFinalExam;
+	private float finalExamResult;
 	
 	public Integer getTeacherId() {
 		return teacherId;
@@ -69,9 +74,21 @@ public class Course {
 	public void setCourseUnities(ArrayList<CourseUnity> courseUnities) {
 		this.courseUnities = courseUnities;
 	}
+	public ArrayList<CourseComment> getCourseComments() {
+		return comments;
+	}
+	public void setCourseComments(ArrayList<CourseComment> comments) {
+		this.comments = comments;
+	}
+	public ArrayList<CourseCalification> getCourseCalifications() {
+		return califications;
+	}
+	public void setCourseCalifications(ArrayList<CourseCalification> califications) {
+		this.califications = califications;
+	}
 	
 	
-	public static Course getById(int id){
+	public static Course getById(int id, int studentId){
 		Course c = (Course)StoreData.getById(Course.class, id);
 		if(c != null){
 			ArrayList<CourseSession> sessions = (ArrayList<CourseSession>) CourseSession.getByCourseId(c.getId());
@@ -90,6 +107,20 @@ public class Course {
 				if(teacher != null){
 					c.setTeacherName(teacher.getFirstName() + " " + teacher.getLastName());
 				}
+			}
+			
+			c.setCourseCalifications((ArrayList<CourseCalification>) CourseCalification.getByCourseId(c.getId()));
+			
+			c.setCourseComments((ArrayList<CourseComment>) CourseComment.getByCourseId(c.getId()));
+			
+			if(activeSession != null){
+				c.setIsFinalExamAvailable(c.isFinalExamEvailable(activeSession));
+			}
+			
+			
+			if(studentId > 0){
+				c.checkIfStudentIsSuscribed(studentId);
+				c.checkIfStudentPassFinalExam(studentId);
 			}
 		}
 		return c;
@@ -116,6 +147,12 @@ public class Course {
 				if(i <= activeUnity){
 					current.setActive(true);
 				}
+				
+				current.setExamTimeFinished(true);
+				if(i == activeUnity - 1){
+					current.setExamTimeFinished(false);
+				}
+				
 				fixed.add(current);
 			}
 			
@@ -147,12 +184,12 @@ public class Course {
 	}
 	
 	
-	public static List<Course> getByCategoryId(int categoryId){
+	public static List<Course> getByCategoryId(int categoryId, int studentId){
 		List<CourseCategory> listOfCouseCategory = CourseCategory.getByCategoryId(categoryId);	 
 		List<Course> listOfCourses = new ArrayList<Course>();
 		
 		for (CourseCategory courseCategory : listOfCouseCategory) {
-			Course course = Course.getById(courseCategory.getCourseId());
+			Course course = Course.getById(courseCategory.getCourseId(), studentId);
 			if(course != null && course.getTeacherId() != null){
 				listOfCourses.add(course);
 			}
@@ -198,7 +235,7 @@ public class Course {
 		
 		List<Category> cateogries = Category.search(search);
 		for (Category category : cateogries) {
-			List<Course> categoryCourses = Course.getByCategoryId(category.getId());
+			List<Course> categoryCourses = Course.getByCategoryId(category.getId(), 0);
 			//TODO: Validar si ya esta el curso en la lista
 			coursesFixed.addAll(categoryCourses);
 		}
@@ -286,6 +323,25 @@ public class Course {
 		}
 	}
 	
+	public void checkIfStudentPassFinalExam(int studentId) {
+		CourseSession currentSession = this.getCurrentSession();
+		
+		if(currentSession != null){
+			String query = "SELECT * FROM StudentExam WHERE studentId = " + studentId + " AND sessionId = " + currentSession.getId() + " AND isFinal = true";
+			List<StudentExam> exams = (List<StudentExam>)StoreData.getByCustomQuery(StudentExam.class, query);
+			if(exams != null && !exams.isEmpty()){
+				this.setPassFinalExam(true);
+				this.setFinalExamResult(exams.get(0).getResult());
+			}else{
+				this.setPassFinalExam(false);
+			}
+		}else{
+			this.setPassFinalExam(false);
+		}
+		
+		
+	}
+	
 	public static List<Course> getSoon() {
 		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		
@@ -335,7 +391,7 @@ public class Course {
 	}
 	
 	public boolean isFinalExamEvailable(CourseSession session){
-		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), this.getActiveSession());
+		List<CourseUnity> unities = Course.getActiveUnities((ArrayList<CourseUnity>) CourseUnity.getByCourseId(this.getId()), session);
 		
 		
 		for (int i = 0; i < unities.size(); i++) {
@@ -345,5 +401,24 @@ public class Course {
 		}
 		
 		return session.isFinalExamAvailable(unities.size());
+	}
+	
+	public boolean getIsFinalExamAvailable() {
+		return isFinalExamAvailable;
+	}
+	public void setIsFinalExamAvailable(boolean isFinalExamAvailable) {
+		this.isFinalExamAvailable = isFinalExamAvailable;
+	}
+	public boolean isPassFinalExam() {
+		return passFinalExam;
+	}
+	public void setPassFinalExam(boolean passFinalExam) {
+		this.passFinalExam = passFinalExam;
+	}
+	public float getFinalExamResult() {
+		return finalExamResult;
+	}
+	public void setFinalExamResult(float finalExamResult) {
+		this.finalExamResult = finalExamResult;
 	}
 }

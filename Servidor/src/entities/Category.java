@@ -40,7 +40,7 @@ public class Category {
 		List<Category> categories = (List<Category>)StoreData.getByField(Category.class, "1", "1");
 		List<Category> result = new ArrayList<Category>();
 		for (Category category : categories) {
-			List<Course> courses = Course.getByCategoryId(category.getId());
+			List<Course> courses = Course.getByCategoryId(category.getId(), studentId);
 			List<Course> coursesFixed = new ArrayList<Course>();
 			for (Course course : courses) {
 				if(course.getTeacherId() != null){
